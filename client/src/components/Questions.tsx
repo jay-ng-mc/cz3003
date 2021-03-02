@@ -1,6 +1,10 @@
 import React from "react";
 import {ThemeProvider, theme, CSSReset, Flex, Box, Image, Heading, HStack, Stack, Button} from "@chakra-ui/react";
 import ReactDOM from 'react-dom';
+import { useGetQuestionQuery } from "../generated/graphql";
+import { Formik } from "formik";
+
+
 export const Questions = () => {
     return (
         <ThemeProvider theme={theme}>
@@ -59,11 +63,11 @@ class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
             <Box  borderWidth={1} px={1} width='full' maxWidth='500px' borderRadius={4} textAlign='center' boxShadow='lg'>
                 <ThemeProvider theme={theme} />
                 <Box p={2}>
-                <Box textAlign='center'>
-                    <Heading>Question {questionId} </Heading>
-                </Box>                    
-                <Box>
-                        <Heading>{QuestionBank[questionId].questionTitle}</Heading>
+                    <Box textAlign='center'>
+                        <Heading>Question {questionId} </Heading>
+                    </Box>                    
+                    <Box>
+                            <Heading>{QuestionBank[questionId].questionTitle}</Heading>
                     </Box>
                 </Box>
                 <Box p={3}>
@@ -99,7 +103,6 @@ class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
                 <h3> Your answer is {this.state.currentAnswer} </h3>
 
                 <h3 id="answer"></h3>
-
             </Box>
         </Flex>
     );
