@@ -1,7 +1,7 @@
-import React from "react";
-import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, Link, FormControl, FormLabel, Input, Stack, Checkbox, Button} from "@chakra-ui/react";
+import React from "react"
+import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, Link, FormControl, FormLabel, Input, Stack, Checkbox, Button} from "@chakra-ui/react"
 
-export const Login = () => {
+const Login = () => {
     return (
         <ThemeProvider theme={theme}>
             <CSSReset />
@@ -64,3 +64,5 @@ const LoginForm = () => {
         </Box>
     )
 }
+
+export default Login
