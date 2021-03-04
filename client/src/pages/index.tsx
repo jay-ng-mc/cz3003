@@ -8,11 +8,13 @@ import { Questions } from '../components/Questions'
 import ReactDOM from 'react-dom';
 import _app from './_app'
 import Board from './board'
+import ChooseCharacter from '../components/ChooseCharacter'
 
 const Index = () => (
   <Container height="100vh">
     <NavBar />
-    <Home />
+    {/* <Home /> */}
+    <ChooseCharacter/>
   </Container>
 
 )
