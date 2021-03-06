@@ -8,10 +8,13 @@ import {
 } from '@chakra-ui/react'
 import { CheckCircleIcon, LinkIcon } from '@chakra-ui/icons'
 import { Container } from '../components/Container'
+import ReactDOM from 'react-dom';
+import _app from './_app'
+import Board from '../board/board'
 
 const Index = () => (
   <Container height="100vh">
-    hello world
+    <Board/>
   </Container>
 )
 
