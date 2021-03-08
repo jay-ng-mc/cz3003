@@ -14,8 +14,9 @@ import Board from '../board/board'
 
 const Index = () => (
   <Container height="100vh">
+    <Board />
   </Container>
 )
-ReactDOM.render(<Board />, document.getElementById('root'));
+ReactDOM.render(Index, document.getElementById('root'));
 
 export default Index
