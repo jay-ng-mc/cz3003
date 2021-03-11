@@ -2,7 +2,7 @@ import Grid from 'react-css-grid'
 import Tile from '../components/Tile'
 import Start from '../components/Start'
 import React, { Component } from 'react'
-import './board.module.css'
+import styles from './board.module.css'
 
 class Board extends React.Component {
     state = {
@@ -27,7 +27,7 @@ class Board extends React.Component {
   
   render(){
     return (
-      <div className="game-board">
+      <div className={styles.gameBoard}>
         <Grid
           width={50}
           gap={0}
