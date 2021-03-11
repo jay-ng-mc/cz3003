@@ -1,5 +1,5 @@
 import React from "react";
-import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, IconButton, Link, FormControl, FormLabel, Input, Stack, Checkbox, Button} from "@chakra-ui/react";
+import {ThemeProvider, theme, CSSReset, Flex, Box, Heading} from "@chakra-ui/react";
 import DiceApp from "./DiceApp"
 
 export const DiceRoller = () => {
