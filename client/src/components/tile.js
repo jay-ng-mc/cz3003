@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
+import styles from '../board/board.module.css'
 
-export default class Tile extends Component {
+export default class tile extends Component {
 
     handleClick = () => {
         this.props.move(this.props.number)
@@ -10,7 +11,7 @@ export default class Tile extends Component {
         return(
             <div 
                 onClick={this.props.move ? this.handleClick : null} 
-                className={this.props.move ? "selectable" : "tile"}
+                className={this.props.move ? styles.selectable : styles.tile}
             >
                 {this.props.number}
             </div>
