@@ -39,7 +39,7 @@ const Header = () => {
 const DiceBox = () => {
     return (
         <Box my={5} textAlign='center'>
-        <DiceApp handlerKey="c" />
+        <DiceApp />
         </Box>
     )
 }
