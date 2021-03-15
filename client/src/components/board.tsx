@@ -11,7 +11,7 @@ class Board extends React.Component {
         rightWall: [118, 105, 92, 79, 66, 53, 40, 27, 14, 1],
         currentTile: 0,
         canMoveTo: [],
-        didStart: false
+        didStart: false,
     }
   
     createBoard = () => {

@@ -6,12 +6,21 @@
 }
 .tile {
   border-style: solid;
+  background-color: rgb(0, 225, 255);
 }
 
 .start {
-  background-color: blue;
+  background-color: purple;
 }
 
-.selectable {
+.green {
   background-color: green;
+}
+
+.currentTile {
+  background-color: yellow;
+}
+
+.redTile {
+  background-color: red;
 }
