@@ -1,5 +1,6 @@
 import React from "react";
-import {ThemeProvider, theme, CSSReset, Flex, Box, Image, Heading, HStack, Stack} from "@chakra-ui/react";
+import {ThemeProvider, theme, CSSReset, Flex, Box, Image, Heading, HStack, Stack, Button} from "@chakra-ui/react";
+import ReactDOM from 'react-dom';
 
 export const Questions = () => {
     return (
@@ -33,30 +34,43 @@ const QuestionsPage = () => {
 
                 <Box p={3}>
                     <Stack isInline  spacing='70px' >
-                        <Box borderWidth = "3px" borderColor = "#000000" as="button" borderRadius="0px" bg="orange" color="black" px={4} h='100px' w='200px'>
+                        <Box id = "answer3" onClick={changeColor3} borderWidth = "3px" borderColor = "#000000" as="button" borderRadius="0px" bg="orange" color="black" px={4} h='100px' w='200px'>
                             Answer 3
                         </Box>
-                        <Box borderWidth = "3px" borderColor = "#000000" as="button" borderRadius="0px" bg="orange" color="black" px={4} h='100px' w='200px' 
-                              _active={{
-                                bg: "#dddfe2",
-                                transform: "scale(0.98)",
-                                borderColor: "#bec3c9",
-                              }}>
+                        <Box borderWidth = "3px" borderColor = "#000000" as="button" borderRadius="0px" bg="orange" color="black" px={4} h='100px' w='200px' >
                             Answer 4
                         </Box>
                     </Stack>
                 </Box>
 
-                <Box as="button" borderRadius="10px" bg="tomato" color="yellow" px={4}>
+                <Box onClick= {isCorrect} as="button" borderRadius="10px" bg="tomato" color="yellow" px={4}>
                     Confirm
                 </Box>
+
+                <h3 id="answer"> </h3>
+
             </Box>
-
-
         </Flex>
     );
 }
 
+function changeColor3() {
+    if (document.getElementById('answer3').style.backgroundColor == "red" ){
+        document.getElementById('answer3').style.backgroundColor = "orange"     
+    }
+    else{
+        document.getElementById('answer3').style.backgroundColor = "red"     
+    }
+}       
+
+function isCorrect() {
+    if (true){
+        document.getElementById('answer').textContent= "The answer is correct"
+    }
+    else {
+        document.getElementById('answer').textContent= "The answer is incorrect"
+    }
+}
 const QuestionHeader = () => {
     return (
         <Box textAlign='center'>
