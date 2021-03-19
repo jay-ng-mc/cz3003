@@ -1,7 +1,6 @@
 import React from "react";
 import {ThemeProvider, theme, CSSReset, Flex, Box, Image, Heading, HStack, Stack, Button} from "@chakra-ui/react";
 import ReactDOM from 'react-dom';
-
 export const Questions = () => {
     return (
         <ThemeProvider theme={theme}>
@@ -11,11 +10,41 @@ export const Questions = () => {
     );
 }
 
+const QuestionBank = [
+    {
+        questionTitle: "This is a test question?", 
+        A: "Answer A",
+        B: "Answer B",
+        C: "Answer C",
+        D: "Answer D",
+        Correct: "A"
+    },
+    { 
+      questionTitle: "why does this happen?", 
+      A: "ABCD",
+      B: "EFGH",
+      C: "IKLM",
+      D: "NOP",
+      Correct: "C"
+    }
+]
+
+const AnswerStyle = {
+    borderWidth: "3px", 
+    borderColor:  "#000000",
+    borderRadius: "0px",
+    backgroundColor: "orange",
+    color: "black",
+    height: '100px',
+    width: '190px',
+}
+const id = 1
+
 class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
     constructor(props) {
         super(props);
         this.state = {currentAnswer: "",
-                    correctAnswer: "B"
+                    correctAnswer: QuestionBank[id].Correct
                 };
         this.isCorrect = this.isCorrect.bind(this);
         this.changeColor1 = this.changeColor1.bind(this);
@@ -24,26 +53,28 @@ class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
         this.changeColor4 = this.changeColor4.bind(this);
     }
 
-
     render() {
     return (
         <Flex minHeight='100vh' width='full' align='center' justifyContent='center'>
             <Box  borderWidth={1} px={1} width='full' maxWidth='500px' borderRadius={4} textAlign='center' boxShadow='lg'>
-                {/* <Image src='./Sausage.png'  /> */}
                 <ThemeProvider theme={theme} />
                 <Box p={2}>
-                    <this.QuestionHeader />
-                    <this.QuestionTitle />
+                <Box textAlign='center'>
+                    <Heading>Question {id} </Heading>
+                </Box>                    
+                <Box>
+                        <Heading>{QuestionBank[id].questionTitle}</Heading>
+                    </Box>
                 </Box>
                 <Box p={3}>
                     <Stack isInline  spacing='10px'>
                         <h2> A </h2>
-                        <Box id = "answer1" onClick={this.changeColor1} mr="40px" borderWidth = "3px" borderColor = "#000000" as="button" borderRadius="0px" bg="orange" color="black" px={4} h='100px' w='190px'>
-                            Answer 1
+                        <Box id = "A" onClick={this.changeColor1} style={AnswerStyle}  as="button" mr="40px">
+                            {QuestionBank[id].A}
                         </Box>
                         <h2> B </h2>
-                        <Box id = "answer2" onClick={this.changeColor2} borderWidth = "3px" borderColor = "#000000" as="button" borderRadius="0px" bg="orange" color="black" px={4} h='100px' w='190px'>
-                            Answer 2
+                        <Box id = "B" onClick={this.changeColor2} style={AnswerStyle}  as="button">
+                            {QuestionBank[id].B}
                         </Box>
                     </Stack>
                 </Box>
@@ -51,21 +82,21 @@ class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
                 <Box p={3}>
                     <Stack isInline  spacing='10px' >
                         <h2> C </h2>
-                        <Box id = "answer3" onClick={this.changeColor3} mr="40px" borderWidth = "3px" borderColor = "#000000" as="button" borderRadius="0px" bg="orange" color="black" px={4} h='100px' w='190px'>
-                            Answer 3
+                        <Box id = "C" onClick={this.changeColor3} style={AnswerStyle} as="button" mr="40px" >
+                            {QuestionBank[id].C}
                         </Box>
                         <h2> D </h2>
-                        <Box id = "answer4" onClick={this.changeColor4} borderWidth = "3px" borderColor = "#000000" as="button" borderRadius="0px" bg="orange" color="black" px={4} h='100px' w='190px' >
-                            Answer 4
+                        <Box id = "D" onClick={this.changeColor4} style={AnswerStyle} as="button" >
+                            {QuestionBank[id].D}
                         </Box>
                     </Stack>
                 </Box>
-
+                
                 <Box onClick= {this.isCorrect} as="button" borderRadius="10px" bg="tomato" color="yellow" px={4}>
                     Confirm
                 </Box>
 
-                <h3> Your current answer is {this.state.currentAnswer} </h3>
+                <h3> Your answer is {this.state.currentAnswer} </h3>
 
                 <h3 id="answer"></h3>
 
@@ -75,67 +106,79 @@ class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
 }
 
 changeColor1() {
-    if (document.getElementById('answer1').style.backgroundColor == "red" ){
-        document.getElementById('answer1').style.backgroundColor = "orange"     
+    if (document.getElementById('A').style.backgroundColor == "yellow" ){
+        document.getElementById('A').style.backgroundColor = "orange"     
     }
     else{
-        document.getElementById('answer1').style.backgroundColor = "red"   
+        document.getElementById('A').style.backgroundColor = "yellow"   
+        document.getElementById('C').style.backgroundColor = "orange"
+        document.getElementById('B').style.backgroundColor = "orange"
+        document.getElementById('D').style.backgroundColor = "orange" 
         this.setState({currentAnswer: "A"})  
     }
 } 
 changeColor2() {
-    if (document.getElementById('answer2').style.backgroundColor == "red" ){
-        document.getElementById('answer2').style.backgroundColor = "orange"     
+    if (document.getElementById('B').style.backgroundColor == "yellow" ){
+        document.getElementById('B').style.backgroundColor = "orange"     
     }
     else{
-        document.getElementById('answer2').style.backgroundColor = "red"   
+        document.getElementById('B').style.backgroundColor = "yellow"  
+        document.getElementById('C').style.backgroundColor = "orange"
+        document.getElementById('D').style.backgroundColor = "orange"
+        document.getElementById('A').style.backgroundColor = "orange"  
         this.setState({currentAnswer: "B"})  
     }
 } 
 
 changeColor3() {
-    if (document.getElementById('answer3').style.backgroundColor == "red" ){
-        document.getElementById('answer3').style.backgroundColor = "orange"     
+    if (document.getElementById('C').style.backgroundColor == "yellow" ){
+        document.getElementById('C').style.backgroundColor = "orange"     
     }
     else{
-        document.getElementById('answer3').style.backgroundColor = "red"   
+        document.getElementById('C').style.backgroundColor = "yellow" 
+        document.getElementById('D').style.backgroundColor = "orange"
+        document.getElementById('B').style.backgroundColor = "orange"
+        document.getElementById('A').style.backgroundColor = "orange"   
         this.setState({currentAnswer: "C"})  
     }
 } 
 
 changeColor4() {
-    if (document.getElementById('answer4').style.backgroundColor == "red" ){
-        document.getElementById('answer4').style.backgroundColor = "orange"     
+    if (document.getElementById('D').style.backgroundColor == "yellow" ){
+        document.getElementById('D').style.backgroundColor = "orange"     
     }
     else{
-        document.getElementById('answer4').style.backgroundColor = "red"   
+        document.getElementById('D').style.backgroundColor = "yellow" 
+        document.getElementById('C').style.backgroundColor = "orange"
+        document.getElementById('B').style.backgroundColor = "orange"
+        document.getElementById('A').style.backgroundColor = "orange"  
         this.setState({currentAnswer: "D"})  
     }
 }       
 
-isCorrect( ) {
-    if (this.state.currentAnswer == this.state.correctAnswer){
-        document.getElementById('answer').textContent= "The answer is correct"
+isCorrect() {
+    if (this.state.currentAnswer == ""){
+        document.getElementById('answer').textContent= "Please select an answer!"
     }
     else {
-        document.getElementById('answer').textContent= "The answer is incorrect"
+        if (this.state.currentAnswer == this.state.correctAnswer){
+            document.getElementById('answer').textContent= "Your answer is correct!"
+            document.getElementById(this.state.correctAnswer).style.backgroundColor = "green"
+        }
+        else {
+            document.getElementById('answer').textContent= "Your answer is incorrect. The correct answer is " + this.state.correctAnswer
+            document.getElementById(this.state.correctAnswer).style.backgroundColor = "green"
+            document.getElementById(this.state.currentAnswer).style.backgroundColor = "red"
+        }
     }
 }
-QuestionHeader = () => {
-    return (
-        <Box textAlign='center'>
-            <Heading>Question: </Heading>
-        </Box>
-    )
-}
 
-QuestionTitle = () => {
-    return (
-        <Box>
-            <Heading>Choose the correct option: </Heading>
-        </Box>
-    )
-}
-
+// QuestionTitle = () => {
+//     return (
+//         <Box>
+//             <Heading>Choose the correct option: </Heading>
+//         </Box>
+//     )
+// }
 
 }
