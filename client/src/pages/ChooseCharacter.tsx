@@ -123,7 +123,7 @@ function ChooseImage({ imageId }) {
 function prevImage() {
   savedImageId = (savedImageId+5)%6; //had some rendering error while trying to put -1 and spam clicking
   (document.getElementById('Avatar') as HTMLImageElement).src = imageList[savedImageId]
-  alert(imageList[savedImageId])
+  //alert(imageList[savedImageId])
 }
 
 function nextImage() {
