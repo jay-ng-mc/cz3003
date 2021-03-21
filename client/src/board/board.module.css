@@ -1,7 +1,7 @@
 .gameBoard {
   display: grid;
   width: 670px;
-  height: 520px;
+  height: 800px;
   margin: auto;
 }
 .tile {

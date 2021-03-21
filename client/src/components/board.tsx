@@ -3,9 +3,14 @@ import Tile from './Tile'
 import Start from './Start'
 import React, { Component } from 'react'
 import styles from '../board/board.module.css'
+import Character from './Character'
 
 class Board extends React.Component {
     state = {
+        Characters: [
+          {id: 1, playerCoins: 3},
+        ],
+        redTile: [2,5],
         startTiles: [130, 118, 13, 1],
         leftWall: [130, 117, 104, 91, 78, 65, 52, 39, 26, 13],
         rightWall: [118, 105, 92, 79, 66, 53, 40, 27, 14, 1],
@@ -60,10 +65,13 @@ class Board extends React.Component {
     }, () => this.updateCanMoveTo())
   }
 
-  
+
   render(){
     return (
       <div className={styles.gameBoard}>
+        { this.state.Characters.map(character => 
+          (<Character key={character.id} playerCoins={character.playerCoins}> 
+          </Character>))}
         <Grid
           width={50}
           gap={0}
