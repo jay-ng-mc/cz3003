@@ -6,14 +6,11 @@ import styles from '../board/board.module.css'
 import Character from './Character'
 
 class Board extends React.Component {
-    constructor(props){
-      super(props);
-      this.increaseCoins = this.increaseCoins.bind(this);
-    }
+
     state = {
-      Characters: [
-        {id: 1, playerCoins: 3},
-        {id: 2, playerCoins: 4},
+      characters: [
+        {characterId: 1, playerCoins: 3},
+        {characterId: 2, playerCoins: 4},
       ],
       redTile: [2,5],
       startTiles: [130, 118, 13, 1],
@@ -70,17 +67,24 @@ class Board extends React.Component {
     }, () => this.updateCanMoveTo())
   }
 
-  increaseCoins = () => {
-    this.setState({ playerCoins: this.props.playerCoins + 1});
-  }
+  handleCoins = character => {
+    const characters = [...this.state.characters];
+    const index = characters.indexOf(character);
+    characters[index] = {...character};
+    characters[index].playerCoins++;
+    this.setState({ characters });
+  };
+
 
   render(){
     return (
       <div className={styles.gameBoard}>
-        { this.state.Characters.map(character => 
-            <Character key ={character.id} characterid={character.id} playerCoins={character.playerCoins}
-            increaseCoins = {this.increaseCoins}> 
-          </Character>)}
+        { this.state.characters.map(character => (
+          <Character 
+          key ={character.characterId} 
+          increaseCoins={this.handleCoins}
+          character={character}
+          />))}
         <Grid
           width={50}
           gap={0}

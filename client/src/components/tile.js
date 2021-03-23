@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import styles from '../board/board.module.css'
-import Character from './Character'
 
 export default class tile extends Component {
 
