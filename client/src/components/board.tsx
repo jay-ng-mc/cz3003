@@ -6,18 +6,23 @@ import styles from '../board/board.module.css'
 import Character from './Character'
 
 class Board extends React.Component {
-    state = {
-        Characters: [
-          {id: 1, playerCoins: 3},
-        ],
-        redTile: [2,5],
-        startTiles: [130, 118, 13, 1],
-        leftWall: [130, 117, 104, 91, 78, 65, 52, 39, 26, 13],
-        rightWall: [118, 105, 92, 79, 66, 53, 40, 27, 14, 1],
-        currentTile: 0,
-        canMoveTo: [],
-        didStart: false,
+    constructor(props){
+      super(props);
+      this.increaseCoins = this.increaseCoins.bind(this);
     }
+    state = {
+      Characters: [
+        {id: 1, playerCoins: 3},
+        {id: 2, playerCoins: 4},
+      ],
+      redTile: [2,5],
+      startTiles: [130, 118, 13, 1],
+      leftWall: [130, 117, 104, 91, 78, 65, 52, 39, 26, 13],
+      rightWall: [118, 105, 92, 79, 66, 53, 40, 27, 14, 1],
+      currentTile: 0,
+      canMoveTo: [],
+      didStart: false,
+  };
   
     createBoard = () => {
     let tileArray = []
@@ -65,13 +70,17 @@ class Board extends React.Component {
     }, () => this.updateCanMoveTo())
   }
 
+  increaseCoins = () => {
+    this.setState({ playerCoins: this.props.playerCoins + 1});
+  }
 
   render(){
     return (
       <div className={styles.gameBoard}>
         { this.state.Characters.map(character => 
-          (<Character key={character.id} playerCoins={character.playerCoins}> 
-          </Character>))}
+            <Character key ={character.id} characterid={character.id} playerCoins={character.playerCoins}
+            increaseCoins = {this.increaseCoins}> 
+          </Character>)}
         <Grid
           width={50}
           gap={0}
