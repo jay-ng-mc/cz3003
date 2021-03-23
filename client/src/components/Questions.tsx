@@ -38,13 +38,13 @@ const AnswerStyle = {
     height: '100px',
     width: '190px',
 }
-const id = 1
+const questionId = 1
 
 class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
     constructor(props) {
         super(props);
         this.state = {currentAnswer: "",
-                    correctAnswer: QuestionBank[id].Correct
+                    correctAnswer: QuestionBank[questionId].Correct
                 };
         this.isCorrect = this.isCorrect.bind(this);
         this.changeColor1 = this.changeColor1.bind(this);
@@ -60,21 +60,21 @@ class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
                 <ThemeProvider theme={theme} />
                 <Box p={2}>
                 <Box textAlign='center'>
-                    <Heading>Question {id} </Heading>
+                    <Heading>Question {questionId} </Heading>
                 </Box>                    
                 <Box>
-                        <Heading>{QuestionBank[id].questionTitle}</Heading>
+                        <Heading>{QuestionBank[questionId].questionTitle}</Heading>
                     </Box>
                 </Box>
                 <Box p={3}>
                     <Stack isInline  spacing='10px'>
                         <h2> A </h2>
                         <Box id = "A" onClick={this.changeColor1} style={AnswerStyle}  as="button" mr="40px">
-                            {QuestionBank[id].A}
+                            {QuestionBank[questionId].A}
                         </Box>
                         <h2> B </h2>
                         <Box id = "B" onClick={this.changeColor2} style={AnswerStyle}  as="button">
-                            {QuestionBank[id].B}
+                            {QuestionBank[questionId].B}
                         </Box>
                     </Stack>
                 </Box>
@@ -83,11 +83,11 @@ class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
                     <Stack isInline  spacing='10px' >
                         <h2> C </h2>
                         <Box id = "C" onClick={this.changeColor3} style={AnswerStyle} as="button" mr="40px" >
-                            {QuestionBank[id].C}
+                            {QuestionBank[questionId].C}
                         </Box>
                         <h2> D </h2>
                         <Box id = "D" onClick={this.changeColor4} style={AnswerStyle} as="button" >
-                            {QuestionBank[id].D}
+                            {QuestionBank[questionId].D}
                         </Box>
                     </Stack>
                 </Box>
