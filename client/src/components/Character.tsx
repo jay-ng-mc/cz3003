@@ -20,6 +20,12 @@ export default class Character extends Component {
                 >
                     Increase
                 </button>
+                <button
+                onClick={() => this.props.nextTurn(this.props.character)}
+                className="btn btn-secondary btn-sm"
+                >
+                    nextTurn
+                </button>
             </div>
         );
     }

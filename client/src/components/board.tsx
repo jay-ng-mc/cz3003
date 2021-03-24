@@ -10,16 +10,19 @@ class Board extends React.Component {
 
     state = {
       characters: [
-        {characterId: 1, playerCoins: 3},
-        {characterId: 2, playerCoins: 4},
+        {characterId: 1, playerCoins: 3, 
+        position:0,canMoveTo:[]},
+        {characterId: 2, playerCoins: 4, 
+        position:0,canMoveTo:[]},
       ],
       redTile:[18,23,45,62],
-      startTiles: [130, 118, 13, 1],
+      startTiles: [1],
       leftWall: [130, 117, 104, 91, 78, 65, 52, 39, 26, 13],
       rightWall: [118, 105, 92, 79, 66, 53, 40, 27, 14, 1],
       currentTile: 0,
       canMoveTo: [],
-      currentTurn: 1,
+      playerTurn: 1,
+      turnsTaken: 0,
       didStart: false,
   };
   
@@ -69,9 +72,8 @@ class Board extends React.Component {
 
   move = (number) => {
     this.state.redTile.includes(number) ? 
-      this.decreaseCoins(this.state.characters[this.state.currentTurn]) :
-      this.increaseCoins(this.state.characters[this.state.currentTurn])
-    // this.increaseCoins(this.state.characters[this.state.currentTurn])
+      this.decreaseCoins(this.state.characters[this.state.playerTurn-1]) :
+      this.increaseCoins(this.state.characters[this.state.playerTurn-1])
     this.setState({
       currentTile: number
     }, () => this.updateCanMoveTo())
@@ -93,6 +95,23 @@ class Board extends React.Component {
     this.setState({ characters });
   };
 
+  nextTurn = character => {
+    const characters = [...this.state.characters];
+    const index = this.state.playerTurn-1;
+    let nextIndex = 12;
+    index === 0 ? nextIndex = 1: nextIndex = 0;
+    if (characters[index].position === 0 && this.state.turnsTaken === 0){ 
+    this.state.didStart = false;
+    this.state.turnsTaken++}
+    characters[index] = {...character};
+    characters[index].position = this.state.currentTile;
+    characters[index].canMoveTo = this.state.canMoveTo;
+    this.state.currentTile = characters[nextIndex].position;
+    this.state.canMoveTo = characters[nextIndex].canMoveTo;
+    this.state.playerTurn = nextIndex + 1;
+    this.setState({ characters });
+  };
+
 
   render(){
     return (
@@ -102,6 +121,7 @@ class Board extends React.Component {
           key ={character.characterId} 
           increaseCoins={this.increaseCoins}
           decreaseCoins={this.decreaseCoins}
+          nextTurn={this.nextTurn}
           character={character}
           />))}
         <Grid
