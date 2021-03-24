@@ -11,7 +11,7 @@ export default class tile extends Component {
         return(
             <div 
                 onClick={this.props.move ? this.handleClick : null} 
-                className={this.props.move ? styles.green : styles.blueTile}
+                className={this.props.move ? styles.green : styles.redTile}
             >
                 {this.props.number}
             </div>

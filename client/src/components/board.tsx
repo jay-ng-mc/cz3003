@@ -1,5 +1,6 @@
 import Grid from 'react-css-grid'
 import Tile from './Tile'
+import RedTile from './redTile'
 import Start from './Start'
 import React, { Component } from 'react'
 import styles from '../board/board.module.css'
@@ -12,12 +13,13 @@ class Board extends React.Component {
         {characterId: 1, playerCoins: 3},
         {characterId: 2, playerCoins: 4},
       ],
-      redTile: [2,5],
+      redTile:[18,23,45,62],
       startTiles: [130, 118, 13, 1],
       leftWall: [130, 117, 104, 91, 78, 65, 52, 39, 26, 13],
       rightWall: [118, 105, 92, 79, 66, 53, 40, 27, 14, 1],
       currentTile: 0,
       canMoveTo: [],
+      currentTurn: 1,
       didStart: false,
   };
   
@@ -33,9 +35,13 @@ class Board extends React.Component {
     return tileArray.map(number => (
       this.state.startTiles.includes(number)
       ? <Start startGame={this.startGame} didStart={this.state.didStart} number={number} />
-      : this.state.canMoveTo.includes(number)
-        ? <Tile move={this.move} number={number} />
-        : <Tile number={number} />
+      : this.state.redTile.includes(number) ? 
+        this.state.canMoveTo.includes(number)
+          ? <RedTile move={this.move} number={number} />
+          : <RedTile number={number} />:
+        this.state.canMoveTo.includes(number)
+          ? <Tile move={this.move} number={number} />
+          : <Tile number={number} />
     ))  
   }
 
@@ -62,16 +68,28 @@ class Board extends React.Component {
   }
 
   move = (number) => {
+    this.state.redTile.includes(number) ? 
+      this.decreaseCoins(this.state.characters[this.state.currentTurn]) :
+      this.increaseCoins(this.state.characters[this.state.currentTurn])
+    // this.increaseCoins(this.state.characters[this.state.currentTurn])
     this.setState({
       currentTile: number
     }, () => this.updateCanMoveTo())
   }
 
-  handleCoins = character => {
+  increaseCoins = character => {
     const characters = [...this.state.characters];
     const index = characters.indexOf(character);
     characters[index] = {...character};
     characters[index].playerCoins++;
+    this.setState({ characters });
+  };
+
+  decreaseCoins = character => {
+    const characters = [...this.state.characters];
+    const index = characters.indexOf(character);
+    characters[index] = {...character};
+    characters[index].playerCoins--;
     this.setState({ characters });
   };
 
@@ -82,7 +100,8 @@ class Board extends React.Component {
         { this.state.characters.map(character => (
           <Character 
           key ={character.characterId} 
-          increaseCoins={this.handleCoins}
+          increaseCoins={this.increaseCoins}
+          decreaseCoins={this.decreaseCoins}
           character={character}
           />))}
         <Grid
