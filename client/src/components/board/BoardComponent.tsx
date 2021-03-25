@@ -6,10 +6,10 @@ import sausageTile from './tiles/sausageTile';
 import React, { Component } from 'react'
 import styles from './board.module.css'
 import Character from './BoardCharacter'
-import {Box, Stack, Flex} from "@chakra-ui/react";
+import {Box, Stack, Flex, HStack} from "@chakra-ui/react";
 import SausageTile from './sausageTile';
 import next from 'next'
-import DiceRoller from './DiceRoller';
+import { DiceRoller } from './DiceRoller';
 
 class BoardComponent extends React.Component {
 
