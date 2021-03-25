@@ -16,7 +16,8 @@ export default class Character extends Component {
                 </Box>         
                 
                 <br></br>
-                <Box as="button" style={ButtonStyle}  px={4} mr="10px"
+                {/* debugging reasons */}
+                {/* <Box as="button" style={ButtonStyle}  px={4} mr="10px"
                 onClick={() => this.props.decreaseCoins(this.props.character)}
                 className="btn btn-secondary btn-sm"
                 >
@@ -27,21 +28,9 @@ export default class Character extends Component {
                 className="btn btn-secondary btn-sm"
                 >
                     Increase
-                </Box>
-                <Box as="button" style={ButtonStyle} px={4} mr="10px"
-                onClick={() => this.props.nextTurn(this.props.character)}
-                className="btn btn-secondary btn-sm"
-                >
-                    nextTurn
-                </Box>
+                </Box> */}
             </div>
         );
     }
 }
 
-const ButtonStyle = {
-    backgroundColor: "tomato",
-    color: "yellow",
-    borderRadius: "10px",
-    fontSize:"20px"
-}

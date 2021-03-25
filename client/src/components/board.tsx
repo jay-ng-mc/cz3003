@@ -5,6 +5,7 @@ import Start from './Start'
 import React, { Component } from 'react'
 import styles from '../board/board.module.css'
 import Character from './Character'
+import {Box} from "@chakra-ui/react";
 
 class Board extends React.Component {
 
@@ -95,15 +96,15 @@ class Board extends React.Component {
     this.setState({ characters });
   };
 
-  nextTurn = character => {
+  nextTurn = () => {
     const characters = [...this.state.characters];
     const index = this.state.playerTurn-1;
-    let nextIndex = 12;
+    let nextIndex;
     index === 0 ? nextIndex = 1: nextIndex = 0;
     if (characters[index].position === 0 && this.state.turnsTaken === 0){ 
     this.state.didStart = false;
     this.state.turnsTaken++}
-    characters[index] = {...character};
+    characters[index] = {...characters[index]};
     characters[index].position = this.state.currentTile;
     characters[index].canMoveTo = this.state.canMoveTo;
     this.state.currentTile = characters[nextIndex].position;
@@ -124,6 +125,14 @@ class Board extends React.Component {
           nextTurn={this.nextTurn}
           character={character}
           />))}
+        <Box as="button" style={ButtonStyle} px={4} mr="10px"
+        width="50%"
+        height="50%"
+                onClick={() => this.nextTurn()}
+                className="btn btn-secondary btn-sm"
+                >
+                    nextTurn
+                </Box>
         <Grid
           width={50}
           gap={0}
@@ -132,6 +141,15 @@ class Board extends React.Component {
           </Grid>
         </div>
     );
-  }}
+  }
+
+}
+
+  const ButtonStyle = {
+    backgroundColor: "tomato",
+    color: "yellow",
+    borderRadius: "10px",
+    fontSize:"20px"
+  }
 
   export default Board;
