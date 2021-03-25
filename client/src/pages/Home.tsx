@@ -1,12 +1,14 @@
-import React from "react";
-import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, IconButton, Link, FormControl, FormLabel, Input, Stack, Checkbox, Button} from "@chakra-ui/react";
+import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, IconButton, Link, Button, Image} from "@chakra-ui/react";
+import { SettingsIcon } from '@chakra-ui/icons'
 
-export const Home = () => {
+const Home = () => {
     return (
-        <ThemeProvider theme={theme}>
-            <CSSReset />
-            <HomePage />
-        </ThemeProvider>
+        <div>
+            <ThemeProvider theme={theme}>
+                <CSSReset />
+                <HomePage />
+            </ThemeProvider> 
+        </div>
     );
 }
 
@@ -31,6 +33,7 @@ const CharacterIcon = () => {
         <IconButton 
         aria-label="Change Character"
         isRound={true} 
+        icon={<SettingsIcon />}
         size='lg'/>
         </Box>
     )
@@ -39,9 +42,12 @@ const CharacterIcon = () => {
 const Header = () => {
     return (
         <Box textAlign='center'>
-            <Heading>Sausage</Heading>
-            <Heading>Party</Heading>
-
+            <Image
+            borderRadius="full"
+            src={"images\\Title screen.png"}
+            alt="Avatar"
+            img id="Avatar"
+            />
         </Box>
     )
 }
@@ -55,3 +61,5 @@ const HomeBox = () => {
         </Box>
     )
 }
+
+export default Home
