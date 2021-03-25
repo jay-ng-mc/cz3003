@@ -15,11 +15,7 @@
     "framer-motion": "^2.9.4",
     "next": "latest",
     "react": "^17.0.1",
-<<<<<<< HEAD
-    "react-dice-roller": "^1.0.5",
-=======
     "react-dice-roll": "^1.1.1",
->>>>>>> 97fafd36b3a2d8a1c704199036c6d291b65ac3b9
     "react-dom": "^17.0.1"
   },
   "license": "MIT",
