@@ -12,7 +12,7 @@ export default class Character extends Component {
                     <b> Player  {this.props.character.characterId} </b>    
                 </Box>
                 <Box bg ="yellow" fontSize="25px" px={4}>
-                     Coins: {this.props.character.playerCoins}  
+                     Coins: {this.props.character.playerCoins}  Sausages:  {this.props.character.playerSausage}
                 </Box>         
                 
                 <br></br>

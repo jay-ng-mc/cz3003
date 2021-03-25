@@ -6,16 +6,13 @@ import React, { Component } from 'react'
 import styles from '../board/board.module.css'
 import Character from './Character'
 import {Box} from "@chakra-ui/react";
+import next from 'next'
 
 class Board extends React.Component {
 
     state = {
-      characters: [
-        {characterId: 1, playerCoins: 3, 
-        position:0,canMoveTo:[]},
-        {characterId: 2, playerCoins: 4, 
-        position:0,canMoveTo:[]},
-      ],
+      charactersCreated: false,
+      characters: [],
       redTile:[18,23,45,62],
       startTiles: [1],
       leftWall: [130, 117, 104, 91, 78, 65, 52, 39, 26, 13],
@@ -25,6 +22,7 @@ class Board extends React.Component {
       playerTurn: 1,
       turnsTaken: 0,
       didStart: false,
+      numberOfPlayers: 3,
   };
   
     createBoard = () => {
@@ -96,14 +94,16 @@ class Board extends React.Component {
     this.setState({ characters });
   };
 
-  nextTurn = () => {
+  nextTurn = (number) => {
     const characters = [...this.state.characters];
     const index = this.state.playerTurn-1;
     let nextIndex;
-    index === 0 ? nextIndex = 1: nextIndex = 0;
-    if (characters[index].position === 0 && this.state.turnsTaken === 0){ 
+    index === number-1 ? nextIndex = 0: nextIndex = index+1;
+    if (characters[index].position === 0 && this.state.turnsTaken < number-1){ 
     this.state.didStart = false;
-    this.state.turnsTaken++}
+    console.log(this.state.didStart);
+    this.state.turnsTaken++
+    console.log(this.state.turnsTaken)}
     characters[index] = {...characters[index]};
     characters[index].position = this.state.currentTile;
     characters[index].canMoveTo = this.state.canMoveTo;
@@ -113,10 +113,21 @@ class Board extends React.Component {
     this.setState({ characters });
   };
 
+  createCharacters = (number) =>{
+    if (this.state.charactersCreated == false){
+      this.state.charactersCreated = true;
+      for (let x = 1; x <= number; x++){
+        this.state.characters.push(
+          {characterId: x, playerCoins: 10, playerSausage: 0, 
+          position:0,canMoveTo:[]})
+    }}
+  };
+
 
   render(){
     return (
       <div className={styles.gameBoard}>
+        {this.createCharacters(this.state.numberOfPlayers)}
         { this.state.characters.map(character => (
           <Character 
           key ={character.characterId} 
@@ -128,7 +139,7 @@ class Board extends React.Component {
         <Box as="button" style={ButtonStyle} px={4} mr="10px"
         width="50%"
         height="50%"
-                onClick={() => this.nextTurn()}
+                onClick={() => this.nextTurn(this.state.numberOfPlayers)}
                 className="btn btn-secondary btn-sm"
                 >
                     nextTurn
