@@ -1,5 +1,5 @@
 import Grid from 'react-css-grid'
-import Tile from './Tile'
+import Tile from './tile'
 import RedTile from './redTile'
 import Start from './Start'
 import React, { Component } from 'react'
