@@ -9,6 +9,7 @@ import Character from './BoardCharacter'
 import {Box, Stack, Flex} from "@chakra-ui/react";
 import SausageTile from './sausageTile';
 import next from 'next'
+import DiceRoller from './DiceRoller';
 
 class BoardComponent extends React.Component {
 
@@ -174,6 +175,9 @@ class BoardComponent extends React.Component {
             >
               nextTurn
             </Box>
+            <Box color="black" bg="green.300" px={4} fontSize="30px"> 
+                    <b> Current Turn: Player {this.state.playerTurn} </b>    
+                </Box>
           </Stack>
         </Flex>
         <Grid className={styles.gameBoard} width={50} gap={0}>
