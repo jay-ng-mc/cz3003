@@ -1,0 +1,17 @@
+.game-board {
+  display: grid;
+  width: 670px;
+  height: 520px;
+  margin: auto;
+}
+.tile {
+  border-style: solid;
+}
+
+.start {
+  background-color: blue;
+}
+
+.selectable {
+  background-color: green;
+}

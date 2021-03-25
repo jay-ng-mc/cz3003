@@ -1,5 +1,6 @@
-import React from "react"
-import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, Link, FormControl, FormLabel, Input, Stack, Checkbox, Button} from "@chakra-ui/react"
+import React from "react";
+import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, Link, FormControl, FormLabel, Input, Stack, Checkbox, Button} from "@chakra-ui/react";
+
 
 const Login = () => {
     return (
@@ -59,7 +60,7 @@ const LoginForm = () => {
                 </Stack>
 
                 <Button width='full' mt={5}>Login</Button>
-                <Button width='full' mt={10}>Register</Button>
+                <Button width='full' type="submit" mt={10}>Register</Button>
             </form>
         </Box>
     )

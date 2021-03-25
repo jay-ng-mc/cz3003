@@ -1,5 +1,6 @@
 import React from "react";
 import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, FormControl, FormLabel, Input, Button} from "@chakra-ui/react";
+import { Form } from "formik";
 
 const Register = () => {
     return (
@@ -37,7 +38,7 @@ const RegisterHeader = () => {
 const RegisterForm = () => {
     return (
         <Box my={8} textAlign='left'>
-            <form>
+            <Form>
                 <FormControl>
                     <FormLabel>Enter E-mail:</FormLabel>
                     <Input type='email' placeholder='Enter your email' />
@@ -59,7 +60,7 @@ const RegisterForm = () => {
                 </FormControl>
 
                 <Button width='full' mt={10}>Confirm</Button>
-            </form>
+            </Form>
         </Box>
     )
 }
