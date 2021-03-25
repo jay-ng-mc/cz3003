@@ -1,5 +1,12 @@
-import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, IconButton, Link, Button, Image} from "@chakra-ui/react";
+import {ThemeProvider, theme, CSSReset, Flex, Box, IconButton, Link, Button, Image, HStack, Input, FormControl, FormLabel, FormErrorMessage, FormHelperText, RadioGroup, Radio} from "@chakra-ui/react";
 import { SettingsIcon } from '@chakra-ui/icons'
+import {
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
+  } from "@chakra-ui/react"
 
 const Home = () => {
     return (
@@ -56,10 +63,23 @@ const HomeBox = () => {
     return (
         <Box my={5} textAlign='left'>
             <form>
+                <FormControl as="fieldset">
+                    <FormLabel as="legend">Number of players:</FormLabel>
+                    <RadioGroup defaultValue="Itachi">
+                    <HStack spacing="24px">
+                    <Radio value="1">1</Radio>
+                    <Radio value="2">2</Radio>
+                    <Radio value="3">3</Radio>
+                    <Radio value="4">4</Radio>
+                    </HStack>
+                </RadioGroup>
+                <FormHelperText>Please select an option.</FormHelperText>
+                </FormControl>
                 <Button width='full' mt={5}>New Game</Button>
             </form>
         </Box>
     )
 }
+
 
 export default Home
