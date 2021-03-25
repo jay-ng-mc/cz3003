@@ -2,7 +2,7 @@ import React from "react";
 import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, IconButton, IconButtonProps, Link, FormControl, FormLabel, Input, Stack, Checkbox, Button, Editable, EditableInput, EditablePreview, ButtonGroup, Image, Avatar } from "@chakra-ui/react";
 import { EditIcon, CheckIcon, CloseIcon, ChevronLeftIcon, ChevronRightIcon, ArrowBackIcon } from '@chakra-ui/icons'
 
-let imageList = ["https://theosophical.files.wordpress.com/2011/06/zero2.jpg?w=584", "https://upload.wikimedia.org/wikipedia/commons/c/c5/Number-One.JPG", "https://lezebre.lu/images/detailed/30/sticker-2.png", "https://lh3.googleusercontent.com/proxy/IDx_M59r8t1glmv5s7C6hLPGuduFFqZrXS7970yYm_FGMB5-ktIIUC9LrEZSDJAuVlt2PHbWGMefLQZMp-Nnk0nxo0TcMprA3UBZH6jf2Ds", "https://i.pinimg.com/originals/b9/5a/e6/b95ae6b0def49e2844fd24a6097adde1.gif", "/images/img5.png"]//"http://assets.stickpng.com/images/58c57fee09e8bc1b42c77938.png"]
+let imageList = ["images\\p0.png","images\\p1.png","images\\p2.png","images\\p3.png","images\\p4.png","images\\p5.png"]
 var savedImageId = 1 //can pass in from DB
 
 const ChooseCharacter = () => {
@@ -37,6 +37,7 @@ const Title = () => {
         icon={<ArrowBackIcon />}
         aria-label="Back Icon"
         isRound={true} 
+        onclick="/Home" //reroute here
         size='sm'/>
         Choose your character
         </Box>
@@ -117,7 +118,9 @@ function ChooseImage({ imageId }) {
             src={imageList[imageId]}
             alt="Avatar"
             img id="Avatar"
-            />) }
+            />
+        ) 
+    }
 }
 
 function prevImage() {
