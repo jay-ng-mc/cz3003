@@ -1,3 +1,4 @@
+
 import React from "react";
 import {ThemeProvider, theme, CSSReset, Flex, Box, Heading} from "@chakra-ui/react";
 import DiceApp from "./DiceApp"
@@ -43,3 +44,5 @@ const DiceBox = () => {
         </Box>
     )
 }
+
+
