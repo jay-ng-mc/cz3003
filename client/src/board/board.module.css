@@ -1,7 +1,7 @@
 .gameBoard {
   display: grid;
   width: 670px;
-  height: 800px;
+  height: 1000px;
   margin: auto;
 }
 .blueTile {
@@ -23,4 +23,8 @@
 
 .redTile {
   background-color: red;
+}
+
+.sausageTile {
+  background-color: tomato;
 }

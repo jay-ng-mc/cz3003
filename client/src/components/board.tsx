@@ -5,7 +5,8 @@ import Start from './Start'
 import React, { Component } from 'react'
 import styles from '../board/board.module.css'
 import Character from './Character'
-import {Box} from "@chakra-ui/react";
+import {Box, Stack} from "@chakra-ui/react";
+import sausageTile from './sausageTile';
 import next from 'next'
 
 class Board extends React.Component {
@@ -13,6 +14,7 @@ class Board extends React.Component {
     state = {
       charactersCreated: false,
       characters: [],
+      sausageTile: [33],
       redTile:[18,23,45,62],
       startTiles: [1],
       leftWall: [130, 117, 104, 91, 78, 65, 52, 39, 26, 13],
@@ -70,9 +72,15 @@ class Board extends React.Component {
   }
 
   move = (number) => {
-    this.state.redTile.includes(number) ? 
-      this.decreaseCoins(this.state.characters[this.state.playerTurn-1]) :
+    if (this.state.redTile.includes(number)){ 
+      this.decreaseCoins(this.state.characters[this.state.playerTurn-1])
+    }
+    else if (this.state.sausageTile.includes(number)){
+      this.increaseSausage(this.state.characters[this.state.playerTurn-1])
+    }
+    else{  
       this.increaseCoins(this.state.characters[this.state.playerTurn-1])
+    }
     this.setState({
       currentTile: number
     }, () => this.updateCanMoveTo())
@@ -93,6 +101,18 @@ class Board extends React.Component {
     characters[index].playerCoins--;
     this.setState({ characters });
   };
+
+  increaseSausage = character => {
+    const characters = [...this.state.characters];
+    const index = characters.indexOf(character);
+    characters[index] = {...character};
+    if (characters[index].playerCoins > 20){
+    characters[index].playerCoins = characters[index].playerCoins -20;
+    characters[index].playerSausage++;
+  }
+    this.setState({ characters });
+  };
+
 
   nextTurn = (number) => {
     const characters = [...this.state.characters];
@@ -128,6 +148,7 @@ class Board extends React.Component {
     return (
       <div className={styles.gameBoard}>
         {this.createCharacters(this.state.numberOfPlayers)}
+        <Stack spacing ="20px">
         { this.state.characters.map(character => (
           <Character 
           key ={character.characterId} 
@@ -137,13 +158,14 @@ class Board extends React.Component {
           character={character}
           />))}
         <Box as="button" style={ButtonStyle} px={4} mr="10px"
-        width="50%"
-        height="50%"
+        width="250px"
+        height="50px"
                 onClick={() => this.nextTurn(this.state.numberOfPlayers)}
                 className="btn btn-secondary btn-sm"
                 >
                     nextTurn
                 </Box>
+                </Stack>
         <Grid
           width={50}
           gap={0}
