@@ -7,6 +7,7 @@ import React, { Component } from 'react'
 import styles from './board.module.css'
 import Character from './BoardCharacter'
 import {Box, Stack, Flex} from "@chakra-ui/react";
+import SausageTile from './sausageTile';
 import next from 'next'
 
 class BoardComponent extends React.Component {
@@ -42,12 +43,19 @@ class BoardComponent extends React.Component {
       : this.state.redTile.includes(number) ? 
         this.state.canMoveTo.includes(number)
           ? <RedTile move={this.move} number={number} />
-          : <RedTile number={number} />:
-        this.state.canMoveTo.includes(number)
-          ? <Tile move={this.move} number={number} />
-          : <Tile number={number} />
+          : <RedTile number={number} />
+                                            :
+          this.state.sausageTile.includes(number) ?
+          this.state.canMoveTo.includes(number)
+            ? <SausageTile move={this.move} number={number} />
+            : <SausageTile number={number} />
+                                                  :
+          this.state.canMoveTo.includes(number)
+            ? <Tile move={this.move} number={number} />
+            : <Tile number={number} />
     ))  
   }
+
 
   startGame = (number) => {
     this.setState({
