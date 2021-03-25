@@ -1,4 +1,5 @@
 import { ChakraProvider, ColorModeProvider } from '@chakra-ui/react'
+import React, { Component } from 'react'
 
 import theme from '../theme'
 
@@ -16,4 +17,5 @@ function MyApp({ Component, pageProps }) {
   )
 }
 
-export default MyApp
+
+export default MyApp;

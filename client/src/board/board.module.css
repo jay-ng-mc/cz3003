@@ -1,0 +1,30 @@
+.gameBoard {
+  display: grid;
+  width: 670px;
+  height: 1000px;
+  margin: auto;
+}
+.blueTile {
+  border-style: solid;
+  background-color: rgb(0, 225, 255);
+}
+
+.start {
+  background-color: purple;
+}
+
+.green {
+  background-color: green;
+}
+
+.currentTile {
+  background-color: yellow;
+}
+
+.redTile {
+  background-color: red;
+}
+
+.sausageTile {
+  background-color: tomato;
+}
