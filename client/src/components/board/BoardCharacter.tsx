@@ -8,10 +8,10 @@ export default class BoardCharacter extends Component {
     render(){
         return(
             <div>
-                <Box color="black" bg="green.300" px={4} fontSize="30px"> 
+                <Box color="black" bg="green.300" px={4} fontSize="16px"> 
                     <b> Player  {this.props.character.characterId} </b>    
                 </Box>
-                <Box bg ="yellow" fontSize="25px" px={4}>
+                <Box bg ="yellow" fontSize="16px" px={4}>
                      Coins: {this.props.character.playerCoins}  Sausages:  {this.props.character.playerSausage}
                 </Box>         
                 

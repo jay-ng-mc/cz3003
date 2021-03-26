@@ -1,7 +1,7 @@
 .gameBoard {
   display: grid;
   width: 670px;
-  height: 1000px;
+  height: 450px;
   margin: auto;
 }
 .blueTile {

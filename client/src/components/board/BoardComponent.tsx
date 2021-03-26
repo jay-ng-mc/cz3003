@@ -5,7 +5,7 @@ import Start from '../Start'
 import React, { Component } from 'react'
 import styles from './board.module.css'
 import Character from './BoardCharacter'
-import {Box, Stack} from "@chakra-ui/react";
+import {Box, Stack, Flex} from "@chakra-ui/react";
 import sausageTile from '../sausageTile';
 import next from 'next'
 
@@ -146,33 +146,32 @@ class BoardComponent extends React.Component {
 
   render(){
     return (
-      <div className={styles.gameBoard}>
+      <div>
         {this.createCharacters(this.state.numberOfPlayers)}
-        <Stack spacing ="20px">
-        { this.state.characters.map(character => (
-          <Character 
-          key ={character.characterId} 
-          increaseCoins={this.increaseCoins}
-          decreaseCoins={this.decreaseCoins}
-          nextTurn={this.nextTurn}
-          character={character}
-          />))}
-        <Box as="button" style={ButtonStyle} px={4} mr="10px"
-        width="250px"
-        height="50px"
-                onClick={() => this.nextTurn(this.state.numberOfPlayers)}
-                className="btn btn-secondary btn-sm"
-                >
-                    nextTurn
-                </Box>
-                </Stack>
-        <Grid
-          width={50}
-          gap={0}
-          >
+        <Flex flexDir='column'>
+          <Stack isInline={true} mt='30px' mb='30px' spacing ="10px" height='auto'>
+            { this.state.characters.map(character => (
+              <Character 
+              key ={character.characterId} 
+              increaseCoins={this.increaseCoins}
+              decreaseCoins={this.decreaseCoins}
+              nextTurn={this.nextTurn}
+              character={character}
+              />))}
+            <Box as="button" style={ButtonStyle} px={4} mr="10px"
+              width="250px"
+              height="50px"
+              onClick={() => this.nextTurn(this.state.numberOfPlayers)}
+              className="btn btn-secondary btn-sm"
+            >
+              nextTurn
+            </Box>
+          </Stack>
+        </Flex>
+        <Grid className={styles.gameBoard} width={50} gap={0}>
           {this.createBoard()}  
-          </Grid>
-        </div>
+        </Grid>
+      </div>
     );
   }
 
