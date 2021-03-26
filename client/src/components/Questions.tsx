@@ -62,16 +62,16 @@ class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
             <Flex minHeight='100vh' width='full' align='center' justifyContent='center'>
                 <Box borderWidth={1} px={1} width='full' maxWidth='500px' borderRadius={4} textAlign='center' boxShadow='lg'>
                     <ThemeProvider theme={theme} />
-                    <Box p={2}>
+                    <Box h='100px' bgImage="url('/images/sausage.png')" bgRepeat='no-repeat' bgPosition='center' bgSize='contain' p={2}>
                         <Box textAlign='center'>
                             <Heading>Question {questionId} </Heading>
                         </Box>                    
                         <Box>
-                            <Heading>{QuestionBank[questionId].questionTitle}</Heading>
+                            <Heading size='md'>{QuestionBank[questionId].questionTitle}</Heading>
                         </Box>
                     </Box>
                     <Box p={3}>
-                        <Stack isInline  spacing='10px'>
+                        <Stack isInline spacing='10px'>
                             <h2> A </h2>
                             <Box id = "A" onClick={this.changeColor1} style={AnswerStyle}  as="button" mr="40px">
                                 {QuestionBank[questionId].A}
