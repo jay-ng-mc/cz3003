@@ -1,6 +1,6 @@
   
 import React, {Component} from 'react'
-import styles from '../board/board.module.css'
+import styles from '../components/board/board.module.css'
 
 export default class start extends Component{
 

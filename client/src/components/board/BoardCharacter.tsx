@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Box} from "@chakra-ui/react";
 
 
-export default class Character extends Component {
+export default class BoardCharacter extends Component {
 
     
     render(){

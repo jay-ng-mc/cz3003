@@ -12,8 +12,6 @@ import Board from './board'
 const Index = () => (
   <Container height="100vh">
     <NavBar />
-    {/* <Board /> */}
-    {/* <Questions /> */}
     <Home />
   </Container>
 
