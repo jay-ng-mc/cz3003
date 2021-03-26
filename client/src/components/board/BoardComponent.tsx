@@ -1,12 +1,12 @@
 import Grid from 'react-css-grid'
-import Tile from '../tile'
-import RedTile from '../redTile'
-import Start from '../Start'
+import Tile from './tiles/tile'
+import RedTile from './tiles/redTile'
+import Start from './tiles/Start'
+import sausageTile from './tiles/sausageTile';
 import React, { Component } from 'react'
 import styles from './board.module.css'
 import Character from './BoardCharacter'
 import {Box, Stack, Flex} from "@chakra-ui/react";
-import sausageTile from '../sausageTile';
 import next from 'next'
 
 class BoardComponent extends React.Component {
