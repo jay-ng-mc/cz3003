@@ -1,15 +1,15 @@
 import Grid from 'react-css-grid'
-import Tile from './tile'
-import RedTile from './redTile'
-import Start from './Start'
+import Tile from './tiles/tile'
+import RedTile from './tiles/redTile'
+import Start from './tiles/Start'
+import sausageTile from './tiles/sausageTile';
 import React, { Component } from 'react'
-import styles from '../board/board.module.css'
-import Character from './Character'
-import {Box, Stack} from "@chakra-ui/react";
-import sausageTile from './sausageTile';
+import styles from './board.module.css'
+import Character from './BoardCharacter'
+import {Box, Stack, Flex} from "@chakra-ui/react";
 import next from 'next'
 
-class Board extends React.Component {
+class BoardComponent extends React.Component {
 
     state = {
       charactersCreated: false,
@@ -146,33 +146,32 @@ class Board extends React.Component {
 
   render(){
     return (
-      <div className={styles.gameBoard}>
+      <div>
         {this.createCharacters(this.state.numberOfPlayers)}
-        <Stack spacing ="20px">
-        { this.state.characters.map(character => (
-          <Character 
-          key ={character.characterId} 
-          increaseCoins={this.increaseCoins}
-          decreaseCoins={this.decreaseCoins}
-          nextTurn={this.nextTurn}
-          character={character}
-          />))}
-        <Box as="button" style={ButtonStyle} px={4} mr="10px"
-        width="250px"
-        height="50px"
-                onClick={() => this.nextTurn(this.state.numberOfPlayers)}
-                className="btn btn-secondary btn-sm"
-                >
-                    nextTurn
-                </Box>
-                </Stack>
-        <Grid
-          width={50}
-          gap={0}
-          >
+        <Flex flexDir='column'>
+          <Stack isInline={true} mt='30px' mb='30px' spacing ="10px" height='auto'>
+            { this.state.characters.map(character => (
+              <Character 
+              key ={character.characterId} 
+              increaseCoins={this.increaseCoins}
+              decreaseCoins={this.decreaseCoins}
+              nextTurn={this.nextTurn}
+              character={character}
+              />))}
+            <Box as="button" style={ButtonStyle} px={4} mr="10px"
+              width="250px"
+              height="50px"
+              onClick={() => this.nextTurn(this.state.numberOfPlayers)}
+              className="btn btn-secondary btn-sm"
+            >
+              nextTurn
+            </Box>
+          </Stack>
+        </Flex>
+        <Grid className={styles.gameBoard} width={50} gap={0}>
           {this.createBoard()}  
-          </Grid>
-        </div>
+        </Grid>
+      </div>
     );
   }
 
@@ -185,4 +184,4 @@ class Board extends React.Component {
     fontSize:"20px"
   }
 
-  export default Board;
+  export default BoardComponent;
