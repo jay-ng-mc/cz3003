@@ -53,6 +53,16 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
                     <Link alignContent='center' color={"white"} mr={2}>Home</Link>
                 </NextLink>
             </Box>
+            <Box p={2}>
+                <NextLink href={"/board"}>
+                    <Link alignContent='center' color={"white"} mr={2}>Board</Link>
+                </NextLink>
+            </Box>
+            <Box p={2}>
+                <NextLink href={"/question"}>
+                    <Link alignContent='center' color={"white"} mr={2}>Question</Link>
+                </NextLink>
+            </Box>
             <Spacer/>
             <Box>
                 {body}

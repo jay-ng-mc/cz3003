@@ -7,13 +7,13 @@ import { Questions } from '../components/Questions'
 
 import ReactDOM from 'react-dom';
 import _app from './_app'
-import Board from '../components/board'
+import Board from './board'
 
 const Index = () => (
   <Container height="100vh">
     <NavBar />
-    <Board />
-    <Questions />
+    {/* <Board /> */}
+    {/* <Questions /> */}
     <Home />
   </Container>
 
