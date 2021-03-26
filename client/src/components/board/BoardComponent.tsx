@@ -10,6 +10,7 @@ import {Box, Stack, Flex, HStack} from "@chakra-ui/react";
 import SausageTile from './sausageTile';
 import next from 'next'
 import { DiceRoller } from './DiceRoller';
+import { Questions } from '../components/Questions'
 
 class BoardComponent extends React.Component {
 
@@ -124,6 +125,7 @@ class BoardComponent extends React.Component {
 
 
   nextTurn = (number) => {
+    this.ReturnFocus()
     const characters = [...this.state.characters];
     const index = this.state.playerTurn-1;
     let nextIndex;
