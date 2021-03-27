@@ -6,11 +6,12 @@ import sausageTile from './tiles/sausageTile';
 import React, { Component } from 'react'
 import styles from './board.module.css'
 import Character from './BoardCharacter'
-import {Box, Stack, Flex, HStack} from "@chakra-ui/react";
+import {Box, Stack, Flex, HStack, Button} from "@chakra-ui/react";
 import SausageTile from './sausageTile';
 import next from 'next'
 import { DiceRoller } from './DiceRoller';
 import { Questions } from '../components/Questions'
+import Dice from "react-dice-roll";
 
 class BoardComponent extends React.Component {
 
@@ -28,6 +29,7 @@ class BoardComponent extends React.Component {
       turnsTaken: 0,
       didStart: false,
       numberOfPlayers: 3,
+      movesLeft : 0,
   };
   
     createBoard = () => {
@@ -82,6 +84,10 @@ class BoardComponent extends React.Component {
   }
 
   move = (number) => {
+    if (this.state.movesLeft == 0){
+      console.log("lmao")
+    }
+    else{
     if (this.state.redTile.includes(number)){ 
       this.decreaseCoins(this.state.characters[this.state.playerTurn-1])
     }
@@ -91,9 +97,12 @@ class BoardComponent extends React.Component {
     else{  
       this.increaseCoins(this.state.characters[this.state.playerTurn-1])
     }
+    this.state.movesLeft -= 1;
+    console.log(this.state.movesLeft);
     this.setState({
-      currentTile: number
+      currentTile: number,
     }, () => this.updateCanMoveTo())
+  }
   }
 
   increaseCoins = character => {
@@ -125,12 +134,11 @@ class BoardComponent extends React.Component {
 
 
   nextTurn = (number) => {
-    this.ReturnFocus()
     const characters = [...this.state.characters];
     const index = this.state.playerTurn-1;
     let nextIndex;
     index === number-1 ? nextIndex = 0: nextIndex = index+1;
-    if (characters[index].position === 0 && this.state.turnsTaken < number-1){ 
+    if (characters[index].position === 0 && this.state.turnsTaken < number){ 
     this.state.didStart = false;
     console.log(this.state.didStart);
     this.state.turnsTaken++
@@ -154,6 +162,17 @@ class BoardComponent extends React.Component {
     }}
   };
 
+  rollDice = (value) => {
+    if (this.state.movesLeft == 0){
+      this.setState({ movesLeft : value });
+    }
+    if (this.state.turnsTaken != 0){
+    this.nextTurn(this.state.numberOfPlayers);
+    }
+    else{
+      this.state.turnsTaken++;
+    }
+  };
 
   render(){
     return (
@@ -182,9 +201,22 @@ class BoardComponent extends React.Component {
                 </Box>
           </Stack>
         </Flex>
+        <Box style={TextStyle}
+        width="400px"
+        height="50ps">
+              Current Player Turn: {this.state.playerTurn}
+        </Box>
+        <Box style={TextStyle}
+        width="400px"
+        height="50ps">
+              Moves Left: {this.state.movesLeft}
+        </Box>
+        <HStack>
         <Grid className={styles.gameBoard} width={50} gap={0}>
           {this.createBoard()}  
         </Grid>
+        <Dice size={100} onRoll={(value) => this.rollDice(value)}/>
+        </HStack>
       </div>
     );
   }
@@ -196,6 +228,13 @@ class BoardComponent extends React.Component {
     color: "yellow",
     borderRadius: "10px",
     fontSize:"20px"
+  }
+
+  const TextStyle = {
+    backgroundColor: "yellow",
+    color: "black",
+    borderRadius: "10px",
+    fontSize:"30px"
   }
 
   export default BoardComponent;

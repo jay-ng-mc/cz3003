@@ -1,6 +1,6 @@
 .gameBoard {
   display: grid;
-  width: 670px;
+  width: 680px;
   height: 570px;
   margin: auto;
 }
