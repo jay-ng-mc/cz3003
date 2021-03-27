@@ -60,7 +60,8 @@ const LoginForm = () => {
                             {errors.password && touched.password && errors.password}
                         </FormControl>
                         
-                        <Button width='full' type="submit" isLoading={isSubmitting} backgroundColor="teal.300" mt={10}>
+                        <Button width='full' type="submit" isLoading={isSubmitting} backgroundColor="teal.300" mt={10}
+                        bgImage="url('/images/sausage.png')" bgPosition='center' bgSize='430px 45px'>
                             Login
                         </Button>
                         

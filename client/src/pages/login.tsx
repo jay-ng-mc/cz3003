@@ -1,4 +1,4 @@
-import { theme, CSSReset, Flex, Box, Heading } from "@chakra-ui/react";
+import { theme, CSSReset, Flex, Box, Image } from "@chakra-ui/react";
 import { ThemeProvider } from "@emotion/react";
 import React from "react";
 import LoginForm from '../components/LoginForm'
@@ -18,8 +18,7 @@ const LoginPage: React.FC<{}> = ({}) => {
 const LoginHeader = () => {
     return (
         <Box textAlign='center'>
-            <Heading>Sausage Party</Heading>
-            <Heading>Login</Heading>
+            <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
         </Box>
     )
 }

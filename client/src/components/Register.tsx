@@ -1,5 +1,5 @@
 import React from "react";
-import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, FormControl, FormLabel, Input, Button} from "@chakra-ui/react";
+import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, FormControl, FormLabel, Input, Button, Image} from "@chakra-ui/react";
 import { Form } from "formik";
 
 const Register = () => {
@@ -28,8 +28,7 @@ const RegisterPage = () => {
 const RegisterHeader = () => {
     return (
         <Box textAlign='center'>
-            <Heading>Sausage</Heading>
-            <Heading>Party</Heading>
+            <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
             <Heading>Account Registration</Heading>
         </Box>
     )
@@ -59,7 +58,8 @@ const RegisterForm = () => {
                     <Input type='password' placeholder='Confirm your password' />
                 </FormControl>
 
-                <Button width='full' mt={10}>Confirm</Button>
+                <Button width='full' mt={10} bgImage="url('/images/sausage.png')"
+                bgPosition='center' bgSize='430px 40px'>Confirm</Button>
             </Form>
         </Box>
     )
