@@ -1,4 +1,4 @@
-import { theme, CSSReset, Flex, Box, Heading, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
+import { theme, CSSReset, Flex, Box, FormControl, FormLabel, Input, Button, Image } from "@chakra-ui/react";
 import { ThemeProvider } from "@emotion/react";
 import React from "react";
 import {Formik, Form} from "formik";
@@ -39,9 +39,7 @@ const RegisterPage = () => {
 const RegisterHeader = () => {
     return (
         <Box textAlign='center'>
-            <Heading>Sausage Party</Heading>
-            <Heading p={2}></Heading>
-            <Heading>Account Registration</Heading>
+            <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
         </Box>
     )
 }
@@ -121,9 +119,10 @@ const RegisterForm = () => {
                 {errors.password2 && touched.password2 && errors.password2}
                 </FormControl>
                 
-                <Button width='full' type="submit" isLoading={isSubmitting} backgroundColor="teal.300" mt={10}>
+                <Button width='full' type="submit" isLoading={isSubmitting} backgroundColor="teal.300" mt={10}
+                bgImage="url('/images/sausage.png')" bgPosition='center' bgSize='430px 45px'>
                     Register</Button>
-                
+                    
                 </Form>
        )}
      </Formik>
