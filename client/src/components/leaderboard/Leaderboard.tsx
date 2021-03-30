@@ -10,6 +10,8 @@ const Styles = styled.div`
   table {
     border-spacing: 0;
     border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
 
     tr {
       :last-child {

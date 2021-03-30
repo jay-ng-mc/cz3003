@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTable } from 'react-table'
-import {Box, Image, Button} from "@chakra-ui/react";
+import {Box, Image, Button, Heading} from "@chakra-ui/react";
 import teacherData from './teacherData'
 
 const Styles = styled.div`
@@ -10,6 +10,8 @@ const Styles = styled.div`
   table {
     border-spacing: 0;
     border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
 
     tr {
       :last-child {
@@ -96,13 +98,14 @@ function Table({ columns, data }) {
                 <Box p={3} textAlign='center'>
                     <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
                 </Box>
-                <Table columns={columns} data={data} />
-                <Box my={5} textAlign='left'>
+                <Box my={5} textAlign='center'>
                     <Button type="submit" backgroundColor="teal.300" bgImage="url('/images/sausage.png')" 
                     bgPosition='center' bgSize='112px 45px'>
                         Share Class
                     </Button>
                 </Box>
+                <Heading textAlign='center' mb='10px'>Students in my class</Heading>
+                <Table columns={columns} data={data} />
             </Styles>
     )
 }
