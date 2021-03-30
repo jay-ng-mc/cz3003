@@ -89,9 +89,10 @@ class BoardComponent extends React.Component {
 
   move = (number) => {
     if (this.state.movesLeft == 0){
-      console.log("lmao")
+      console.log("Out of moves")
     }
     else{
+    if (this.state.movesLeft == 1){
     if (this.state.redTile.includes(number)){ 
       this.decreaseCoins(this.state.characters[this.state.playerTurn-1])
     }
@@ -100,7 +101,7 @@ class BoardComponent extends React.Component {
     }
     else{  
       this.increaseCoins(this.state.characters[this.state.playerTurn-1])
-    }
+    }}
     this.state.movesLeft -= 1;
     console.log(this.state.movesLeft);
     this.setState({
@@ -113,7 +114,7 @@ class BoardComponent extends React.Component {
     const characters = [...this.state.characters];
     const index = characters.indexOf(character);
     characters[index] = {...character};
-    characters[index].playerCoins++;
+    characters[index].playerCoins += 3;
     this.setState({ characters });
   };
 
@@ -121,7 +122,7 @@ class BoardComponent extends React.Component {
     const characters = [...this.state.characters];
     const index = characters.indexOf(character);
     characters[index] = {...character};
-    characters[index].playerCoins--;
+    characters[index].playerCoins -= 3;
     this.setState({ characters });
   };
 
