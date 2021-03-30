@@ -70,7 +70,6 @@ const HeaderLogin = () => {
         <Box p={3} textAlign='center'>
             <Heading>Welcome to</Heading>
             <Heading>Sausage Party</Heading>
-
         </Box>
     )
 }
@@ -83,6 +82,9 @@ const HomeBox = () => {
             </NextLink>
             <NextLink href={"/register"}>
                 <Button width='full' backgroundColor="teal.300" mt={5}>Register</Button>
+            </NextLink>
+            <NextLink href={"/leaderboard"}>
+                <Button width='full' backgroundColor="teal.300" mt={5}>Leaderboard</Button>
             </NextLink>
         </Box>
     )
