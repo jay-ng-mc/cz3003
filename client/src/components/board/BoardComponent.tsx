@@ -7,7 +7,7 @@ import React, { Component } from 'react'
 import styles from './board.module.css'
 import Character from './BoardCharacter'
 import {Box, Stack, Flex, HStack, Button} from "@chakra-ui/react";
-import SausageTile from './sausageTile';
+import SausageTile from './tiles/sausageTile';
 import next from 'next'
 import { DiceRoller } from './DiceRoller';
 import { Questions } from '../components/Questions'
@@ -30,6 +30,7 @@ class BoardComponent extends React.Component {
       didStart: false,
       numberOfPlayers: 3,
       movesLeft : 0,
+      wall: [2,15,28],
   };
   
     createBoard = () => {
@@ -48,15 +49,18 @@ class BoardComponent extends React.Component {
         this.state.canMoveTo.includes(number)
           ? <RedTile move={this.move} number={number} />
           : <RedTile number={number} />
-                                            :
-          this.state.sausageTile.includes(number) ?
+              :
+              this.state.sausageTile.includes(number) ?
           this.state.canMoveTo.includes(number)
             ? <SausageTile move={this.move} number={number} />
             : <SausageTile number={number} />
-                                                  :
-          this.state.canMoveTo.includes(number)
-            ? <Tile move={this.move} number={number} />
-            : <Tile number={number} />
+                :
+              this.state.wall.includes(number)  ?
+              <WallTile number = {number} />
+                :
+            this.state.canMoveTo.includes(number)
+              ? <Tile move={this.move} number={number} />
+              : <Tile number={number} />
     ))  
   }
 

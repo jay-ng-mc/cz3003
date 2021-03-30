@@ -11,7 +11,7 @@ export default class SausageTile extends Component {
         return(
             <div 
                 onClick={this.props.move ? this.handleClick : null} 
-                className={this.props.move ? styles.green : styles.sausageTile}
+                className={this.props.move ? styles.sausageTileSelected : styles.sausageTile}
             >
                 {this.props.number}
             </div>

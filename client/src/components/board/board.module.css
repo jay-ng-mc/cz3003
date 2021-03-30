@@ -25,6 +25,18 @@
   background-color: red;
 }
 
+.redTileSelected {
+  background-color: #b00000;
+}
+
 .sausageTile {
   background-color: tomato;
+}
+
+.sausageTileSelected {
+  background-color: #b36800;
+}
+
+.wallTile {
+  background-color: #1a1714;
 }
