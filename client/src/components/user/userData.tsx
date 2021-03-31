@@ -8,10 +8,20 @@ const range = len => {
   return arr
 }
 
+function randomDate(start, end) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
+
 const newEntry = () => {
+  var x = Math.floor(Math.random() * 100)
+  var y = Math.floor(Math.random() * x)
+  var date = randomDate(new Date(2020, 0, 1), new Date())
+
   return {
-    userName: namor.generate({ words: 1, numbers: 0 }),
-    masteryScore: Math.floor(Math.random() * 100),
+    timePlayed: date.toUTCString(),
+    questionAnswered: x,
+    correctAnswer: y
   }
 }
 
