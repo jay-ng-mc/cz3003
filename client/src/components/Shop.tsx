@@ -1,118 +1,184 @@
+import { Container } from '../components/Container'
 import React from "react";
-import {ThemeProvider, theme, CSSReset, Flex, Box, IconButton, HStack, VStack, Button, Editable, EditableInput, EditablePreview, ButtonGroup, Image, Center } from "@chakra-ui/react";
+import {ThemeProvider, theme, Heading, Flex, Box, Stack, VStack, Image, Center } from "@chakra-ui/react";
 
 const welcome = "Welcome to the sausage shop! Click on an item to purchase!"
-const doublePower = "This item can be used before the start of the turn. The next dice roll will be doubled, and you can move twice the number of spaces!"
-const halfAndPuff = "This item can be used before the start of the turn. For the next question, the number of options will be halved."
+const ketchupDesc = "KETCHUP: This item can be used before the start of the turn. For the next question, the number of options will be halved."
+const mustardDesc = "MUSTARD: This item can be used at any time. You will be able to steal coins from another player!"
 
 const shopSign = "https://www.dropbox.com/s/07q4i3sibqhdkwb/shopSign.png?dl=1"
-const itemDesc = "https://www.dropbox.com/s/97vbnhmtdmjcl9t/itemDesc.png?dl=1"
-const item1 = "https://www.dropbox.com/s/yj462pb1r5ehi29/doubleItem.png?dl=1"
-const item2 = "https://www.dropbox.com/s/ukk2auz745nhkxg/halfItem.png?dl=1"
-const item1Sel = "https://www.dropbox.com/s/nn0oqrt0b6x7iwx/item1sel.png?dl=1"
-const item2Sel = "https://www.dropbox.com/s/5n31ou5lyfpou76/item2sel.png?dl=1"
+const itemDescBg = "https://www.dropbox.com/s/aa4zvr4eprdnb84/SausageTransparent.png?dl=1"
+const ketchup = "https://www.dropbox.com/s/f7i0e92xizp74xo/KetchupBottleTransparent.png?dl=1"
+const mustard = "https://www.dropbox.com/s/ubtqqsgtw1jxxnm/Mustard.png?dl=1"
 const buy = "https://www.dropbox.com/s/49rkwb9zb2pyzvs/buy.png?dl=1"
 const exit = "https://www.dropbox.com/s/ah2uydxm8vcurf4/exitImg.png?dl=1"
 
-const Shop = () => {
-    return (
-        <ThemeProvider theme={theme}>
-            <CSSReset />
-            <ShopPage />
-        </ThemeProvider>
-    );
+const BuyOrExitStyle = {
+    borderWidth: "3px", 
+    borderColor:  "#000000",
+    borderRadius: "0px",
+    backgroundColor: "orange",
+    color: "black",
+    height: '50px',
+    width: '200px',
 }
 
-const ShopPage = () => {
-    return (
-        <Flex maxHeight='150vh' width='full' align='center' justifyContent='center'>
-            <Box borderWidth={1} px={4} width='full' maxWidth='300vh' borderRadius={4} textAlign='center' boxShadow='lg'>
-                <ThemeProvider theme={theme} />
-                <VStack p={4}>
-                    <ShopSign />
-                    <Items />
-                    <ItemDesc />
-                    <BuyOrExit />
-                </VStack>
-            </Box>
-        </Flex>
-    );
+class ShopPage extends React.Component <{}, { [key: string]: string }> {
+    constructor(props) {
+        super(props);
+        this.state = {currentSelection: "welcome"};
+ 
+        this.selectKetchup = this.selectKetchup.bind(this);
+        this.selectMustard = this.selectMustard.bind(this);
+    }
+
+    render() {
+        return (
+            <Container height="100vh">
+                <Flex minHeight='100vh' width='full' align='center' justifyContent='center'>
+                    <Box borderWidth={1} px={1} width='full' maxWidth='500px' borderRadius={4} textAlign='center' boxShadow='lg'>
+                        
+                        <ThemeProvider theme={theme} />
+
+
+                        <Box h='100px' >
+                            <Center>
+                                <Image 
+                                    src={shopSign} 
+                                    alt='Shop Sign' 
+                                />
+                            </Center> 
+                        </Box>
+
+                    
+                        <Box h='200px' >
+                            <Stack isInline >
+
+                                <Box  
+                                    onClick={this.selectKetchup} 
+                                    as="button"
+                                >
+                                    <Image 
+                                        src={ketchup} 
+                                        alt='Ketchup'
+                                    />
+                                </Box>
+
+                                <Box  
+                                    onClick={this.selectMustard} 
+                                    as="button"
+                                >
+                                    <Image 
+                                        src={mustard} 
+                                        alt='Mustard' 
+                                    />
+                                </Box>
+
+                                </Stack>
+                        </Box>
+
+                
+                        <Box 
+                            h='230px' 
+                            bgImage="url('/images/shop/itemDescBg.png')" 
+                            bgRepeat='no-repeat' 
+                            bgPosition='center' 
+                            bgSize='contain'
+                            textAlign='center' 
+                        >
+ 
+                                <Heading 
+                                    size='md'
+                                    pt='20'
+                                    pl='10'
+                                    pr='10'
+                                >
+                                    {this.displayInfo()}
+                                </Heading>
+                  
+                        </Box>
+                        
+
+                       
+                        <Box p={3}>
+                            <Stack isInline spacing='10px'>
+                                <Box id = "Exit" onClick={this.exitShop} style={BuyOrExitStyle}  as="button" mr='40px'>
+                                    <Heading>Exit</Heading>
+                                </Box>
+                                <Box id = "Buy" onClick={this.buyItem} style={BuyOrExitStyle}  as="button">
+                                    <Heading>Purchase</Heading>
+                                </Box>
+                            </Stack>
+                        </Box>         
+                            
+                    </Box>
+                </Flex>
+            </Container>
+        )
+    }
+
+    selectKetchup() {
+        this.setState({currentSelection: "ketchup"})
+    }
+
+    selectMustard() {
+        this.setState({currentSelection: "mustard"})
+    }
+
+    displayInfo() {
+        if(this.state.currentSelection == 'ketchup') {
+            return ketchupDesc
+        }
+        else if(this.state.currentSelection == 'mustard') {
+            return mustardDesc
+        }
+        else {
+            return welcome
+        }
+    }
+
+    buyItem() {
+
+    }
+
+    exitShop() {
+
+    }
 }
 
-const ShopSign = () => {
-    return (
-        <Center>
-            <Image 
-                src={shopSign}
-                alt="Shop Sign"
-            />
-        </Center>
-    );
-}
 
 
-const Items = () => {
-    return (
-        <Center>
-            <HStack>
-                <Image 
-                    src={item1}
-                    alt="Double Power"
-                    onclick={selectItem1}
-                />
-                <Image 
-                    src={item2}
-                    alt="Half and Puff"
-                    onclick={selectItem2}
-                />
-            </HStack>
-        </Center>
-    )
-}
+// const ShopPage = () => {
+//     return (
+//         <Container height="100vh">
+//             <Flex minHeight='100vh' width='full' align='center' justifyContent='center'>
+//                 <Box borderWidth={1} px={1} width='full' maxWidth='800px' borderRadius={4} textAlign='center' boxShadow='lg'>
+                    
+//                     <ThemeProvider theme={theme} />
 
-const ItemDesc = () => {
-    return (
-        <Center>
-            <Image 
-                src={itemDesc}
-                alt="Item Description Background"
-            />
-        </Center>
-    )
-}
+//                     <Box h='100px' >
+//                         <ShopSign />
+//                     </Box>
 
-const BuyOrExit = () => {
-    return (
-        <Center>
-            <HStack>
-                <Image 
-                    src={exit}
-                    alt="Exit"
-                />
-                <Image 
-                    src={buy}
-                    alt="Buy"
-                />
-            </HStack>
-        </Center>
-    )
-}
+//                     <Box h='100px' >
+//                         <Items />
+//                     </Box>
+
+//                     <Box h='100px' bgImage="url('/images/shop/itemDescBg.png')" bgRepeat='no-repeat' bgPosition='center' bgSize='contain'>
+//                         <ItemDesc />
+//                     </Box>
+                    
+//                     <Box h='100px' >
+//                         <BuyOrExit />
+//                     </Box>         
+                        
+//                 </Box>
+//             </Flex>
+//         </Container>
+        
+//     );
+// }
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function selectItem1() {
-    return(
-        <Box>Hello1</Box>
-    );
-}
-
-function selectItem2() {
-    return(
-        <Box>Hello2</Box>
-    );
-}
-
-
-
-export default Shop
+export default ShopPage

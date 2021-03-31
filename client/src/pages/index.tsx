@@ -1,21 +1,20 @@
-import {
-  Link as ChakraLink,
-  Text,
-  Code,
-  List,
-  ListIcon,
-  ListItem,
-} from '@chakra-ui/react'
-import { CheckCircleIcon, LinkIcon } from '@chakra-ui/icons'
+import { withUrqlClient } from 'next-urql'
 import { Container } from '../components/Container'
-import { DiceRoller } from '../components/DiceRoller'
-import Shop from '../components/Shop'
-//import { Home } from '../components/Home'
+import { Home } from '../components/Home'
+import { NavBar } from '../components/NavBar'
+import { createUrqlClient } from '../utils/createUrqlClient'
+import { Questions } from '../components/Questions'
+
+import ReactDOM from 'react-dom';
+import _app from './_app'
+import Board from './board'
 
 const Index = () => (
   <Container height="100vh">
-    <Shop />
+    <NavBar />
+    <Home />
   </Container>
+
 )
 
-export default Index
+export default withUrqlClient(createUrqlClient, {ssr: true}) (Index);

@@ -1,0 +1,10 @@
+query GetQuestion($id: Float!){
+  getQuestion(id: $id){
+    question
+    choice1
+    choice2
+    choice3
+    choice4
+    correctAnswer
+  }
+}
