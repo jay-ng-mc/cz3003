@@ -14,35 +14,15 @@ export type Scalars = {
   Float: number;
 };
 
-export type Query = {
-  __typename?: 'Query';
-  me?: Maybe<User>;
-  getQuestion?: Maybe<Question>;
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
 };
 
-
-export type QueryGetQuestionArgs = {
-  id: Scalars['Float'];
-};
-
-export type User = {
-  __typename?: 'User';
-  id: Scalars['Float'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+export type LoginInput = {
   username: Scalars['String'];
-  email: Scalars['String'];
-};
-
-export type Question = {
-  __typename?: 'Question';
-  id: Scalars['Float'];
-  question: Scalars['String'];
-  choice1: Scalars['String'];
-  choice2: Scalars['String'];
-  choice3: Scalars['String'];
-  choice4: Scalars['String'];
-  correctAnswer: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type Mutation = {
@@ -62,16 +42,26 @@ export type MutationLoginArgs = {
   options: LoginInput;
 };
 
-export type UserResponse = {
-  __typename?: 'UserResponse';
-  errors?: Maybe<Array<FieldError>>;
-  user?: Maybe<User>;
+export type Query = {
+  __typename?: 'Query';
+  me?: Maybe<User>;
+  getQuestion?: Maybe<Question>;
 };
 
-export type FieldError = {
-  __typename?: 'FieldError';
-  field: Scalars['String'];
-  message: Scalars['String'];
+
+export type QueryGetQuestionArgs = {
+  id: Scalars['Float'];
+};
+
+export type Question = {
+  __typename?: 'Question';
+  id: Scalars['Float'];
+  questionTitle: Scalars['String'];
+  A: Scalars['String'];
+  B: Scalars['String'];
+  C: Scalars['String'];
+  D: Scalars['String'];
+  correctAnswer: Scalars['String'];
 };
 
 export type RegisterInput = {
@@ -81,9 +71,19 @@ export type RegisterInput = {
   password2: Scalars['String'];
 };
 
-export type LoginInput = {
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Float'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
   username: Scalars['String'];
-  password: Scalars['String'];
+  email: Scalars['String'];
+};
+
+export type UserResponse = {
+  __typename?: 'UserResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
 };
 
 export type RegularUserFragment = (
@@ -161,7 +161,7 @@ export type GetQuestionQuery = (
   { __typename?: 'Query' }
   & { getQuestion?: Maybe<(
     { __typename?: 'Question' }
-    & Pick<Question, 'question' | 'choice1' | 'choice2' | 'choice3' | 'choice4' | 'correctAnswer'>
+    & Pick<Question, 'questionTitle' | 'A' | 'B' | 'C' | 'D' | 'correctAnswer'>
   )> }
 );
 
@@ -230,11 +230,11 @@ export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'q
 export const GetQuestionDocument = gql`
     query GetQuestion($id: Float!) {
   getQuestion(id: $id) {
-    question
-    choice1
-    choice2
-    choice3
-    choice4
+    questionTitle
+    A
+    B
+    C
+    D
     correctAnswer
   }
 }
