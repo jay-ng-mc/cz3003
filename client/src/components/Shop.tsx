@@ -1,6 +1,6 @@
 import { Container } from '../components/Container'
 import React from "react";
-import {ThemeProvider, theme, Heading, Flex, Box, Stack, VStack, Image, Center } from "@chakra-ui/react";
+import {ThemeProvider, theme, Heading, Flex, Box, Stack, Image, Center } from "@chakra-ui/react";
 
 const welcome = "Welcome to the sausage shop! Click on an item to purchase!"
 const ketchupDesc = "KETCHUP: This item can be used before the start of the turn. For the next question, the number of options will be halved."
@@ -10,8 +10,6 @@ const shopSign = "https://www.dropbox.com/s/07q4i3sibqhdkwb/shopSign.png?dl=1"
 const itemDescBg = "https://www.dropbox.com/s/aa4zvr4eprdnb84/SausageTransparent.png?dl=1"
 const ketchup = "https://www.dropbox.com/s/f7i0e92xizp74xo/KetchupBottleTransparent.png?dl=1"
 const mustard = "https://www.dropbox.com/s/ubtqqsgtw1jxxnm/Mustard.png?dl=1"
-const buy = "https://www.dropbox.com/s/49rkwb9zb2pyzvs/buy.png?dl=1"
-const exit = "https://www.dropbox.com/s/ah2uydxm8vcurf4/exitImg.png?dl=1"
 
 const BuyOrExitStyle = {
     borderWidth: "3px", 
