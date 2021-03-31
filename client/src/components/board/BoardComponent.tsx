@@ -18,8 +18,8 @@ class BoardComponent extends React.Component {
     state = {
       charactersCreated: false,
       characters: [],
-      sausageTile: [33],
-      redTile:[18,23,45,62],
+      sausageTile: [86],
+      redTile:[85,53,4,92],
       startTiles: [1],
       leftWall: [130, 117, 104, 91, 78, 65, 52, 39, 26, 13],
       rightWall: [118, 105, 92, 79, 66, 53, 40, 27, 14, 1],
@@ -30,7 +30,7 @@ class BoardComponent extends React.Component {
       didStart: false,
       numberOfPlayers: 3,
       movesLeft : 0,
-      wall: [2,15,28],
+      wall: [15,28,16,17,18,19,20,21,22,23,24,25,38,51,64,77,76,75,74,73,72,71,70,69,68,67,41,54],
   };
   
     createBoard = () => {
@@ -69,11 +69,12 @@ class BoardComponent extends React.Component {
     this.setState({
       didStart: true,
       currentTile: number
-    }, () => this.updateCanMoveTo()
+    }, () => this.updateCanMoveTo(131)
+    //131 is a random number so that a prameter can be taken in
     )
   }
 
-  updateCanMoveTo = () => {
+  updateCanMoveTo = (prev) => {
     let updatedCanMoveTo = []
     updatedCanMoveTo.push((this.state.currentTile + 13), this.state.currentTile - 13)
     if (!this.state.leftWall.includes(this.state.currentTile)){
@@ -82,12 +83,20 @@ class BoardComponent extends React.Component {
     if (!this.state.rightWall.includes(this.state.currentTile)){
       updatedCanMoveTo.push(this.state.currentTile - 1)
     }
+    if (prev == 131){}
+    else{
+    var index = updatedCanMoveTo.indexOf(prev)
+    updatedCanMoveTo.splice(index, 1);
+    }
+    console.log({updatedCanMoveTo});
     this.setState({
       canMoveTo: updatedCanMoveTo
     })
   }
 
   move = (number) => {
+    var prev = this.state.currentTile;
+    console.log({prev});
     if (this.state.movesLeft == 0){
       console.log("Out of moves")
     }
@@ -106,7 +115,7 @@ class BoardComponent extends React.Component {
     console.log(this.state.movesLeft);
     this.setState({
       currentTile: number,
-    }, () => this.updateCanMoveTo())
+    }, () => this.updateCanMoveTo(prev))
   }
   }
 
@@ -168,7 +177,7 @@ class BoardComponent extends React.Component {
   };
 
   rollDice = (value) => {
-    if (this.state.movesLeft == 0){
+    if (this.state.movesLeft == 0){{
       this.setState({ movesLeft : value });
     }
     if (this.state.turnsTaken != 0){
@@ -176,7 +185,7 @@ class BoardComponent extends React.Component {
     }
     else{
       this.state.turnsTaken++;
-    }
+    }}
   };
 
   render(){
