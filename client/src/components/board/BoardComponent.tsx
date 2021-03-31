@@ -12,6 +12,7 @@ import next from 'next'
 import { DiceRoller } from './DiceRoller';
 import { Questions } from '../components/Questions'
 import Dice from "react-dice-roll";
+import { Container } from './Container';
 
 class BoardComponent extends React.Component {
 
@@ -19,6 +20,7 @@ class BoardComponent extends React.Component {
       charactersCreated: false,
       characters: [],
       sausageTile: [86],
+      shopTile: [95],
       redTile:[85,53,4,92],
       startTiles: [1],
       leftWall: [130, 117, 104, 91, 78, 65, 52, 39, 26, 13],
@@ -58,9 +60,13 @@ class BoardComponent extends React.Component {
               this.state.wall.includes(number)  ?
               <WallTile number = {number} />
                 :
-            this.state.canMoveTo.includes(number)
-              ? <Tile move={this.move} number={number} />
-              : <Tile number={number} />
+                this.state.shopTile.includes(number) ?
+                this.state.canMoveTo.includes(number)
+                ? <ShopTile move={this.move} number={number} />
+                : <ShopTile number={number} /> :
+                  this.state.canMoveTo.includes(number)
+                    ? <Tile move={this.move} number={number} />
+                    : <Tile number={number} />
     ))  
   }
 
@@ -127,6 +133,14 @@ class BoardComponent extends React.Component {
     this.setState({ characters });
   };
 
+  increaseMustard = character => {
+    const characters = [...this.state.characters];
+    const index = characters.indexOf(character);
+    characters[index] = {...character};
+    characters[index].mustardCount ++;
+    this.setState({ characters });
+  };
+
   decreaseCoins = character => {
     const characters = [...this.state.characters];
     const index = characters.indexOf(character);
@@ -171,7 +185,7 @@ class BoardComponent extends React.Component {
       this.state.charactersCreated = true;
       for (let x = 1; x <= number; x++){
         this.state.characters.push(
-          {characterId: x, playerCoins: 10, playerSausage: 0, 
+          {characterId: x, playerCoins: 10, playerSausage: 0, mustardCount: 0,
           position:0,canMoveTo:[]})
     }}
   };
@@ -187,6 +201,17 @@ class BoardComponent extends React.Component {
       this.state.turnsTaken++;
     }}
   };
+
+  createMustardButton = () => {
+    if (this.state.characters[this.state.playerTurn-1].mustardCount == 0 ){}
+    else {
+    return (
+    <Button colorScheme = "yellow">
+        Steal
+      </Button>
+      )
+    }
+  }
 
   render(){
     return (
@@ -205,10 +230,10 @@ class BoardComponent extends React.Component {
             <Box as="button" style={ButtonStyle} px={4} mr="10px"
               width="250px"
               height="50px"
-              onClick={() => this.nextTurn(this.state.numberOfPlayers)}
+              onClick={() => this.increaseMustard(this.state.characters[this.state.playerTurn-1])}
               className="btn btn-secondary btn-sm"
             >
-              nextTurn
+              increase Mustard
             </Box>
             <Box color="black" bg="green.300" px={4} fontSize="30px"> 
                     <b> Current Turn: Player {this.state.playerTurn} </b>    
@@ -229,7 +254,10 @@ class BoardComponent extends React.Component {
         <Grid className={styles.gameBoard} width={50} gap={0}>
           {this.createBoard()}  
         </Grid>
+        <Stack>
         <Dice size={100} onRoll={(value) => this.rollDice(value)}/>
+        {this.createMustardButton()}
+        </Stack>
         </HStack>
       </div>
     );
