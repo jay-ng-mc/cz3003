@@ -203,14 +203,23 @@ class BoardComponent extends React.Component {
   };
 
   createMustardButton = () => {
-    if (this.state.characters[this.state.playerTurn-1].mustardCount == 0 ){}
-    else {
-    return (
-    <Button colorScheme = "yellow">
-        Steal
+    let currentPlayer = [1]
+    let playerArray = [1,2,3]
+    return playerArray.map(number => (
+      currentPlayer.includes(number)?<Box/>
+      :
+      <Button colorScheme = "yellow">
+        Steal from {number}
       </Button>
-      )
-    }
+    ))
+    // if (this.state.characters[this.state.playerTurn-1].mustardCount == 0 ){}
+    // else {
+    // return (
+    // <Button colorScheme = "yellow">
+    //     Steal from;
+    //   </Button>
+    //   )
+    // }
   }
 
   render(){
