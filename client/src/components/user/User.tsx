@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useTable } from 'react-table'
 import {Box, Image, Button, Heading} from "@chakra-ui/react";
-import userData from './userData'
+import {makeData, getQuestion, getCorrect} from './userData'
 
 const Styles = styled.div`
   padding: 1rem;
@@ -75,6 +75,7 @@ function Table({ columns, data }) {
         </table>
     )
 }
+    
 
     function User() {
         const columns = React.useMemo(
@@ -95,15 +96,21 @@ function Table({ columns, data }) {
             []
         )
 
-        const data = React.useMemo(() => userData(10), [])
-
+        const data = React.useMemo(() => makeData(10), [])
+        const totalQuestions = getQuestion()
+        const totalCorrect = getCorrect()
+        const percentageCorrect = (totalCorrect/totalQuestions)*100
+        const converted = percentageCorrect.toPrecision(3) + "%"
         return (
             <Styles>
                 <Box p={3} textAlign='center'>
                     <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
                     <Heading textAlign='center' mb='10px'>My profile</Heading>
+                    <h2> Total questions answered: {totalQuestions} </h2>
+                    <h2> Total correct answers: {totalCorrect} </h2>
+                    <h2> Accuracy: {converted} </h2>
                 </Box>        
-                
+
                 <Table columns={columns} data={data} />
             </Styles>
     )

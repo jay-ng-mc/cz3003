@@ -1,5 +1,7 @@
 import namor from 'namor'
 
+var totalQuestion =0
+var totalCorrect =0 
 const range = len => {  
   const arr = []
   for (let i = 0; i < len; i++) {
@@ -15,17 +17,26 @@ function randomDate(start, end) {
 
 const newEntry = () => {
   var x = Math.floor(Math.random() * 100)
+  totalQuestion += x
   var y = Math.floor(Math.random() * x)
+  totalCorrect +=y
   var date = randomDate(new Date(2020, 0, 1), new Date())
-
+  
   return {
     timePlayed: date.toUTCString(),
     questionAnswered: x,
-    correctAnswer: y
+    correctAnswer: y,     
   }
 }
 
-export default function makeData(...lens) {
+export function getQuestion() {
+    return totalQuestion
+}
+
+export function getCorrect() {
+    return totalCorrect
+}
+export function makeData(...lens) {
   const makeDataLevel = (depth = 0) => {
     const len = lens[depth]
     return range(len).map(d => {
