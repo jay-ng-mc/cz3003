@@ -7,6 +7,8 @@ import {
     NumberIncrementStepper,
     NumberDecrementStepper,
   } from "@chakra-ui/react"
+import NextLink from "next/link";
+import React from "react";
 
 let imageList = ["images\\p0.png","images\\p1.png","images\\p2.png","images\\p3.png","images\\p4.png","images\\p5.png"]
 var savedImageId = 1 //can pass in from DB
@@ -91,18 +93,21 @@ function render(){
     return(
         <Box my={5} textAlign='left'>
             <form>
-            <Grid templateColumns="repeat(4, 1fr)" gap={1}>
-            <Box w="100%" h="30" bg="gray.200" textAlign='center'>        
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<IconButton aria-label="Change Character" isRound={true} icon={<SettingsIcon />} size='xs'/>
-        <Center><Image borderRadius="full" boxSize="30px" src={imageList[savedImageId]} alt="Avatar" img id="Avatar" /></Center>
-        <Text fontSize="xs">IGN</Text>
-        <Text fontSize="xs">Username</Text>
-        </Box>
-            { users(2) }
-            { users(3) }
-            { users(4) }
-            </Grid>
-                <Button width='full' mt={5}>New Game</Button>
+                <Grid templateColumns="repeat(4, 1fr)" gap={1}>
+                    <Box w="100%" h="30" bg="gray.200" textAlign='center'>        
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <IconButton aria-label="Change Character" isRound={true} icon={<SettingsIcon />} size='xs'/>
+                        <Center><Image borderRadius="full" boxSize="30px" src={imageList[savedImageId]} alt="Avatar" img id="Avatar" /></Center>
+                        <Text fontSize="xs">IGN</Text>
+                        <Text fontSize="xs">Username</Text>
+                    </Box>
+                    { users(2) }
+                    { users(3) }
+                    { users(4) }
+                </Grid>
+                <NextLink href={"/board"}>
+                    <Button width='full' mt={5}>New Game</Button>
+                </NextLink>
             </form>
         </Box>
     ) 
