@@ -52,11 +52,11 @@ const AnswerStyle = {
     width: '190px',
 }
 
-class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
+class QuestionsPage extends React.Component <{questionBank, questionId}, { [key: string]: string }>{
     constructor(props) {
         super(props);
         this.state = {currentAnswer: "",
-                    correctAnswer: this.props.questionBank[props.questionId].Correct
+                    correctAnswer: this.props.questionBank[props.questionId].correctAnswer
                 };
         this.isCorrect = this.isCorrect.bind(this);
         this.changeColor1 = this.changeColor1.bind(this);
