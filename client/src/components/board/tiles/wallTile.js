@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import styles from '../board/board.module.css'
+import styles from '../board.module.css'
 
-export default class WallTile extends Component {
+export default class wallTile extends Component {
 
     render(){
         return(

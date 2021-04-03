@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import styles from '../board/board.module.css'
+import styles from '../board.module.css'
 
-export default class ShopTile extends Component {
+export default class shopTile extends Component {
 
     handleClick = () => {
         this.props.move(this.props.number)
