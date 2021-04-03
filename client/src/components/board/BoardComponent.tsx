@@ -4,23 +4,22 @@ import RedTile from './tiles/redTile'
 import Start from './tiles/Start'
 import WallTile from './tiles/wallTile'
 import ShopTile from './tiles/shopTile'
-import sausageTile from './tiles/sausageTile';
 import React, { Component } from 'react'
 import styles from './board.module.css'
 import Character from './BoardCharacter'
-import {Box, Stack, Flex, HStack, Button} from "@chakra-ui/react";
-import SausageTile from './tiles/sausageTile';
+import {Box, Stack, Flex, HStack, Button} from "@chakra-ui/react"
+import SausageTile from './tiles/sausageTile'
 import next from 'next'
-import { DiceRoller } from './DiceRoller';
+import { DiceRoller } from './DiceRoller'
 import { Questions } from '../components/Questions'
-import Dice from "react-dice-roll";
+import Dice from "react-dice-roll"
 
 class BoardComponent extends React.Component {
 
     state = {
       charactersCreated: false,
       characters: [],
-      sausageTile: [86],
+      sausageTile: [3],
       shopTile: [95],
       redTile:[85,53,4,92],
       startTiles: [1],
@@ -49,15 +48,15 @@ class BoardComponent extends React.Component {
     return tileArray.map(number => (
       this.state.startTiles.includes(number)
       ? <Start startGame={this.startGame} didStart={this.state.didStart} number={number} />
-      : this.state.redTile.includes(number) ? 
+      : this.state.sausageTile.includes(number) ?
         this.state.canMoveTo.includes(number)
-          ? <RedTile move={this.move} number={number} />
-          : <RedTile number={number} />
+        ? <SausageTile move={this.move} number={number} />
+        : <SausageTile number={number} />
               :
-              this.state.sausageTile.includes(number) ?
-          this.state.canMoveTo.includes(number)
-            ? <SausageTile move={this.move} number={number} />
-            : <SausageTile number={number} />
+              this.state.redTile.includes(number) ? 
+              this.state.canMoveTo.includes(number)
+                ? <RedTile move={this.move} number={number} />
+                : <RedTile number={number} />
                 :
               this.state.wall.includes(number)  ?
               <WallTile number = {number} />
@@ -119,6 +118,9 @@ class BoardComponent extends React.Component {
     else{  
       this.increaseCoins(this.state.characters[this.state.playerTurn-1])
     }}
+    if (this.state.sausageTile.includes(number)){
+      this.increaseSausage(this.state.characters[this.state.playerTurn-1])
+    }
     this.state.movesLeft -= 1;
     console.log(this.state.movesLeft);
     this.setState({
@@ -152,12 +154,24 @@ class BoardComponent extends React.Component {
   };
 
   increaseSausage = character => {
+    let NewTile = 1;
+    let NewSausageTile = [];
     const characters = [...this.state.characters];
     const index = characters.indexOf(character);
     characters[index] = {...character};
     if (characters[index].playerCoins > 20){
     characters[index].playerCoins = characters[index].playerCoins -20;
     characters[index].playerSausage++;
+    while (this.state.wall.includes(NewTile) || NewTile == 1){
+      NewTile = Math.floor(Math.random()*130)+2;
+    } 
+    NewSausageTile.push(NewTile)
+    this.setState({
+      sausageTile : NewSausageTile
+    })
+    if(characters[index].playerSausage == 3){
+      console.log("End game");
+    }
   }
     this.setState({ characters });
   };
