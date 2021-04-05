@@ -162,7 +162,7 @@ class BoardComponent extends React.Component {
     if (characters[index].playerCoins > 20){
     characters[index].playerCoins = characters[index].playerCoins -20;
     characters[index].playerSausage++;
-    while (this.state.wall.includes(NewTile) || NewTile == 1){
+    while (this.state.wall.includes(NewTile) || NewTile == 1 || this.state.shopTile.includes(NewTile)){
       NewTile = Math.floor(Math.random()*130)+2;
     } 
     NewSausageTile.push(NewTile)
