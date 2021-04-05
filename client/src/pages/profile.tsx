@@ -8,12 +8,12 @@ import { Questions } from '../components/Questions'
 import ReactDOM from 'react-dom';
 import _app from './_app'
 import Board from './board'
-import User from '../components/user/User'
+import UserProfile from '../components/user/UserProfile'
 
 const Index = () => (
   <Container height="100vh">
     <NavBar />
-    <User />
+    <UserProfile />
   </Container>
 
 )

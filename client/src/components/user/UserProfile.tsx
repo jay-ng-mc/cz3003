@@ -1,82 +1,120 @@
-import React from "react"
-import { Link, Button, Stack, Flex, Heading, Box, ThemeProvider, theme, CSSReset, propNames } from "@chakra-ui/react";
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import { useTable } from 'react-table'
+import {Box, Image, Button, Heading} from "@chakra-ui/react";
+import {makeData, getQuestion, getCorrect} from './userData'
 
-export const UserProfile = () => {
-    return (
-        <ThemeProvider theme={theme}>
-            <CSSReset />
-            <QuestionsPage />
-        </ThemeProvider>
-    );
-}
+const Styles = styled.div`
+  padding: 1rem;
 
-const TableStyle = {
-    borderWidth: "3px", 
-    borderColor:  "#000000",
-    borderRadius: "0px",
-    color: "black",
+  table {
+    border-spacing: 0;
+    border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
 
-}
-
-const userBank = 
-[
-    {name: 'John',
-        play: 
-        [
-            { time: '9:00', asked: 10, correct: '6' },
-            { time: '10:00', asked: 11, correct: '1' },
-            {time: '11:00', asked: 12, correct: '11' }
-        ]
-    }
-];
-
-
-const id=0
-
-class QuestionsPage extends React.Component {
-    questions = () => {
-        var sum=0
-        for (var i = 0; i < userBank[id].play.length; i++) {
-            sum += userBank[id].play[i].asked;
-          }
-        return sum
+    tr {
+      :last-child {
+        td {
+          border-bottom: 0;
         }
-        
-    render() {
-    return (
-        <ThemeProvider theme={theme}>
-            <CSSReset />
-            <Flex minHeight='100vh' width='full' align='center' justifyContent='center'>
-            <Box borderWidth={1} px={1} width='full' maxWidth='400px' borderRadius={4} textAlign='center' boxShadow='lg'>
-            <ThemeProvider theme={theme} />
-                <Heading>User Profile</Heading>
-                <Heading>Player name: {userBank[id].name}</Heading>
-                <h2>Number of games played: {userBank[id].play.length}</h2>
-                <h2>Total questions answered: {this.questions} </h2>
-                {/* <h2>Total correct answers: {this.answers} </h2> */}
-                <br></br>
-                <Box style={TableStyle}>
-                    <tr>
-                        <th>Time played</th>
-                        <th>Questions answered</th>
-                        <th>Correct answers</th>
-                        <th>Percentage correct</th>
-                    </tr>
-                    {userBank[id].play.map((player) => (
-                        <tr>
-                        <td>{player.time}</td>
-                        <td>{player.asked}</td>
-                        <td>{player.correct}</td>                        
-                        </tr>
-                    ))}
-                    
-                </Box>
-            </Box>
-        </Flex>
-        </ThemeProvider>
-    );
+      }
     }
 
+    th,
+    td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
 
+      :last-child {
+        border-right: 0;
+      }
+    }
+  }
+`
+
+function Table({ columns, data }) {
+    // Use the state and functions returned from useTable to build your UI
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        rows,
+        prepareRow,
+    } = useTable({
+        columns,
+        data,
+    })
+
+    // Render the UI for your table
+    return (
+        <table {...getTableProps()}>
+        <thead>
+            {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => (
+                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                ))}
+            </tr>
+            ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+            {rows.map((row, i) => {
+            prepareRow(row)
+            return (
+                <tr {...row.getRowProps()}>
+                {row.cells.map(cell => {
+                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                })}
+                </tr>
+            )
+            })}
+        </tbody>
+        </table>
+    )
+}
+    
+
+function UserProfile() {
+    const columns = React.useMemo(
+        () => [
+        {
+            Header: 'Time played',
+            accessor: 'timePlayed',
+        },
+        {
+            Header: 'Questions answered',
+            accessor: 'questionAnswered',
+        },
+        {
+            Header: 'Correct answer',
+            accessor: 'correctAnswer'
+        },
+        ],
+        []
+    )
+
+    const data = React.useMemo(() => makeData(10), [])
+    const totalQuestions = getQuestion()
+    const totalCorrect = getCorrect()
+    const percentageCorrect = (totalCorrect/totalQuestions)*100
+    const converted = percentageCorrect.toPrecision(3) + "%"
+    return (
+        <Styles>
+            <Box p={3} textAlign='center'>
+                <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
+                <Heading textAlign='center' mb='10px'>My profile</Heading>
+                <h2> Total questions answered: {totalQuestions} </h2>
+                <h2> Total correct answers: {totalCorrect} </h2>
+                <h2> Accuracy: {converted} </h2>
+            </Box>        
+
+            <Table columns={columns} data={data} />
+        </Styles>
+    )
 }
 
+
+export default UserProfile
