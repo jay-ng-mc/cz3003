@@ -14,23 +14,23 @@ export class Question {
 
   @Field()
   @Property({type: 'text', unique: true})
-  question!: string;
+  questionTitle!: string;
 
   @Field()
   @Property({type: 'text'})
-  choice1!: string;
+  A!: string;
 
   @Field()
   @Property({type: 'text'})
-  choice2!: string;
+  B!: string;
 
   @Field()
   @Property({type: 'text', nullable: true})
-  choice3!: string;
+  C: string;
 
   @Field()
   @Property({type: 'text', nullable: true})
-  choice4!: string;
+  D: string;
 
   @Field()
   @Property({type: 'text'})

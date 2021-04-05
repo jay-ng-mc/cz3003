@@ -6,10 +6,19 @@ import { Formik } from "formik";
 
 
 export const Questions = () => {
+    const questionId = 0
+    const [{data}] = useGetQuestionQuery({
+        variables: {
+            id: questionId + 1 // because in database questions are 1 indexed (this is just arbitrary, we should be using two ids)
+        }
+    })
+    var questionBank = data;
+    console.log(data)
+
     return (
         <ThemeProvider theme={theme}>
             <CSSReset />
-            <QuestionsPage />
+            <QuestionsPage questionBank={[questionBank.getQuestion]} questionId={questionId}/>
         </ThemeProvider>
     );
 }
@@ -42,13 +51,12 @@ const AnswerStyle = {
     height: '100px',
     width: '190px',
 }
-const questionId = 1
 
-class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
+class QuestionsPage extends React.Component <{questionBank, questionId}, { [key: string]: string }>{
     constructor(props) {
         super(props);
         this.state = {currentAnswer: "",
-                    correctAnswer: QuestionBank[questionId].Correct
+                    correctAnswer: this.props.questionBank[props.questionId].correctAnswer
                 };
         this.isCorrect = this.isCorrect.bind(this);
         this.changeColor1 = this.changeColor1.bind(this);
@@ -65,10 +73,10 @@ class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
                     
                     <Box h='100px' bgImage="url('/images/sausage.png')" bgRepeat='no-repeat' bgPosition='center' bgSize='contain' p={2}>
                         <Box textAlign='center'>
-                            <Heading>Question {questionId} </Heading>
+                            <Heading>Question {this.props.questionId} </Heading>
                         </Box>                    
                         <Box>
-                            <Heading size='md'>{QuestionBank[questionId].questionTitle}</Heading>
+                            <Heading size='md'>{this.props.questionBank[this.props.questionId].questionTitle}</Heading>
                         </Box>
                     </Box>
                     
@@ -76,11 +84,11 @@ class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
                         <Stack isInline spacing='10px'>
                             <h2> A </h2>
                             <Box id = "A" onClick={this.changeColor1} style={AnswerStyle}  as="button" mr="40px">
-                                {QuestionBank[questionId].A}
+                                {this.props.questionBank[this.props.questionId].A}
                             </Box>
                             <h2> B </h2>
                             <Box id = "B" onClick={this.changeColor2} style={AnswerStyle}  as="button">
-                                {QuestionBank[questionId].B}
+                                {this.props.questionBank[this.props.questionId].B}
                             </Box>
                         </Stack>
                     </Box>
@@ -89,11 +97,11 @@ class QuestionsPage extends React.Component <{}, { [key: string]: string }>{
                         <Stack isInline  spacing='10px' >
                             <h2> C </h2>
                             <Box id = "C" onClick={this.changeColor3} style={AnswerStyle} as="button" mr="40px" >
-                                {QuestionBank[questionId].C}
+                                {this.props.questionBank[this.props.questionId].C}
                             </Box>
                             <h2> D </h2>
                             <Box id = "D" onClick={this.changeColor4} style={AnswerStyle} as="button" >
-                                {QuestionBank[questionId].D}
+                                {this.props.questionBank[this.props.questionId].D}
                             </Box>
                         </Stack>
                     </Box>
