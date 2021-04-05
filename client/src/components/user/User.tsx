@@ -77,42 +77,42 @@ function Table({ columns, data }) {
 }
     
 
-    function User() {
-        const columns = React.useMemo(
-            () => [
-            {
-                Header: 'Time played',
-                accessor: 'timePlayed',
-            },
-            {
-                Header: 'Questions answered',
-                accessor: 'questionAnswered',
-            },
-            {
-                Header: 'Correct answer',
-                accessor: 'correctAnswer'
-            },
-            ],
-            []
-        )
+function User() {
+    const columns = React.useMemo(
+        () => [
+        {
+            Header: 'Time played',
+            accessor: 'timePlayed',
+        },
+        {
+            Header: 'Questions answered',
+            accessor: 'questionAnswered',
+        },
+        {
+            Header: 'Correct answer',
+            accessor: 'correctAnswer'
+        },
+        ],
+        []
+    )
 
-        const data = React.useMemo(() => makeData(10), [])
-        const totalQuestions = getQuestion()
-        const totalCorrect = getCorrect()
-        const percentageCorrect = (totalCorrect/totalQuestions)*100
-        const converted = percentageCorrect.toPrecision(3) + "%"
-        return (
-            <Styles>
-                <Box p={3} textAlign='center'>
-                    <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
-                    <Heading textAlign='center' mb='10px'>My profile</Heading>
-                    <h2> Total questions answered: {totalQuestions} </h2>
-                    <h2> Total correct answers: {totalCorrect} </h2>
-                    <h2> Accuracy: {converted} </h2>
-                </Box>        
+    const data = React.useMemo(() => makeData(10), [])
+    const totalQuestions = getQuestion()
+    const totalCorrect = getCorrect()
+    const percentageCorrect = (totalCorrect/totalQuestions)*100
+    const converted = percentageCorrect.toPrecision(3) + "%"
+    return (
+        <Styles>
+            <Box p={3} textAlign='center'>
+                <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
+                <Heading textAlign='center' mb='10px'>My profile</Heading>
+                <h2> Total questions answered: {totalQuestions} </h2>
+                <h2> Total correct answers: {totalCorrect} </h2>
+                <h2> Accuracy: {converted} </h2>
+            </Box>        
 
-                <Table columns={columns} data={data} />
-            </Styles>
+            <Table columns={columns} data={data} />
+        </Styles>
     )
 }
 
