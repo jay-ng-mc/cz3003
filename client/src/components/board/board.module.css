@@ -22,6 +22,9 @@
 }
 
 .redTile {
+  background-image: url(../board/assets/Coins.png);
+  background-size: cover;
+  background-position: center;
   background-color: red;
 }
 

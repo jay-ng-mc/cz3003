@@ -7,7 +7,15 @@ import ShopTile from './tiles/shopTile'
 import React, { Component } from 'react'
 import styles from './board.module.css'
 import Character from './BoardCharacter'
-import {Box, Stack, Flex, HStack, Button} from "@chakra-ui/react"
+import {Box, Stack, Flex, HStack, Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,} from "@chakra-ui/react"
 import SausageTile from './tiles/sausageTile'
 import next from 'next'
 import { DiceRoller } from './DiceRoller'
@@ -45,6 +53,25 @@ class BoardComponent extends React.Component {
   }
   
   occupyTiles = (tileArray) => {
+    if (this.state.movesLeft == 0){
+      return tileArray.map(number => (
+        this.state.startTiles.includes(number)
+        ? <Start startGame={this.startGame} didStart={false} number={number} />
+        : this.state.sausageTile.includes(number) ?
+        <SausageTile number={number} />
+                :
+                this.state.redTile.includes(number) ? 
+                <RedTile number={number} />
+                  :
+                this.state.wall.includes(number)  ?
+                <WallTile number = {number} />
+                  :
+                  this.state.shopTile.includes(number) ?
+                  <ShopTile number={number} /> :
+                  <Tile number={number} />
+      ))
+    }
+    else {
     return tileArray.map(number => (
       this.state.startTiles.includes(number)
       ? <Start startGame={this.startGame} didStart={this.state.didStart} number={number} />
@@ -68,7 +95,8 @@ class BoardComponent extends React.Component {
                   this.state.canMoveTo.includes(number)
                     ? <Tile move={this.move} number={number} />
                     : <Tile number={number} />
-    ))  
+    ))
+    }  
   }
 
 
@@ -251,6 +279,32 @@ class BoardComponent extends React.Component {
     this.setState({ characters });
   };
 
+  BasicUsage = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    return (
+      <>
+        <Button onClick={onOpen}>Open Modal</Button>
+  
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Modal Title</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+            </ModalBody>
+  
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Close
+              </Button>
+              <Button variant="ghost">Secondary Action</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    )
+  }
+
 
   render(){
     return (
@@ -270,7 +324,7 @@ class BoardComponent extends React.Component {
             <Box as="button" style={ButtonStyle} px={4} mr="10px"
               width="250px"
               height="50px"
-              onClick={() => this.increaseMustard(this.state.characters[this.state.playerTurn-1])}
+              onClick={() => this.BasicUsage()}
               className="btn btn-secondary btn-sm"
             >
               increase Mustard
