@@ -13,7 +13,11 @@ export class Question {
   difficulty!: number;
 
   @Field()
-  @Property({type: 'text', unique: true})
+  @Property()
+  type!: string;
+
+  @Field()
+  @Property({type: 'text'})
   questionTitle!: string;
 
   @Field()

@@ -1,0 +1,8 @@
+query GetGame($id: Float!){
+  getGame(id: $id){
+    username
+    startTime
+    endTime
+    score
+  }
+}

@@ -15,6 +15,8 @@ class RegisterInput {
     password: string;
     @Field()
     password2: string;
+    @Field()
+    userRole: string;
 }
 
 @InputType()
@@ -23,6 +25,8 @@ class LoginInput {
     username: string;
     @Field()
     password: string;
+    @Field()
+    userRole: string;
 }
 
 @ObjectType()
@@ -42,6 +46,7 @@ class UserResponse {
     @Field(() => User, { nullable: true })
     user?: User
 }
+
 
 @Resolver()
 export class UserResolver {
@@ -98,6 +103,7 @@ export class UserResolver {
                 password: hashedPassword,
                 created_at: new Date(),
                 updated_at: new Date(),
+                userRole: options.userRole,
             }).returning("*");
             user = result[0];
         }catch(err){
@@ -166,5 +172,13 @@ export class UserResolver {
                 resolve(true);
             })
         )
+    }
+
+    @Query(() => User, { nullable: true })
+    getUser(
+        @Arg( 'id' ) id: number,
+        @Ctx() { em }: MyContext
+    ): Promise<User | null>{
+        return em.findOne(User, { id });
     }
 }

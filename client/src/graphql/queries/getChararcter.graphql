@@ -1,0 +1,6 @@
+query GetCharacter($username: String!){
+  getCharacter(username: $username){
+    username
+    characterId
+  }
+}

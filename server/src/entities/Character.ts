@@ -1,28 +1,21 @@
 import { Entity, PrimaryKey, Property } from "mikro-orm";
 import { Field, ObjectType } from "type-graphql";
-import { User } from "./User";
 
 @ObjectType()
 @Entity()
-export class Game {
+export class Character {
 
   @Field()
   @PrimaryKey()
   id!: number;
 
   @Field(() => String)
+  @Property({type: 'text', unique: true})
   username!: string;
 
-  @Field(() => String)
-  @Property({ type: 'date' })
-  startTime = new  Date();
-
-  @Field(() => String)
-  @Property({ type: 'date' })
-  endTime: Date;
-
   @Field()
-  @Property()
-  score: number;
+  @Property({type: 'text', unique: true})
+  characterId!: string;
+
 
 }

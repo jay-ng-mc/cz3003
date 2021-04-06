@@ -1,6 +1,7 @@
 import { Question } from "../entities/Question";
 import { MyContext } from "src/types";
-import { Arg, Ctx, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Field, InputType, ObjectType, Query, Resolver } from "type-graphql";
+
 
 @Resolver()
 export class QuestionResolver {

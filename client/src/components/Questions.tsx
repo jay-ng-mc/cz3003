@@ -1,12 +1,12 @@
 import React from "react";
 import {ThemeProvider, theme, CSSReset, Flex, Box, Image, Heading, HStack, Stack, Button} from "@chakra-ui/react";
 import ReactDOM from 'react-dom';
-import { useGetQuestionQuery } from "../generated/graphql";
-import { Formik } from "formik";
+import { GetQuestionQuery, useGetQuestionQuery } from "../generated/graphql";
+
 
 
 export const Questions = () => {
-    const questionId = 0
+    const questionId = 2
     const [{data}] = useGetQuestionQuery({
         variables: {
             id: questionId + 1 // because in database questions are 1 indexed (this is just arbitrary, we should be using two ids)
@@ -18,29 +18,29 @@ export const Questions = () => {
     return (
         <ThemeProvider theme={theme}>
             <CSSReset />
-            <QuestionsPage questionBank={[questionBank.getQuestion]} questionId={questionId}/>
+            <QuestionsPage questionBank={questionBank['getQuestion']} questionId={questionId}/>
         </ThemeProvider>
     );
 }
 
-const QuestionBank = [
-    {
-        questionTitle: "This is a test question?", 
-        A: "Answer A",
-        B: "Answer B",
-        C: "Answer C",
-        D: "Answer D",
-        Correct: "A"
-    },
-    { 
-      questionTitle: "why does this happen?", 
-      A: "ABCD",
-      B: "EFGH",
-      C: "IKLM",
-      D: "NOP",
-      Correct: "C"
-    }
-]
+// const QuestionBank = [
+//     {
+//         questionTitle: "This is a test question?", 
+//         A: "Answer A",
+//         B: "Answer B",
+//         C: "Answer C",
+//         D: "Answer D",
+//         correctAnswer: "A"
+//     },
+//     { 
+//       questionTitle: "why does this happen?", 
+//       A: "ABCD",
+//       B: "EFGH",
+//       C: "IKLM",
+//       D: "NOP",
+//       correctAnswer: "C"
+//     }
+// ]
 
 const AnswerStyle = {
     borderWidth: "3px", 
@@ -56,7 +56,7 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
     constructor(props) {
         super(props);
         this.state = {currentAnswer: "",
-                    correctAnswer: this.props.questionBank[props.questionId].correctAnswer
+                    correctAnswer: this.props.questionBank.correctAnswer
                 };
         this.isCorrect = this.isCorrect.bind(this);
         this.changeColor1 = this.changeColor1.bind(this);
@@ -72,21 +72,21 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
                     <ThemeProvider theme={theme} />
                     <Box h='100px' bgImage="url('/images/sausage.png')" bgRepeat='no-repeat' bgPosition='center' bgSize='contain' p={2}>
                         <Box textAlign='center'>
-                            <Heading>Question {this.props.questionId} </Heading>
+                            <Heading>Question {this.props.questionId + 1} </Heading>
                         </Box>                    
                         <Box>
-                            <Heading size='md'>{this.props.questionBank[this.props.questionId].questionTitle}</Heading>
+                            <Heading size='md'>{this.props.questionBank.questionTitle}</Heading>
                         </Box>
                     </Box>
                     <Box p={3}>
                         <Stack isInline spacing='10px'>
                             <h2> A </h2>
                             <Box id = "A" onClick={this.changeColor1} style={AnswerStyle}  as="button" mr="40px">
-                                {this.props.questionBank[this.props.questionId].A}
+                                {this.props.questionBank.A}
                             </Box>
                             <h2> B </h2>
                             <Box id = "B" onClick={this.changeColor2} style={AnswerStyle}  as="button">
-                                {this.props.questionBank[this.props.questionId].B}
+                                {this.props.questionBank.B}
                             </Box>
                         </Stack>
                     </Box>
@@ -95,11 +95,11 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
                         <Stack isInline  spacing='10px' >
                             <h2> C </h2>
                             <Box id = "C" onClick={this.changeColor3} style={AnswerStyle} as="button" mr="40px" >
-                                {this.props.questionBank[this.props.questionId].C}
+                                {this.props.questionBank.C}
                             </Box>
                             <h2> D </h2>
                             <Box id = "D" onClick={this.changeColor4} style={AnswerStyle} as="button" >
-                                {this.props.questionBank[this.props.questionId].D}
+                                {this.props.questionBank.D}
                             </Box>
                         </Stack>
                     </Box>

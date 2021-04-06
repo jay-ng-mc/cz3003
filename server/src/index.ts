@@ -11,6 +11,9 @@ import { MyContext } from "./types";
 import { COOKIE_NAME, __prod__ } from "./constants";
 import session from "express-session";
 import { QuestionResolver } from "./resolvers/question";
+import { GameResolver } from "./resolvers/game";
+import { StudentTeacherResolver } from "./resolvers/student_teacher";
+import { CharacterResolver } from "./resolvers/character";
 
 const main = async () => {
   // connect to database
@@ -48,7 +51,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [ UserResolver, QuestionResolver ],
+      resolvers: [ UserResolver, QuestionResolver, GameResolver, StudentTeacherResolver, CharacterResolver ],
       validate: false,
     }),
     context: ({ req, res }): MyContext => ({ em: orm.em, req, res })

@@ -1,0 +1,10 @@
+mutation UpdateGame( $username: String!, $startTime: String!, $endTime: String!, $score: String!) {
+    updateGame(options: { username: $username, startTime: $startTime, endTime: $endTime, score: $score }){
+        game{
+            username
+            startTime
+            endTime
+            score
+        }
+      }
+    }
