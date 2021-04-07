@@ -72,6 +72,7 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
             <Flex minHeight='100vh' width='full' align='center' justifyContent='center'>
                 <Box borderWidth={1} px={1} width='full' maxWidth='500px' borderRadius={4} textAlign='center' boxShadow='lg'>
                     <ThemeProvider theme={theme} />
+                    
                     <Box h='100px' bgImage="url('/images/sausage.png')" bgRepeat='no-repeat' bgPosition='center' bgSize='contain' p={2}>
                         <Box textAlign='center'>
                             <Heading>Question {this.props.questionId + 1} </Heading>
@@ -80,6 +81,7 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
                             <Heading size='md'>{this.props.questionBank?.getAllQuestion[this.props.questionId].questionTitle}</Heading>
                         </Box>
                     </Box>
+                    
                     <Box p={3}>
                         <Stack isInline spacing='10px'>
                             <h2> A </h2>

@@ -1,25 +1,31 @@
 import Grid from 'react-css-grid'
-import Tile from './tiles/tile'
-import RedTile from './tiles/redTile'
-import Start from './tiles/Start'
-import WallTile from './tiles/wallTile'
-import ShopTile from './tiles/shopTile'
+import Tile from './tile'
+import RedTile from './redTile'
+import WallTile from './board/tiles/wallTile'
+import ShopTile from './board/tiles/shopTile'
+import Start from './Start'
 import React, { Component } from 'react'
-import styles from './board.module.css'
-import Character from './BoardCharacter'
-import {Box, Stack, Flex, HStack, Button} from "@chakra-ui/react"
-import SausageTile from './tiles/sausageTile'
-import next from 'next'
-import { DiceRoller } from './DiceRoller'
-import { Questions } from '../components/Questions'
-import Dice from "react-dice-roll"
+import styles from '../board/board.module.css'
+import Character from './Character'
+import {Box, Stack, HStack, Button, Flex, useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,} from "@chakra-ui/react";
+import SausageTile from './sausageTile';
+import next from 'next';
+import Dice from "react-dice-roll";
+import { Container } from './Container';
 
-class BoardComponent extends React.Component {
+class Board extends React.Component {
 
     state = {
       charactersCreated: false,
       characters: [],
-      sausageTile: [3],
+      sausageTile: [86],
       shopTile: [95],
       redTile:[85,53,4,92],
       startTiles: [1],
@@ -33,7 +39,6 @@ class BoardComponent extends React.Component {
       numberOfPlayers: 3,
       movesLeft : 0,
       wall: [15,28,16,17,18,19,20,21,22,23,24,25,38,51,64,77,76,75,74,73,72,71,70,69,68,67,41,54],
-      targetPlayer : 0,
   };
   
     createBoard = () => {
@@ -48,15 +53,15 @@ class BoardComponent extends React.Component {
     return tileArray.map(number => (
       this.state.startTiles.includes(number)
       ? <Start startGame={this.startGame} didStart={this.state.didStart} number={number} />
-      : this.state.sausageTile.includes(number) ?
+      : this.state.redTile.includes(number) ? 
         this.state.canMoveTo.includes(number)
-        ? <SausageTile move={this.move} number={number} />
-        : <SausageTile number={number} />
+          ? <RedTile move={this.move} number={number} />
+          : <RedTile number={number} />
               :
-              this.state.redTile.includes(number) ? 
-              this.state.canMoveTo.includes(number)
-                ? <RedTile move={this.move} number={number} />
-                : <RedTile number={number} />
+              this.state.sausageTile.includes(number) ?
+          this.state.canMoveTo.includes(number)
+            ? <SausageTile move={this.move} number={number} />
+            : <SausageTile number={number} />
                 :
               this.state.wall.includes(number)  ?
               <WallTile number = {number} />
@@ -118,9 +123,6 @@ class BoardComponent extends React.Component {
     else{  
       this.increaseCoins(this.state.characters[this.state.playerTurn-1])
     }}
-    if (this.state.sausageTile.includes(number)){
-      this.increaseSausage(this.state.characters[this.state.playerTurn-1])
-    }
     this.state.movesLeft -= 1;
     console.log(this.state.movesLeft);
     this.setState({
@@ -154,24 +156,12 @@ class BoardComponent extends React.Component {
   };
 
   increaseSausage = character => {
-    let NewTile = 1;
-    let NewSausageTile = [];
     const characters = [...this.state.characters];
     const index = characters.indexOf(character);
     characters[index] = {...character};
     if (characters[index].playerCoins > 20){
     characters[index].playerCoins = characters[index].playerCoins -20;
     characters[index].playerSausage++;
-    while (this.state.wall.includes(NewTile) || NewTile == 1 || this.state.shopTile.includes(NewTile)){
-      NewTile = Math.floor(Math.random()*130)+2;
-    } 
-    NewSausageTile.push(NewTile)
-    this.setState({
-      sausageTile : NewSausageTile
-    })
-    if(characters[index].playerSausage == 3){
-      console.log("End game");
-    }
   }
     this.setState({ characters });
   };
@@ -219,38 +209,24 @@ class BoardComponent extends React.Component {
   };
 
   createMustardButton = () => {
-    let currentPlayer = [this.state.playerTurn]
-    let playerArray = []
-    for (let counter = this.state.numberOfPlayers; counter > 0; counter--){
-      playerArray.push(counter)
-    }
-    if(this.state.characters[this.state.playerTurn-1].mustardCount == 0){}
-    else{
+    let currentPlayer = [1]
+    let playerArray = [1,2,3]
     return playerArray.map(number => (
       currentPlayer.includes(number)?<Box/>
       :
-      <Button colorScheme = "yellow"
-      onClick={() => this.mustardFunction(number)}>
+      <Button colorScheme = "yellow">
         Steal from {number}
       </Button>
-    ))}
+    ))
+    // if (this.state.characters[this.state.playerTurn-1].mustardCount == 0 ){}
+    // else {
+    // return (
+    // <Button colorScheme = "yellow">
+    //     Steal from;
+    //   </Button>
+    //   )
+    // }
   }
-
-  mustardFunction = (targetPlayer) => {
-    this.state.targetPlayer = targetPlayer - 1
-    this.mustardCall(this.state.characters[this.state.playerTurn-1])
-  }
-
-  mustardCall = character => {
-    const characters = [...this.state.characters];
-    const index = characters.indexOf(character);
-    characters[index] = {...character};
-    characters[index].playerCoins += 5;
-    characters[index].mustardCount--;
-    characters[this.state.targetPlayer].playerCoins -= 5;
-    this.setState({ characters });
-  };
-
 
   render(){
     return (
@@ -264,7 +240,6 @@ class BoardComponent extends React.Component {
               increaseCoins={this.increaseCoins}
               decreaseCoins={this.decreaseCoins}
               nextTurn={this.nextTurn}
-              mustardCall = {this.mustardFunction}
               character={character}
               />))}
             <Box as="button" style={ButtonStyle} px={4} mr="10px"
@@ -275,11 +250,13 @@ class BoardComponent extends React.Component {
             >
               increase Mustard
             </Box>
-            <Box color="black" bg="green.300" px={4} fontSize="30px"> 
-                    <b> Current Turn: Player {this.state.playerTurn} </b>    
-                </Box>
           </Stack>
         </Flex>
+        <Box style={TextStyle}
+        width="400px"
+        height="50ps">
+              Current Player Turn: {this.state.playerTurn}
+        </Box>
         <Box style={TextStyle}
         width="400px"
         height="50ps">
@@ -314,4 +291,4 @@ class BoardComponent extends React.Component {
     fontSize:"30px"
   }
 
-  export default BoardComponent;
+  export default Board;

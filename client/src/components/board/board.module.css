@@ -1,7 +1,7 @@
 .gameBoard {
   display: grid;
-  width: 670px;
-  height: 450px;
+  width: 680px;
+  height: 570px;
   margin: auto;
 }
 .blueTile {
@@ -25,6 +25,26 @@
   background-color: red;
 }
 
+.redTileSelected {
+  background-color: #b00000;
+}
+
 .sausageTile {
   background-color: tomato;
+}
+
+.sausageTileSelected {
+  background-color: #b36800;
+}
+
+.wallTile {
+  background-color: #1a1714;
+}
+
+.shopTile {
+  background-color: yellow;
+}
+
+.shopTileSelected {
+  background-color: #bfb326;
 }
