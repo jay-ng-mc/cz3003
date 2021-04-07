@@ -1,46 +1,36 @@
 import React from "react";
 import {ThemeProvider, theme, CSSReset, Flex, Box, Image, Heading, HStack, Stack, Button} from "@chakra-ui/react";
 import ReactDOM from 'react-dom';
-import { useGetQuestionQuery } from "../generated/graphql";
-import { Formik } from "formik";
+import { GetQuestionQuery, Question, useGetAllQuestionQuery, GetAllQuestionQuery } from "../generated/graphql";
+import { withUrqlClient } from "next-urql";
+import { createUrqlClient } from "../utils/createUrqlClient";
 
-
-export const Questions = () => {
+const Questions = ()  => {
     const questionId = 0
-    const [{data}] = useGetQuestionQuery({
+    const [{data}] = useGetAllQuestionQuery({
         variables: {
-            id: questionId + 1 // because in database questions are 1 indexed (this is just arbitrary, we should be using two ids)
+            type: "topic 2",
+            difficulty: 2,
         }
     })
-    var questionBank = data;
-    console.log(data)
+    const questionBank = data;
+        // var chunk_size = 1;
+        // const questionBank1 = data.getAllQuestion.map(function(e,i){
+        //     return i%chunk_size===0 ? data.getAllQuestion.slice(i,i+chunk_size) : null;
+        // })
+        // .filter(x=>!!x)
+
+        //const questionBank = questionBank1;
+    // var questionBank = Data();
+    //console.log(questionBank?.getAllQuestion[questionId].questionTitle)
 
     return (
         <ThemeProvider theme={theme}>
             <CSSReset />
-            <QuestionsPage questionBank={[questionBank.getQuestion]} questionId={questionId}/>
+            <QuestionsPage questionBank={questionBank} questionId={questionId}/>
         </ThemeProvider>
     );
 }
-
-const QuestionBank = [
-    {
-        questionTitle: "This is a test question?", 
-        A: "Answer A",
-        B: "Answer B",
-        C: "Answer C",
-        D: "Answer D",
-        Correct: "A"
-    },
-    { 
-      questionTitle: "why does this happen?", 
-      A: "ABCD",
-      B: "EFGH",
-      C: "IKLM",
-      D: "NOP",
-      Correct: "C"
-    }
-]
 
 const AnswerStyle = {
     borderWidth: "3px", 
@@ -55,14 +45,26 @@ const AnswerStyle = {
 class QuestionsPage extends React.Component <{questionBank, questionId}, { [key: string]: string }>{
     constructor(props) {
         super(props);
-        this.state = {currentAnswer: "",
-                    correctAnswer: this.props.questionBank[props.questionId].correctAnswer
-                };
+        this.state = {
+            currentAnswer: "",
+            correctAnswer: this.props.questionBank?.getAllQuestion[this.props.questionId].correctAnswer.toUpperCase()
+        };
         this.isCorrect = this.isCorrect.bind(this);
         this.changeColor1 = this.changeColor1.bind(this);
         this.changeColor2 = this.changeColor2.bind(this);
         this.changeColor3 = this.changeColor3.bind(this);
         this.changeColor4 = this.changeColor4.bind(this);
+    }
+
+    componentDidUpdate() {
+        console.log(this.props)
+        console.log(this.state)
+        if (this.state.correctAnswer != this.props.questionBank?.getAllQuestion[this.props.questionId].correctAnswer.toUpperCase()) {
+            this.setState({
+                ...this.state,
+                correctAnswer: this.props.questionBank?.getAllQuestion[this.props.questionId].correctAnswer.toUpperCase()
+            })
+        }
     }
 
     render() {
@@ -73,10 +75,10 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
                     
                     <Box h='100px' bgImage="url('/images/sausage.png')" bgRepeat='no-repeat' bgPosition='center' bgSize='contain' p={2}>
                         <Box textAlign='center'>
-                            <Heading>Question {this.props.questionId} </Heading>
+                            <Heading>Question {this.props.questionId + 1} </Heading>
                         </Box>                    
                         <Box>
-                            <Heading size='md'>{this.props.questionBank[this.props.questionId].questionTitle}</Heading>
+                            <Heading size='md'>{this.props.questionBank?.getAllQuestion[this.props.questionId].questionTitle}</Heading>
                         </Box>
                     </Box>
                     
@@ -84,11 +86,11 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
                         <Stack isInline spacing='10px'>
                             <h2> A </h2>
                             <Box id = "A" onClick={this.changeColor1} style={AnswerStyle}  as="button" mr="40px">
-                                {this.props.questionBank[this.props.questionId].A}
+                                {this.props.questionBank?.getAllQuestion[this.props.questionId].A}
                             </Box>
                             <h2> B </h2>
                             <Box id = "B" onClick={this.changeColor2} style={AnswerStyle}  as="button">
-                                {this.props.questionBank[this.props.questionId].B}
+                                {this.props.questionBank?.getAllQuestion[this.props.questionId].B}
                             </Box>
                         </Stack>
                     </Box>
@@ -97,11 +99,11 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
                         <Stack isInline  spacing='10px' >
                             <h2> C </h2>
                             <Box id = "C" onClick={this.changeColor3} style={AnswerStyle} as="button" mr="40px" >
-                                {this.props.questionBank[this.props.questionId].C}
+                                {this.props.questionBank?.getAllQuestion[this.props.questionId].C}
                             </Box>
                             <h2> D </h2>
                             <Box id = "D" onClick={this.changeColor4} style={AnswerStyle} as="button" >
-                                {this.props.questionBank[this.props.questionId].D}
+                                {this.props.questionBank?.getAllQuestion[this.props.questionId].D}
                             </Box>
                         </Stack>
                     </Box>
@@ -116,6 +118,24 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
                 </Box>
             </Flex>
         )
+    }
+
+    async Data() {
+        const [{data,fetching}] = await useGetAllQuestionQuery({
+            variables: {
+                type: "topic 2",
+                difficulty: 2,
+            }
+        })
+        if (fetching){
+            console.log('fetching')
+        }else{
+             var questionBank = data.getAllQuestion;
+            if (questionBank == null){
+                console.log('nothing');
+            }
+        }
+        return questionBank;
     }
 
     changeColor1() {
@@ -195,3 +215,5 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
 // }
 
 }
+
+export default withUrqlClient(createUrqlClient) (Questions);

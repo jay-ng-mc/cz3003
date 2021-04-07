@@ -1,4 +1,4 @@
-import { theme, CSSReset, Flex, Box, FormControl, FormLabel, Input, Button, Image } from "@chakra-ui/react";
+import { theme, CSSReset, Flex, Box, FormControl, FormLabel, Input, Button, Image, Select } from "@chakra-ui/react";
 import { ThemeProvider } from "@emotion/react";
 import React from "react";
 import {Formik, Form} from "formik";
@@ -50,9 +50,9 @@ const RegisterForm = () => {
     return (
         <Box my={8} textAlign='left'>
             <Formik
-                initialValues={{ email: '',username: '', password: '', password2: '' }}
+                initialValues={{ email: '',username: '', password: '', password2: '', userType: '' }}
                 onSubmit={async (values, {setErrors}) => {
-                    const response = await register({email: values.email, username: values.username, password: values.password, password2: values.password2});
+                    const response = await register({email: values.email, username: values.username, password: values.password, password2: values.password2, userType: values.userType});
                     if(response.data?.register.errors){
                         setErrors(toErrorMap(response.data.register.errors));
                     } else if (response.data?.register.user) {
@@ -116,7 +116,22 @@ const RegisterForm = () => {
                     onBlur={handleBlur}
                     value={values.password2}
                 />
+
+
                 {errors.password2 && touched.password2 && errors.password2}
+                </FormControl>
+
+                <FormControl mt={4}>
+                    <FormLabel>userType:</FormLabel>
+                <Input
+                    type="userType"
+                    name="userType"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.userType}
+                    placeholder='Select UserType'
+                />
+
                 </FormControl>
                 
                 <Button width='full' type="submit" isLoading={isSubmitting} backgroundColor="teal.300" mt={10}

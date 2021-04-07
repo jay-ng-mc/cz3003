@@ -1,0 +1,8 @@
+query GetAllGame{
+    getAllGame{
+        username
+        startTime
+        endTime
+        score
+    }
+}

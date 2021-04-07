@@ -1,0 +1,13 @@
+query GetAllQuestion($type: String!, $difficulty: Float!){
+    getAllQuestion(type: $type, difficulty: $difficulty){
+        id
+        difficulty
+        type
+        questionTitle
+        A
+        B
+        C
+        D
+        correctAnswer
+    }
+}

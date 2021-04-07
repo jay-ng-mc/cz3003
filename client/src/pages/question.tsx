@@ -1,6 +1,6 @@
 import { withUrqlClient } from 'next-urql'
 import { Container } from '../components/Container'
-import { Questions } from '../components/Questions'
+import Questions from '../components/Questions'
 import { NavBar } from '../components/NavBar'
 import { createUrqlClient } from '../utils/createUrqlClient'
 

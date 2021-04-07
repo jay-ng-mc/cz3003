@@ -13,10 +13,10 @@ const LoginForm = () => {
     return (
         <Box my={8} textAlign='left'>
             <Formik
-                initialValues={{ username: '', password: '' }}
+                initialValues={{ username: '', password: '', userType: ''}}
                 
                 onSubmit={async (values, {setErrors}) => {
-                    const response = await login({username: values.username, password: values.password});
+                    const response = await login({username: values.username, password: values.password, userType: values.userType});
                     if(response.data?.login.errors){
                         setErrors(toErrorMap(response.data.login.errors));
                     } else if (response.data?.login.user) {
@@ -58,6 +58,18 @@ const LoginForm = () => {
                                 value={values.password}
                             />
                             {errors.password && touched.password && errors.password}
+                        </FormControl>
+
+                        <FormControl mt={4}>
+                            <FormLabel>userType:</FormLabel>
+                            <Input
+                                type="userType"
+                                name="userType"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.userType}
+                            />
+    
                         </FormControl>
                         
                         <Button width='full' type="submit" isLoading={isSubmitting} backgroundColor="teal.300" mt={10}

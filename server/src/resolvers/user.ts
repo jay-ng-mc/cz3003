@@ -15,6 +15,8 @@ class RegisterInput {
     password: string;
     @Field()
     password2: string;
+    @Field()
+    userType: string;
 }
 
 @InputType()
@@ -23,6 +25,8 @@ class LoginInput {
     username: string;
     @Field()
     password: string;
+    @Field()
+    userType: string;
 }
 
 @ObjectType()
@@ -42,6 +46,7 @@ class UserResponse {
     @Field(() => User, { nullable: true })
     user?: User
 }
+
 
 @Resolver()
 export class UserResolver {
@@ -98,6 +103,7 @@ export class UserResolver {
                 password: hashedPassword,
                 created_at: new Date(),
                 updated_at: new Date(),
+                user_type: options.userType
             }).returning("*");
             user = result[0];
         }catch(err){
@@ -128,7 +134,7 @@ export class UserResolver {
         @Arg('options') options: LoginInput,
         @Ctx() { em, req }: MyContext
     ): Promise<UserResponse> {
-        const user = await em.findOne(User, { username: options.username });
+        const user = await em.findOne(User, {$and: [ {username:options.username}, {userType:options.userType}]});
         if (!user) {
             return{
                 errors: [{
@@ -154,6 +160,35 @@ export class UserResolver {
         };
     }
 
+    @Mutation(() => UserResponse)
+    async sublogin(
+        @Arg('options') options: LoginInput,
+        @Ctx() { em }: MyContext
+    ): Promise<UserResponse> {
+        const user = await em.findOne(User, { username: options.username });
+        if (!user) {
+            return{
+                errors: [{
+                    field: 'username',
+                    message: "incorrect username or password",
+                }],
+            };
+        }
+        const valid = await argon2.verify(user.password, options.password);
+        if (!valid){
+            return {
+                errors: [{
+                    field: 'password',
+                    message: "incorrect username or password",
+                }],
+            };
+        }
+
+        return {
+            user
+        };
+    }
+
     @Mutation(() => Boolean)
     logout(@Ctx() { req, res }: MyContext){
         return new Promise( (resolve) => 
@@ -166,5 +201,13 @@ export class UserResolver {
                 resolve(true);
             })
         )
+    }
+
+    @Query(() => User, { nullable: true })
+    getUser(
+        @Arg( 'id' ) id: number,
+        @Ctx() { em }: MyContext
+    ): Promise<User | null>{
+        return em.findOne(User, { id });
     }
 }

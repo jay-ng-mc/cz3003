@@ -1,0 +1,11 @@
+mutation Sublogin($username: String!, $password: String!, $userType: String!) {
+  sublogin(options: { username: $username, password: $password, userType: $userType }) {
+    errors {
+      field
+      message
+    }
+    user {
+      ...RegularUser
+    }
+  }
+}

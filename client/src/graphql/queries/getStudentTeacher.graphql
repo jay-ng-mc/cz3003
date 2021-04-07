@@ -1,0 +1,6 @@
+query GetStudentTeacher($teacher: String!) {
+    getStudentTeacher(teacher: $teacher){
+        student
+        teacher
+    }
+}

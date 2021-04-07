@@ -14,34 +14,37 @@ export const Home = () => {
     );
 }
 
+function HeaderAndBox (props) {
+    //data is loading 
+    // just do nothing, there's a race condition
+    // if (props.fetching){
+    //     return <div>Loading</div>
+    // }
+    // user is logged in
+    if (props.me){
+        return (
+            <div>
+                <HeaderLogin/>
+                <HomeBoxLogin/>
+            </div>
+        )  
+    // user is not logged in
+    } else {
+        return (
+            <div>
+                <Header/>
+                <HomeBox/>
+            </div>
+        ) 
+    }
+}
+
 const HomePage = () => {
 
     const isServer = () => typeof window ==="undefined";
     const [{data, fetching}] = useMeQuery({
         pause: isServer(),
     });
-    let body = null
-    
-    //data is loading
-    if (fetching){
-
-    // user not logged in
-    } else if (!data?.me){
-        body = (
-            <>
-                <Header/>
-                <HomeBox/>
-            </>
-        )  
-    // user is logged in
-    } else {
-        body = (
-            <>
-                <HeaderLogin/>
-                <HomeBoxLogin/>
-            </>
-        )   
-    }
 
     return (
         <Flex minHeight='100vh' width='full' align='center' justifyContent='center'>
@@ -49,7 +52,7 @@ const HomePage = () => {
                 <ThemeProvider theme={theme} />
                 <Box p={4}>
                     <CharacterIcon />
-                    {body}
+                    <HeaderAndBox fetching={fetching} me={data?.me}/>
                 </Box>
             </Box>
         </Flex>

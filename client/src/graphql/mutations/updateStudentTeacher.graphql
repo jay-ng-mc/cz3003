@@ -1,0 +1,8 @@
+mutation UpdateStudentTeacher($student: String!, $teacher: String!){
+    updateStudentTeacher(options: {student: $student, teacher: $teacher}){
+        studentTeacher{
+            student
+            teacher
+        }
+    }
+}
