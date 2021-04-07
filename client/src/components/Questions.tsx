@@ -84,7 +84,7 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
         super(props);
         this.state = {
             currentAnswer: "",
-            correctAnswer: this.props.questionBank?.getAllQuestion[this.props.questionId]['correctAnswer']
+            correctAnswer: this.props.questionBank?.getAllQuestion[this.props.questionId].correctAnswer.toUpperCase()
         };
         this.isCorrect = this.isCorrect.bind(this);
         this.changeColor1 = this.changeColor1.bind(this);
