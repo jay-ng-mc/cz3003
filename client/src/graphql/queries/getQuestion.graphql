@@ -1,5 +1,8 @@
 query GetQuestion($id: Float!){
   getQuestion(id: $id){
+    id
+    difficulty
+    type
     questionTitle
     A
     B
