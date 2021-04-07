@@ -58,6 +58,15 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
         this.changeColor4 = this.changeColor4.bind(this);
     }
 
+    getDerivedStateFromProps() {
+        if (this.state.correctAnswer != this.props.questionBank?.getAllQuestion[this.props.questionId].correctAnswer.toUpperCase()) {
+            this.state = {
+                ...this.state,
+                correctAnswer: this.props.questionBank?.getAllQuestion[this.props.questionId].correctAnswer.toUpperCase()
+            }
+        }
+    }
+
     render() {
         return (
             <Flex minHeight='100vh' width='full' align='center' justifyContent='center'>
