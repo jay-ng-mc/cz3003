@@ -5,8 +5,8 @@ import { GetQuestionQuery, Question, useGetAllQuestionQuery, GetAllQuestionQuery
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
-const Questions = () => {
-    const questionId = 3
+const Questions = ()  => {
+    const questionId = 0
     const [{data}] = useGetAllQuestionQuery({
         variables: {
             type: "topic 2",
