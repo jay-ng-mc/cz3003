@@ -1,10 +1,5 @@
-import { Entity, Enum, PrimaryKey, Property} from "mikro-orm";
+import { Entity, PrimaryKey, Property} from "mikro-orm";
 import { Field, ObjectType } from "type-graphql";
-
-enum UserRole {
-  TEACHER = 'teacher',
-  STUDENT = 'student'
-}
 
 @ObjectType()
 @Entity()
@@ -33,7 +28,8 @@ export class User {
   @Property({type: 'text'})
   password!: string;
 
-  @Enum()
-  userRole!: UserRole;
+  @Field(()=> String)
+  @Property({type: 'text'})
+  userType!: string
   
 }

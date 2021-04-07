@@ -1,5 +1,5 @@
-query GetGame($id: Float!){
-  getGame(id: $id){
+query GetGame($username: String!){
+  getGame(username: $username){
     username
     startTime
     endTime

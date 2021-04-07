@@ -26,18 +26,18 @@ export class GameResolver {
 
     @Query(() => Game, { nullable: true })
     getGame(
-        @Arg( 'id' ) id: number,
+        @Arg( 'username' ) username: string,
         @Ctx() { em }: MyContext
     ): Promise<Game | null>{
-        return em.findOne(Game, { id });
+        return em.findOne(Game, { username });
     }
 
     @Query(() => [Game], { nullable: true })
     getAllGame(
-        @Arg( 'username' ) username: string,
+        // @Arg( 'username' ) username: string,
         @Ctx() { em }: MyContext
     ): Promise<Game[] | null>{
-        return em.find(Game, { username });
+        return em.find(Game, { });
     }
 
     @Mutation(() => GameResponse)
@@ -51,8 +51,8 @@ export class GameResolver {
             .getKnexQuery()
             .insert({
                 username: options.username,
-                startTime: new Date(),
-                endTime: null,
+                start_time: new Date(),
+                end_time: null,
                 score: options.score,
             }).returning("*");
             game = result[0];

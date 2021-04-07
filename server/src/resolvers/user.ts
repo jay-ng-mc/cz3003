@@ -16,7 +16,7 @@ class RegisterInput {
     @Field()
     password2: string;
     @Field()
-    userRole: string;
+    userType: string;
 }
 
 @InputType()
@@ -26,7 +26,7 @@ class LoginInput {
     @Field()
     password: string;
     @Field()
-    userRole: string;
+    userType: string;
 }
 
 @ObjectType()
@@ -103,7 +103,7 @@ export class UserResolver {
                 password: hashedPassword,
                 created_at: new Date(),
                 updated_at: new Date(),
-                userRole: options.userRole,
+                user_type: options.userType
             }).returning("*");
             user = result[0];
         }catch(err){
@@ -134,7 +134,7 @@ export class UserResolver {
         @Arg('options') options: LoginInput,
         @Ctx() { em, req }: MyContext
     ): Promise<UserResponse> {
-        const user = await em.findOne(User, { username: options.username });
+        const user = await em.findOne(User, {$and: [ {username:options.username}, {userType:options.userType}]});
         if (!user) {
             return{
                 errors: [{

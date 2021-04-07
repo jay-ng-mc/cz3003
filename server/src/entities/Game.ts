@@ -10,6 +10,7 @@ export class Game {
   id!: number;
 
   @Field(() => String)
+  @Property({ type: 'text' })
   username!: string;
 
   @Field(() => String)

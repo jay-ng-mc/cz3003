@@ -1,5 +1,5 @@
-query GetAllGame($username: String!){
-    getAllGame(username: $username){
+query GetAllGame{
+    getAllGame{
         username
         startTime
         endTime

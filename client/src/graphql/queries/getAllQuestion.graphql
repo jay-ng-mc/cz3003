@@ -1,5 +1,7 @@
 query GetAllQuestion($type: String!, $difficulty: Float!){
     getAllQuestion(type: $type, difficulty: $difficulty){
+        type
+        difficulty
         questionTitle
         A
         B

@@ -45,11 +45,6 @@ export type QueryGetAllQuestionArgs = {
 
 
 export type QueryGetGameArgs = {
-  id: Scalars['Float'];
-};
-
-
-export type QueryGetAllGameArgs = {
   username: Scalars['String'];
 };
 
@@ -75,6 +70,7 @@ export type User = {
   updatedAt: Scalars['String'];
   username: Scalars['String'];
   email: Scalars['String'];
+  userType: Scalars['String'];
 };
 
 export type Question = {
@@ -165,13 +161,13 @@ export type RegisterInput = {
   username: Scalars['String'];
   password: Scalars['String'];
   password2: Scalars['String'];
-  userRole: Scalars['String'];
+  userType: Scalars['String'];
 };
 
 export type LoginInput = {
   username: Scalars['String'];
   password: Scalars['String'];
-  userRole: Scalars['String'];
+  userType: Scalars['String'];
 };
 
 export type GameResponse = {
@@ -204,7 +200,7 @@ export type RegularUserFragment = (
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
-  userRole: Scalars['String'];
+  userType: Scalars['String'];
 }>;
 
 
@@ -235,7 +231,7 @@ export type RegisterMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
   password2: Scalars['String'];
-  userRole: Scalars['String'];
+  userType: Scalars['String'];
 }>;
 
 
@@ -256,7 +252,7 @@ export type RegisterMutation = (
 export type SubloginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
-  userRole: Scalars['String'];
+  userType: Scalars['String'];
 }>;
 
 
@@ -310,9 +306,7 @@ export type UpdateStudentTeacherMutation = (
   ) }
 );
 
-export type GetAllGameQueryVariables = Exact<{
-  username: Scalars['String'];
-}>;
+export type GetAllGameQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllGameQuery = (
@@ -333,7 +327,7 @@ export type GetAllQuestionQuery = (
   { __typename?: 'Query' }
   & { getAllQuestion?: Maybe<Array<(
     { __typename?: 'Question' }
-    & Pick<Question, 'questionTitle' | 'A' | 'B' | 'C' | 'D' | 'correctAnswer'>
+    & Pick<Question, 'type' | 'difficulty' | 'questionTitle' | 'A' | 'B' | 'C' | 'D' | 'correctAnswer'>
   )>> }
 );
 
@@ -364,7 +358,7 @@ export type GetCharacterQuery = (
 );
 
 export type GetGameQueryVariables = Exact<{
-  id: Scalars['Float'];
+  username: Scalars['String'];
 }>;
 
 
@@ -420,8 +414,8 @@ export const RegularUserFragmentDoc = gql`
 }
     `;
 export const LoginDocument = gql`
-    mutation Login($username: String!, $password: String!, $userRole: String!) {
-  login(options: {username: $username, password: $password, userRole: $userRole}) {
+    mutation Login($username: String!, $password: String!, $userType: String!) {
+  login(options: {username: $username, password: $password, userType: $userType}) {
     errors {
       field
       message
@@ -446,9 +440,9 @@ export function useLogoutMutation() {
   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 };
 export const RegisterDocument = gql`
-    mutation Register($email: String!, $username: String!, $password: String!, $password2: String!, $userRole: String!) {
+    mutation Register($email: String!, $username: String!, $password: String!, $password2: String!, $userType: String!) {
   register(
-    options: {email: $email, username: $username, password: $password, password2: $password2, userRole: $userRole}
+    options: {email: $email, username: $username, password: $password, password2: $password2, userType: $userType}
   ) {
     errors {
       field
@@ -465,9 +459,9 @@ export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
 export const SubloginDocument = gql`
-    mutation Sublogin($username: String!, $password: String!, $userRole: String!) {
+    mutation Sublogin($username: String!, $password: String!, $userType: String!) {
   sublogin(
-    options: {username: $username, password: $password, userRole: $userRole}
+    options: {username: $username, password: $password, userType: $userType}
   ) {
     errors {
       field
@@ -516,8 +510,8 @@ export function useUpdateStudentTeacherMutation() {
   return Urql.useMutation<UpdateStudentTeacherMutation, UpdateStudentTeacherMutationVariables>(UpdateStudentTeacherDocument);
 };
 export const GetAllGameDocument = gql`
-    query GetAllGame($username: String!) {
-  getAllGame(username: $username) {
+    query GetAllGame {
+  getAllGame {
     username
     startTime
     endTime
@@ -532,6 +526,8 @@ export function useGetAllGameQuery(options: Omit<Urql.UseQueryArgs<GetAllGameQue
 export const GetAllQuestionDocument = gql`
     query GetAllQuestion($type: String!, $difficulty: Float!) {
   getAllQuestion(type: $type, difficulty: $difficulty) {
+    type
+    difficulty
     questionTitle
     A
     B
@@ -569,8 +565,8 @@ export function useGetCharacterQuery(options: Omit<Urql.UseQueryArgs<GetCharacte
   return Urql.useQuery<GetCharacterQuery>({ query: GetCharacterDocument, ...options });
 };
 export const GetGameDocument = gql`
-    query GetGame($id: Float!) {
-  getGame(id: $id) {
+    query GetGame($username: String!) {
+  getGame(username: $username) {
     username
     startTime
     endTime
