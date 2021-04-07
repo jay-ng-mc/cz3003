@@ -49,8 +49,6 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
             currentAnswer: "",
             correctAnswer: this.props.questionBank?.getAllQuestion[this.props.questionId].correctAnswer.toUpperCase()
         };
-        console.log(this.props)
-        console.log(this.state)
         this.isCorrect = this.isCorrect.bind(this);
         this.changeColor1 = this.changeColor1.bind(this);
         this.changeColor2 = this.changeColor2.bind(this);
@@ -58,12 +56,14 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
         this.changeColor4 = this.changeColor4.bind(this);
     }
 
-    getDerivedStateFromProps() {
+    componentDidUpdate() {
+        console.log(this.props)
+        console.log(this.state)
         if (this.state.correctAnswer != this.props.questionBank?.getAllQuestion[this.props.questionId].correctAnswer.toUpperCase()) {
-            this.state = {
+            this.setState({
                 ...this.state,
                 correctAnswer: this.props.questionBank?.getAllQuestion[this.props.questionId].correctAnswer.toUpperCase()
-            }
+            })
         }
     }
 
