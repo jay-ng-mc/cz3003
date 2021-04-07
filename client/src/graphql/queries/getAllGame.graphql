@@ -1,0 +1,8 @@
+query GetAllGame($username: String!){
+    getAllGame(username: $username){
+        username
+        startTime
+        endTime
+        score
+    }
+}

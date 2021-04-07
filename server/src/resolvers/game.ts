@@ -32,6 +32,14 @@ export class GameResolver {
         return em.findOne(Game, { id });
     }
 
+    @Query(() => [Game], { nullable: true })
+    getAllGame(
+        @Arg( 'username' ) username: string,
+        @Ctx() { em }: MyContext
+    ): Promise<Game[] | null>{
+        return em.find(Game, { username });
+    }
+
     @Mutation(() => GameResponse)
     async updateGame(
         @Arg('options') options: GameInput,
@@ -43,7 +51,7 @@ export class GameResolver {
             .getKnexQuery()
             .insert({
                 username: options.username,
-                startTime: new DataCue(),
+                startTime: new Date(),
                 endTime: null,
                 score: options.score,
             }).returning("*");

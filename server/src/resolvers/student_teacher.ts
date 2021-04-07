@@ -30,6 +30,14 @@ export class StudentTeacherResolver {
         return em.findOne(StudentTeacher, { teacher });
     }
 
+    @Query(() => [StudentTeacher], { nullable: true })
+    getAllStudentTeacher(
+        @Arg( 'teacher' ) teacher: string,
+        @Ctx() { em }: MyContext
+    ): Promise<StudentTeacher[] | null>{
+        return em.find(StudentTeacher, { teacher });
+    }
+
     @Mutation(() => StudentTeacherResponse)
     async updateStudentTeacher(
         @Arg('options') options: StudentTeacherInput,

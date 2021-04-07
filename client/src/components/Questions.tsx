@@ -1,23 +1,24 @@
 import React from "react";
 import {ThemeProvider, theme, CSSReset, Flex, Box, Image, Heading, HStack, Stack, Button} from "@chakra-ui/react";
 import ReactDOM from 'react-dom';
-import { GetQuestionQuery, useGetQuestionQuery } from "../generated/graphql";
+import { GetQuestionQuery, useGetAllQuestionQuery } from "../generated/graphql";
 
 
 
 export const Questions = () => {
     const questionId = 0
-    const [{data}] = useGetQuestionQuery({
+    const [{data}] = useGetAllQuestionQuery({
         variables: {
-            id: questionId + 1 // because in database questions are 1 indexed (this is just arbitrary, we should be using two ids)
+            type: "topic 2",
+            difficulty: 2,
         }
     })
-    var question = data;
+    var questionBank = data;
 
     return (
         <ThemeProvider theme={theme}>
             <CSSReset />
-            <QuestionsPage question={question.getQuestion} questionId={questionId}/>
+            <QuestionsPage questionBank={questionBank.getAllQuestion} questionId={questionId}/>
         </ThemeProvider>
     );
 }
@@ -51,12 +52,12 @@ const AnswerStyle = {
     width: '190px',
 }
 
-class QuestionsPage extends React.Component <{question, questionId}, { [key: string]: string }>{
+class QuestionsPage extends React.Component <{questionBank, questionId}, { [key: string]: string }>{
     constructor(props) {
         super(props);
         this.state = {
             currentAnswer: "",
-            correctAnswer: this.props.question.correctAnswer.toUpperCase()
+            correctAnswer: this.props.questionBank[this.props.questionId].correctAnswer.toUpperCase()
         };
         this.isCorrect = this.isCorrect.bind(this);
         this.changeColor1 = this.changeColor1.bind(this);
@@ -75,18 +76,18 @@ class QuestionsPage extends React.Component <{question, questionId}, { [key: str
                             <Heading>Question {this.props.questionId + 1} </Heading>
                         </Box>                    
                         <Box>
-                            <Heading size='md'>{this.props.question.questionTitle}</Heading>
+                            <Heading size='md'>{this.props.questionBank[this.props.questionId].questionTitle}</Heading>
                         </Box>
                     </Box>
                     <Box p={3}>
                         <Stack isInline spacing='10px'>
                             <h2> A </h2>
                             <Box id = "A" onClick={this.changeColor1} style={AnswerStyle}  as="button" mr="40px">
-                                {this.props.question.A}
+                                {this.props.questionBank[this.props.questionId].A}
                             </Box>
                             <h2> B </h2>
                             <Box id = "B" onClick={this.changeColor2} style={AnswerStyle}  as="button">
-                                {this.props.question.B}
+                                {this.props.questionBank[this.props.questionId].B}
                             </Box>
                         </Stack>
                     </Box>
@@ -95,11 +96,11 @@ class QuestionsPage extends React.Component <{question, questionId}, { [key: str
                         <Stack isInline  spacing='10px' >
                             <h2> C </h2>
                             <Box id = "C" onClick={this.changeColor3} style={AnswerStyle} as="button" mr="40px" >
-                                {this.props.question.C}
+                                {this.props.questionBank[this.props.questionId].C}
                             </Box>
                             <h2> D </h2>
                             <Box id = "D" onClick={this.changeColor4} style={AnswerStyle} as="button" >
-                                {this.props.question.D}
+                                {this.props.questionBank[this.props.questionId].D}
                             </Box>
                         </Stack>
                     </Box>

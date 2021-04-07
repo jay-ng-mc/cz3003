@@ -19,8 +19,11 @@ export type Query = {
   me?: Maybe<User>;
   getUser?: Maybe<User>;
   getQuestion?: Maybe<Question>;
+  getAllQuestion?: Maybe<Array<Question>>;
   getGame?: Maybe<Game>;
+  getAllGame?: Maybe<Array<Game>>;
   getStudentTeacher?: Maybe<StudentTeacher>;
+  getAllStudentTeacher?: Maybe<Array<StudentTeacher>>;
   getCharacter?: Maybe<Character>;
 };
 
@@ -35,12 +38,28 @@ export type QueryGetQuestionArgs = {
 };
 
 
+export type QueryGetAllQuestionArgs = {
+  difficulty: Scalars['Float'];
+  type: Scalars['String'];
+};
+
+
 export type QueryGetGameArgs = {
   id: Scalars['Float'];
 };
 
 
+export type QueryGetAllGameArgs = {
+  username: Scalars['String'];
+};
+
+
 export type QueryGetStudentTeacherArgs = {
+  teacher: Scalars['String'];
+};
+
+
+export type QueryGetAllStudentTeacherArgs = {
   teacher: Scalars['String'];
 };
 
@@ -56,12 +75,12 @@ export type User = {
   updatedAt: Scalars['String'];
   username: Scalars['String'];
   email: Scalars['String'];
-  userType: Scalars['String'];
 };
 
 export type Question = {
   __typename?: 'Question';
   id: Scalars['Float'];
+  difficulty: Scalars['Float'];
   type: Scalars['String'];
   questionTitle: Scalars['String'];
   A: Scalars['String'];
@@ -98,6 +117,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   register: UserResponse;
   login: UserResponse;
+  sublogin: UserResponse;
   logout: Scalars['Boolean'];
   updateGame: GameResponse;
   updateStudentTeacher: StudentTeacherResponse;
@@ -110,6 +130,11 @@ export type MutationRegisterArgs = {
 
 
 export type MutationLoginArgs = {
+  options: LoginInput;
+};
+
+
+export type MutationSubloginArgs = {
   options: LoginInput;
 };
 
@@ -228,6 +253,27 @@ export type RegisterMutation = (
   ) }
 );
 
+export type SubloginMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+  userRole: Scalars['String'];
+}>;
+
+
+export type SubloginMutation = (
+  { __typename?: 'Mutation' }
+  & { sublogin: (
+    { __typename?: 'UserResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & RegularUserFragment
+    )> }
+  ) }
+);
+
 export type UpdateGameMutationVariables = Exact<{
   username: Scalars['String'];
   startTime: Scalars['String'];
@@ -262,6 +308,46 @@ export type UpdateStudentTeacherMutation = (
       & Pick<StudentTeacher, 'student' | 'teacher'>
     )> }
   ) }
+);
+
+export type GetAllGameQueryVariables = Exact<{
+  username: Scalars['String'];
+}>;
+
+
+export type GetAllGameQuery = (
+  { __typename?: 'Query' }
+  & { getAllGame?: Maybe<Array<(
+    { __typename?: 'Game' }
+    & Pick<Game, 'username' | 'startTime' | 'endTime' | 'score'>
+  )>> }
+);
+
+export type GetAllQuestionQueryVariables = Exact<{
+  type: Scalars['String'];
+  difficulty: Scalars['Float'];
+}>;
+
+
+export type GetAllQuestionQuery = (
+  { __typename?: 'Query' }
+  & { getAllQuestion?: Maybe<Array<(
+    { __typename?: 'Question' }
+    & Pick<Question, 'questionTitle' | 'A' | 'B' | 'C' | 'D' | 'correctAnswer'>
+  )>> }
+);
+
+export type GetAllStudentTeacherQueryVariables = Exact<{
+  teacher: Scalars['String'];
+}>;
+
+
+export type GetAllStudentTeacherQuery = (
+  { __typename?: 'Query' }
+  & { getAllStudentTeacher?: Maybe<Array<(
+    { __typename?: 'StudentTeacher' }
+    & Pick<StudentTeacher, 'student'>
+  )>> }
 );
 
 export type GetCharacterQueryVariables = Exact<{
@@ -378,6 +464,25 @@ export const RegisterDocument = gql`
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
+export const SubloginDocument = gql`
+    mutation Sublogin($username: String!, $password: String!, $userRole: String!) {
+  sublogin(
+    options: {username: $username, password: $password, userRole: $userRole}
+  ) {
+    errors {
+      field
+      message
+    }
+    user {
+      ...RegularUser
+    }
+  }
+}
+    ${RegularUserFragmentDoc}`;
+
+export function useSubloginMutation() {
+  return Urql.useMutation<SubloginMutation, SubloginMutationVariables>(SubloginDocument);
+};
 export const UpdateGameDocument = gql`
     mutation UpdateGame($username: String!, $startTime: String!, $endTime: String!, $score: String!) {
   updateGame(
@@ -409,6 +514,47 @@ export const UpdateStudentTeacherDocument = gql`
 
 export function useUpdateStudentTeacherMutation() {
   return Urql.useMutation<UpdateStudentTeacherMutation, UpdateStudentTeacherMutationVariables>(UpdateStudentTeacherDocument);
+};
+export const GetAllGameDocument = gql`
+    query GetAllGame($username: String!) {
+  getAllGame(username: $username) {
+    username
+    startTime
+    endTime
+    score
+  }
+}
+    `;
+
+export function useGetAllGameQuery(options: Omit<Urql.UseQueryArgs<GetAllGameQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllGameQuery>({ query: GetAllGameDocument, ...options });
+};
+export const GetAllQuestionDocument = gql`
+    query GetAllQuestion($type: String!, $difficulty: Float!) {
+  getAllQuestion(type: $type, difficulty: $difficulty) {
+    questionTitle
+    A
+    B
+    C
+    D
+    correctAnswer
+  }
+}
+    `;
+
+export function useGetAllQuestionQuery(options: Omit<Urql.UseQueryArgs<GetAllQuestionQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllQuestionQuery>({ query: GetAllQuestionDocument, ...options });
+};
+export const GetAllStudentTeacherDocument = gql`
+    query GetAllStudentTeacher($teacher: String!) {
+  getAllStudentTeacher(teacher: $teacher) {
+    student
+  }
+}
+    `;
+
+export function useGetAllStudentTeacherQuery(options: Omit<Urql.UseQueryArgs<GetAllStudentTeacherQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllStudentTeacherQuery>({ query: GetAllStudentTeacherDocument, ...options });
 };
 export const GetCharacterDocument = gql`
     query GetCharacter($username: String!) {

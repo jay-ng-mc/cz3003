@@ -1,6 +1,5 @@
 import { Entity, PrimaryKey, Property } from "mikro-orm";
 import { Field, ObjectType } from "type-graphql";
-import { User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -19,7 +18,7 @@ export class Game {
 
   @Field(() => String)
   @Property({ type: 'date' })
-  endTime: Date;
+  endTime = new Date();
 
   @Field()
   @Property()

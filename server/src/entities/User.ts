@@ -33,10 +33,6 @@ export class User {
   @Property({type: 'text'})
   password!: string;
 
-  @Field()
-  @Property({type: 'text'})
-  userType!: string;
-
   @Enum()
   userRole!: UserRole;
   

@@ -9,11 +9,12 @@ export class Question {
   @PrimaryKey()
   id!: number;
 
+  @Field()
   @Property()
   difficulty!: number;
 
   @Field()
-  @Property()
+  @Property({ type: 'text' })
   type!: string;
 
   @Field()
@@ -29,12 +30,12 @@ export class Question {
   B!: string;
 
   @Field()
-  @Property({type: 'text', nullable: true})
-  C: string;
+  @Property({type: 'text'})
+  C!: string;
 
   @Field()
-  @Property({type: 'text', nullable: true})
-  D: string;
+  @Property({type: 'text'})
+  D!: string;
 
   @Field()
   @Property({type: 'text'})

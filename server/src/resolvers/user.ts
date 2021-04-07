@@ -160,6 +160,35 @@ export class UserResolver {
         };
     }
 
+    @Mutation(() => UserResponse)
+    async sublogin(
+        @Arg('options') options: LoginInput,
+        @Ctx() { em }: MyContext
+    ): Promise<UserResponse> {
+        const user = await em.findOne(User, { username: options.username });
+        if (!user) {
+            return{
+                errors: [{
+                    field: 'username',
+                    message: "incorrect username or password",
+                }],
+            };
+        }
+        const valid = await argon2.verify(user.password, options.password);
+        if (!valid){
+            return {
+                errors: [{
+                    field: 'password',
+                    message: "incorrect username or password",
+                }],
+            };
+        }
+
+        return {
+            user
+        };
+    }
+
     @Mutation(() => Boolean)
     logout(@Ctx() { req, res }: MyContext){
         return new Promise( (resolve) => 
