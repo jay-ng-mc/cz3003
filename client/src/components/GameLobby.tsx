@@ -19,28 +19,32 @@ const GameLobby = () => {
         <div>
             <ThemeProvider theme={theme}>
                 <CSSReset />
-                <HomePage />
+                <GameLobbyBox />
             </ThemeProvider> 
         </div>
     );
 }
 
-const HomePage = () => {
+const GameLobbyBox = () => {
     return (
-        <Flex minHeight='100vh' width='full' align='center' justifyContent='center'>
-            <Box borderWidth={1} px={4} width='full' maxWidth='300px' borderRadius={4} textAlign='center' boxShadow='lg'>
+        <Flex minHeight='80vh' width='full' align='center' justifyContent='center'>
+            <Box borderWidth={1} px={4} h="auto" w="60vw" borderRadius={4} textAlign='center' boxShadow='lg'>
                 <ThemeProvider theme={theme} />
-                <Box p={4}>
-                    <CharacterIcon />
-                    <Header />
-                    <HomeBox />
+                <Box p={4} display="flex" flex-flexDirection="row">
+                    <Box flex='1' display="flex" flex-flexDirection="column">
+                        <BackIcon />
+                        <Header/>
+                    </Box>
+                    <Box flex='3'>
+                        <GameLobbyContent/>
+                    </Box>
                 </Box>
             </Box>
         </Flex>
     );
 }
 
-const CharacterIcon = () => {
+const BackIcon = () => {
     return (
         <Box my={3} textAlign='left'>
         <IconButton 
@@ -65,41 +69,35 @@ const Header = () => {
     )
 }
 
-const HomeBox = () => {
-    return (
-        render()
-    )
-}
-
 function users(num : Number){
     let userCount: number = 3; //import from DB
     if (num <= userCount){
-        var output = <Box w="100%" h="100" bg="gray.200" textAlign='center'>        
-            <IconButton aria-label="Delete Character" isRound={true} icon={<CloseIcon />} size='xs'/>&#8239;
-            <IconButton aria-label="Change Character" isRound={true} icon={<SettingsIcon />} size='xs'/>
+        var output = <Box w="100%" h="200" bg="gray.200" textAlign='center'>        
+            <IconButton aria-label="Delete Character" isRound={true} icon={<CloseIcon />} size='md'/>&#8239;
+            <IconButton aria-label="Change Character" isRound={true} icon={<SettingsIcon />} size='md'/>
             <Center><Image borderRadius="full" boxSize="30px" src={imageList[savedImageId2]} alt="Avatar" img id="Avatar" /></Center>
-            <Text fontSize="xs">IGN</Text>
-            <Text fontSize="xs">Username</Text>
+            <Text fontSize="md">IGN</Text>
+            <Text fontSize="md">Username</Text>
         </Box>
     }
     else if (num == userCount + 1){
-        var output = <Box w="100%" h="100" bg="gray.50" ><Center h="100px"><IconButton aria-label="New Character" isRound={true} icon={<AddIcon />} size='lg'/></Center></Box>   
+        var output = <Box w="100%" h="200" bg="gray.50" ><Center h="100px"><IconButton aria-label="New Character" isRound={true} icon={<AddIcon />} size='lg'/></Center></Box>   
     }
     else{}
     return output;
 }
 
-function render(){
+function GameLobbyContent(){
     return(
         <Box my={5} textAlign='left'>
             <form>
                 <Grid templateColumns="repeat(4, 1fr)" gap={1}>
-                    <Box w="100%" h="100" bg="gray.200" textAlign='center'>        
+                    <Box w="100%" h="200" bg="gray.200" textAlign='center'>        
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <IconButton aria-label="Change Character" isRound={true} icon={<SettingsIcon />} size='xs'/>
+                        <IconButton aria-label="Change Character" isRound={true} icon={<SettingsIcon />} size='md'/>
                         <Center><Image borderRadius="full" boxSize="30px" src={imageList[savedImageId]} alt="Avatar" img id="Avatar" /></Center>
-                        <Text fontSize="xs">IGN</Text>
-                        <Text fontSize="xs">Username</Text>
+                        <Text fontSize="md">IGN</Text>
+                        <Text fontSize="md">Username</Text>
                     </Box>
                     { users(2) }
                     { users(3) }
