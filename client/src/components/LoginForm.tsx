@@ -6,7 +6,6 @@ import { toErrorMap } from "../utils/toErrorMap";
 import { useRouter } from "next/router";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
-import { loadOptions } from "@babel/core";
     
 const LoginForm = () => {
     const router = useRouter();
