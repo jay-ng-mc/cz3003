@@ -4,23 +4,17 @@ import RedTile from './tiles/redTile'
 import Start from './tiles/Start'
 import WallTile from './tiles/wallTile'
 import ShopTile from './tiles/shopTile'
+import CurrentTile from './tiles/currentTile'
 import React, { Component } from 'react'
 import styles from './board.module.css'
 import Character from './BoardCharacter'
-import {Box, Stack, Flex, HStack, Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,} from "@chakra-ui/react"
+import {Box, Stack, Flex, HStack, Button} from "@chakra-ui/react"
 import SausageTile from './tiles/sausageTile'
 import next from 'next'
 import { DiceRoller } from './DiceRoller'
-import { Questions } from '../components/Questions'
+import { Questions } from './../Questions'
 import Dice from "react-dice-roll"
+import Popup from 'reactjs-popup';
 
 class BoardComponent extends React.Component {
 
@@ -96,7 +90,10 @@ class BoardComponent extends React.Component {
                 : <ShopTile number={number} /> :
                   this.state.canMoveTo.includes(number)
                     ? <Tile move={this.move} number={number} />
-                    : <Tile number={number} />
+                    : number == this.state.currentTile ? 
+                    <CurrentTile number = {number}/>
+                    :
+                    <Tile number={number} />
     ))
     }  
   }
@@ -125,7 +122,6 @@ class BoardComponent extends React.Component {
     var index = updatedCanMoveTo.indexOf(prev)
     updatedCanMoveTo.splice(index, 1);
     }
-    console.log({updatedCanMoveTo});
     this.setState({
       canMoveTo: updatedCanMoveTo
     })
@@ -133,7 +129,6 @@ class BoardComponent extends React.Component {
 
   move = (number) => {
     var prev = this.state.currentTile;
-    console.log({prev});
     if (this.state.movesLeft == 0){
       console.log("Out of moves")
     }
@@ -194,7 +189,9 @@ class BoardComponent extends React.Component {
     characters[index].playerSausage++;
     while (this.state.wall.includes(NewTile) || NewTile == 1 || this.state.shopTile.includes(NewTile)){
       NewTile = Math.floor(Math.random()*130)+2;
+      console.log("New Sausage Tile location: ", {NewTile});
     } 
+    console.log("New Sausage Tile location: ", {NewTile})
     NewSausageTile.push(NewTile)
     this.setState({
       sausageTile : NewSausageTile
@@ -212,11 +209,13 @@ class BoardComponent extends React.Component {
     const index = this.state.playerTurn-1;
     let nextIndex;
     index === number-1 ? nextIndex = 0: nextIndex = index+1;
+    if (this.state.turnsTaken == 3 * this.state.numberOfPlayers){
+      console.log("GAME END");
+    }
     if (characters[index].position === 0 && this.state.turnsTaken < number){ 
-    this.state.didStart = false;
-    console.log(this.state.didStart);
-    this.state.turnsTaken++
-    console.log(this.state.turnsTaken)}
+    this.state.didStart = false;}
+    this.state.turnsTaken++;
+    console.log("Turns Taken:", this.state.turnsTaken)
     characters[index] = {...characters[index]};
     characters[index].position = this.state.currentTile;
     characters[index].canMoveTo = this.state.canMoveTo;
@@ -231,7 +230,7 @@ class BoardComponent extends React.Component {
       this.state.charactersCreated = true;
       for (let x = 1; x <= number; x++){
         this.state.characters.push(
-          {characterId: x, playerCoins: 10, playerSausage: 0, mustardCount: 0,
+          {characterId: x, playerCoins: 100, playerSausage: 0, mustardCount: 0,ketchupCount: 0,
           position:0,canMoveTo:[]})
     }}
   };
@@ -281,30 +280,13 @@ class BoardComponent extends React.Component {
     this.setState({ characters });
   };
 
-  BasicUsage = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    return (
-      <>
-        <Button onClick={onOpen}>Open Modal</Button>
-  
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Modal Title</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-            </ModalBody>
-  
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Close
-              </Button>
-              <Button variant="ghost">Secondary Action</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
-    )
+  declareTurn = () => {
+    if (this.state.turnsTaken == 0){
+      return "Game has not started"
+    }
+    else{ 
+      return (this.state.turnsTaken - this.state.playerTurn)/3 + 1
+    }
   }
 
 
@@ -331,16 +313,24 @@ class BoardComponent extends React.Component {
             >
               increase Mustard
             </Box>
-            <Box color="black" bg="green.300" px={4} fontSize="30px" height = "50px" > 
-                    <b> Current Turn: Player {this.state.playerTurn} </b>    
-                </Box>
           </Stack>
         </Flex>
+        <Box color="black" bg="green.300" px={4} fontSize="30px" height = "50px" > 
+                    <b> Current Player: Player {this.state.playerTurn} </b>    
+                </Box>
+        <Box style={TextStyle}
+        width="400px"
+        height="50ps">
+              Current Turn: {this.declareTurn()}
+        </Box>
         <Box style={TextStyle}
         width="400px"
         height="50ps">
               Moves Left: {this.state.movesLeft}
         </Box>
+        {/* <Popup trigger={<button> Trigger</button>} position="right center">
+        <Questions />
+        </Popup> */}
         <HStack>
         <Grid className={styles.gameBoard} width={45} gap={5} >
           {this.createBoard()}  
