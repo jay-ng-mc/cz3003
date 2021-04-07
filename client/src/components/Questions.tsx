@@ -5,24 +5,6 @@ import { GetQuestionQuery, Question, useGetAllQuestionQuery, GetAllQuestionQuery
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
-// async function Data() {
-//     const [{data,fetching}] = await useGetAllQuestionQuery({
-//         variables: {
-//             type: "topic 2",
-//             difficulty: 2,
-//         }
-//     })
-//     if (fetching){
-//         console.log('fetching')
-//     }else{
-//         var [questionBank] = data.getAllQuestion;
-//         if (questionBank == null){
-//             console.log('nothing');
-//         }
-//     }
-//     return questionBank;
-// }
-
 const Questions = () => {
     const questionId = 3
     const [{data}] = useGetAllQuestionQuery({
@@ -50,25 +32,6 @@ const Questions = () => {
     );
 }
 
-// const QuestionBank = [
-//     {
-//         questionTitle: "This is a test question?", 
-//         A: "Answer A",
-//         B: "Answer B",
-//         C: "Answer C",
-//         D: "Answer D",
-//         correctAnswer: "A"
-//     },
-//     { 
-//       questionTitle: "why does this happen?", 
-//       A: "ABCD",
-//       B: "EFGH",
-//       C: "IKLM",
-//       D: "NOP",
-//       correctAnswer: "C"
-//     }
-// ]
-
 const AnswerStyle = {
     borderWidth: "3px", 
     borderColor:  "#000000",
@@ -86,6 +49,8 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
             currentAnswer: "",
             correctAnswer: this.props.questionBank?.getAllQuestion[this.props.questionId].correctAnswer.toUpperCase()
         };
+        console.log(this.props)
+        console.log(this.state)
         this.isCorrect = this.isCorrect.bind(this);
         this.changeColor1 = this.changeColor1.bind(this);
         this.changeColor2 = this.changeColor2.bind(this);
