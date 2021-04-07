@@ -27,9 +27,9 @@ class BoardComponent extends React.Component {
     state = {
       charactersCreated: false,
       characters: [],
-      sausageTile: [3],
+      sausageTile: [70],
       shopTile: [95],
-      redTile:[85,53,4,92],
+      redTile:[85, 20,41,72],
       startTiles: [1],
       leftWall: [130, 117, 104, 91, 78, 65, 52, 39, 26, 13],
       rightWall: [118, 105, 92, 79, 66, 53, 40, 27, 14, 1],
@@ -40,7 +40,9 @@ class BoardComponent extends React.Component {
       didStart: false,
       numberOfPlayers: 3,
       movesLeft : 0,
-      wall: [15,28,16,17,18,19,20,21,22,23,24,25,38,51,64,77,76,75,74,73,72,71,70,69,68,67,41,54],
+      wall: [3,4,5,6,7,8,9,10,11,12,13,14,26,27,39,40,52,53,65,66,78,79,91,92,104,105,117,118,119,
+      120,121,122,123,124,125,126,127,128,129,130,94,96,97,98,99,100,101,102,
+      37,36,35,34,33,32,31,30,29],
       targetPlayer : 0,
   };
   
@@ -324,12 +326,12 @@ class BoardComponent extends React.Component {
             <Box as="button" style={ButtonStyle} px={4} mr="10px"
               width="250px"
               height="50px"
-              onClick={() => this.BasicUsage()}
+              onClick={() => this.increaseMustard(this.state.characters[this.state.playerTurn-1])}
               className="btn btn-secondary btn-sm"
             >
               increase Mustard
             </Box>
-            <Box color="black" bg="green.300" px={4} fontSize="30px"> 
+            <Box color="black" bg="green.300" px={4} fontSize="30px" height = "50px" > 
                     <b> Current Turn: Player {this.state.playerTurn} </b>    
                 </Box>
           </Stack>
@@ -340,7 +342,7 @@ class BoardComponent extends React.Component {
               Moves Left: {this.state.movesLeft}
         </Box>
         <HStack>
-        <Grid className={styles.gameBoard} width={50} gap={0}>
+        <Grid className={styles.gameBoard} width={45} gap={5} >
           {this.createBoard()}  
         </Grid>
         <Stack>
@@ -362,7 +364,6 @@ class BoardComponent extends React.Component {
   }
 
   const TextStyle = {
-    backgroundColor: "yellow",
     color: "black",
     borderRadius: "10px",
     fontSize:"30px"

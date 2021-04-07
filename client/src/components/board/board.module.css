@@ -7,6 +7,9 @@
 .blueTile {
   border-style: solid;
   background-color: rgb(0, 225, 255);
+  background-image: url(../board/assets/CoinsTransparent.png);
+  background-size: cover;
+  background-position: center;
 }
 
 .start {
@@ -15,6 +18,9 @@
 
 .green {
   background-color: green;
+  background-image: url(../board/assets/CoinsTransparent.png);
+  background-size: cover;
+  background-position: center;
 }
 
 .currentTile {
@@ -22,7 +28,7 @@
 }
 
 .redTile {
-  background-image: url(../board/assets/Coins.png);
+  background-image: url(../board/assets/CoinsTransparent.png);
   background-size: cover;
   background-position: center;
   background-color: red;
@@ -30,14 +36,21 @@
 
 .redTileSelected {
   background-color: #b00000;
+  background-image: url(../board/assets/CoinsTransparent.png);
+  background-size: cover;
+  background-position: center;
 }
 
 .sausageTile {
-  background-color: tomato;
+  background-image: url(../board/assets/SausageTransparent3.png);
+  background-size: cover;
+  background-position: center;
 }
 
 .sausageTileSelected {
-  background-color: #b36800;
+  background-image: url(../board/assets/SausageTransparent3.png);
+  background-size: cover;
+  background-position: center;
 }
 
 .wallTile {
@@ -45,9 +58,14 @@
 }
 
 .shopTile {
-  background-color: yellow;
+  background-image: url(../board/assets/ShopTransparent.png);
+  background-size: cover;
+  background-position: center;
 }
 
 .shopTileSelected {
   background-color: #bfb326;
+  background-image: url(../board/assets/ShopTransparent.png);
+  background-size: cover;
+  background-position: center;
 }
