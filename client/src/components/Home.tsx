@@ -1,5 +1,6 @@
 import React from "react";
-import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, IconButton, Link, FormControl, FormLabel, Input, Stack, Checkbox, Button} from "@chakra-ui/react";
+import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, IconButton, Button, Image} from "@chakra-ui/react";
+import { SettingsIcon } from '@chakra-ui/icons'
 import NextLink from "next/link";
 import { useMeQuery } from "../generated/graphql";
 
@@ -47,7 +48,7 @@ const HomePage = () => {
             <Box borderWidth={1} px={4} width='full' maxWidth='400px' borderRadius={4} textAlign='center' boxShadow='lg'>
                 <ThemeProvider theme={theme} />
                 <Box p={4}>
-                    {/* <CharacterIcon /> */}
+                    <CharacterIcon />
                     {body}
                 </Box>
             </Box>
@@ -59,16 +60,6 @@ const Header = () => {
     return (
         <Box p={3} textAlign='center'>
             <Heading>Join</Heading>
-            <Heading>Sausage Party</Heading>
-
-        </Box>
-    )
-}
-
-const HeaderLogin = () => {
-    return (
-        <Box p={3} textAlign='center'>
-            <Heading>Welcome to</Heading>
             <Heading>Sausage Party</Heading>
 
         </Box>
@@ -88,11 +79,37 @@ const HomeBox = () => {
     )
 }
 
+const CharacterIcon = () => {
+    return (
+        <Box my={3} textAlign='right'>
+        <IconButton 
+        aria-label="Change Character"
+        isRound={true} 
+        icon={<SettingsIcon />}
+        size='lg'/>
+        </Box>
+    )
+}
+
+const HeaderLogin = () => {
+    return (
+        <Box textAlign='center'>
+            <Image
+            borderRadius="full"
+            src={"images\\Title screen.png"}
+            alt="Avatar"
+            img id="Avatar"
+            />
+        </Box>
+    )
+}
+
 const HomeBoxLogin = () => {
     return (
         <Box my={5} textAlign='left'>
-            <NextLink href={"/question"}>
-                <Button width='full' backgroundColor="teal.300" mt={5}>StartGame</Button>
+            
+            <NextLink href={"/lobby"}>
+                <Button width='full' mt={5}>Start Game Lobby</Button>
             </NextLink>
         </Box>
     )
