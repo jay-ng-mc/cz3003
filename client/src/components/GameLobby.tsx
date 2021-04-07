@@ -74,7 +74,7 @@ const HomeBox = () => {
 function users(num : Number){
     let userCount: number = 3; //import from DB
     if (num <= userCount){
-        var output = <Box w="100%" h="30" bg="gray.200" textAlign='center'>        
+        var output = <Box w="100%" h="100" bg="gray.200" textAlign='center'>        
             <IconButton aria-label="Delete Character" isRound={true} icon={<CloseIcon />} size='xs'/>&#8239;
             <IconButton aria-label="Change Character" isRound={true} icon={<SettingsIcon />} size='xs'/>
             <Center><Image borderRadius="full" boxSize="30px" src={imageList[savedImageId2]} alt="Avatar" img id="Avatar" /></Center>
@@ -83,7 +83,7 @@ function users(num : Number){
         </Box>
     }
     else if (num == userCount + 1){
-        var output = <Box w="100%" h="30" bg="gray.50" ><Center h="80px"><IconButton aria-label="New Character" isRound={true} icon={<AddIcon />} size='lg'/></Center></Box>   
+        var output = <Box w="100%" h="100" bg="gray.50" ><Center h="100px"><IconButton aria-label="New Character" isRound={true} icon={<AddIcon />} size='lg'/></Center></Box>   
     }
     else{}
     return output;
@@ -94,7 +94,7 @@ function render(){
         <Box my={5} textAlign='left'>
             <form>
                 <Grid templateColumns="repeat(4, 1fr)" gap={1}>
-                    <Box w="100%" h="30" bg="gray.200" textAlign='center'>        
+                    <Box w="100%" h="100" bg="gray.200" textAlign='center'>        
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <IconButton aria-label="Change Character" isRound={true} icon={<SettingsIcon />} size='xs'/>
                         <Center><Image borderRadius="full" boxSize="30px" src={imageList[savedImageId]} alt="Avatar" img id="Avatar" /></Center>
