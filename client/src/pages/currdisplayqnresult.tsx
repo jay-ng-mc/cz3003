@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Button, Stack, Flex, Heading, Box, ThemeProvider, theme, ColorModeProvider, CSSReset } from "@chakra-ui/react"
-import QuestionResults from '../components/Questions';
+import QuestionResults from '../components/CurrentQnResults';
 
 
 export const Questions = () => {

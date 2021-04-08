@@ -14,7 +14,7 @@ const QuestionResults = () => {
                     {dis}
                 </Box>
             </div>
-                <NextLink href={'/Results'}>
+                <NextLink href={'/currsessionresult'}>
                     <Link as={Button} backgroundColor='orange' borderRadius="md" color="black" borderWidth={2} borderStyle="solid" borderColor="black" fontSize='large' margin={2} px={4} h={8} mr={2}>Back to Results Page</Link>
                 </NextLink>
         </div>

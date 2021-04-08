@@ -31,13 +31,16 @@ export const getPlayerResult = () => {
                 ))}
             </div>
             <Stack marginTop={5} justifyContent='space-between' direction='row'>
-                <Button backgroundColor='orange' borderRadius="md" color="black" borderWidth={2} borderStyle="solid" borderColor="black">
-                    Display Leaderboard
-                </Button>
-
-                <Button backgroundColor='orange' borderRadius="md" color="black" borderWidth={2} borderStyle="solid" borderColor="black" leftIcon={<BiHome />}>
-                    Return Home
-                </Button>
+                <NextLink href={'/leaderboard'}>
+                    <Link as={Button} backgroundColor='orange' borderRadius="md" color="black" borderWidth={2} borderStyle="solid" borderColor="black">
+                        Display Leaderboard
+                    </Link>
+                </NextLink>
+                <NextLink href={'/'}>
+                    <Link as={Button} backgroundColor='orange' borderRadius="md" color="black" borderWidth={2} borderStyle="solid" borderColor="black" leftIcon={<BiHome />}>
+                        Return Home
+                    </Link>
+                </NextLink>
             </Stack>
         </div>
     );

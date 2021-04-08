@@ -19,7 +19,7 @@ import PopupController from '../PopupController';
 import { useRouter } from "next/router";
 
 
-class BoardComponent extends React.Component {
+class BoardComponent extends React.Component<{router}> {
 
   constructor(props) {
     super(props)
@@ -29,7 +29,7 @@ class BoardComponent extends React.Component {
   state = {
     charactersCreated: false,
     characters: [],
-    sausageTile: [70],
+    sausageTile: [16],
     shopTile: [95],
     redTile:[85, 20,41,72],
     startTiles: [1],
@@ -112,36 +112,6 @@ class BoardComponent extends React.Component {
           } else {
               return <Tile number={number} />
           }
-      
-        // const tileToRender = 
-        // this.state.startTiles.includes(number)
-        // ? <Start startGame={this.startGame} didStart={this.state.didStart} number={number} />
-        // : this.state.sausageTile.includes(number) ?
-        //   this.state.canMoveTo.includes(number)
-        //   ? <SausageTile move={this.move} number={number} />
-        //   : <SausageTile number={number} />
-        //         :
-        //         this.state.redTile.includes(number) ? 
-        //         this.state.canMoveTo.includes(number)
-        //           ? <RedTile move={this.move} number={number} />
-        //           : <RedTile number={number} />
-        //           :
-        //         this.state.wall.includes(number)  ?
-        //         <WallTile number = {number} />
-        //           :
-        //           this.state.shopTile.includes(number) ?
-        //           this.state.canMoveTo.includes(number)
-        //           ? <ShopTile move={this.move} number={number} />
-        //           : <ShopTile number={number} /> :
-        //             this.state.canMoveTo.includes(number)
-        //               ? <Tile move={this.move} number={number} />
-        //               : number == this.state.currentTile ? 
-        //               <CurrentTile number = {number}/>
-        //               :
-        //               <Tile number={number} />
-        console.log(tileToRender)
-        // return(<PopupController hostDiv={tileToRender} enable={true}/>)
-        return(tileToRender)
       })
     }  
   }
@@ -272,9 +242,8 @@ class BoardComponent extends React.Component {
   };
 
   endGame() {
-    const router = useRouter();
     console.log("End game");
-    router.push("/currsessionresult");
+    this.props.router.push("/currsessionresult");
   }
 
 
@@ -283,7 +252,7 @@ class BoardComponent extends React.Component {
     const index = this.state.playerTurn-1;
     let nextIndex;
     index === number-1 ? nextIndex = 0: nextIndex = index+1;
-    if (this.state.turnsTaken == 3 * this.state.numberOfPlayers){
+    if (this.state.turnsTaken == 2 * this.state.numberOfPlayers){
       this.endGame()
     }
     if (characters[index].position === 0 && this.state.turnsTaken < number){ 
@@ -304,7 +273,7 @@ class BoardComponent extends React.Component {
       this.state.charactersCreated = true;
       for (let x = 1; x <= number; x++){
         this.state.characters.push(
-          {characterId: x, playerCoins: 100, playerSausage: 0, mustardCount: 0,ketchupCount: 0,
+          {characterId: x, playerCoins: 20, playerSausage: 0, mustardCount: 0,ketchupCount: 0,
           position:0,canMoveTo:[], questionsAsked: 0, questionsCorrect: 0 })
     }}
   };
@@ -431,4 +400,10 @@ class BoardComponent extends React.Component {
     fontSize:"30px"
   }
 
-  export default BoardComponent;
+  const BoardFunction = () => {
+    return (
+      <BoardComponent router={useRouter()}/>
+    )
+  }
+
+  export default BoardFunction;
