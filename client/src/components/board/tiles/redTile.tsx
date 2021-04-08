@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import styles from '../board.module.css'
+import PopupController from '../../PopupController'
 
 export default class RedTile extends Component {
 
@@ -7,14 +8,30 @@ export default class RedTile extends Component {
         this.props.move(this.props.number)
     }
 
+    tileDiv = () => (
+        <div 
+            onClick={this.props.move ? this.handleClick : null} 
+            className={this.props.move ? styles.redTileSelected : styles.redTile}
+        >
+            {this.props.number}
+        </div>
+    )
+
     render(){
-        return(
-            <div 
-                onClick={this.props.move ? this.handleClick : null} 
-                className={this.props.move ? styles.redTileSelected : styles.redTile}
-            >
-                {this.props.number}
-            </div>
-        )
+        if (this.props.movesLeft == 1) {
+            return(
+                // this.tileDiv()
+                <PopupController hostDiv={this.tileDiv} enable={true} handleClick={this.handleClick} answerQuestion={this.props.answerQuestion}/>
+                // <Popup trigger={this.tileDiv} modal>
+                //     <Box>
+                //         <Questions />
+                //     </Box>
+                // </Popup>
+            )
+        } else {
+            return(
+                this.tileDiv()
+            )
+        }
     }
 }

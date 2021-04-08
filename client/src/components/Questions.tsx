@@ -5,7 +5,7 @@ import { GetQuestionQuery, Question, useGetAllQuestionQuery, GetAllQuestionQuery
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
-const Questions = ()  => {
+const Questions = (props)  => {
     const questionId = 0
     const [{data}] = useGetAllQuestionQuery({
         variables: {
@@ -27,7 +27,10 @@ const Questions = ()  => {
     return (
         <ThemeProvider theme={theme}>
             <CSSReset />
-            <QuestionsPage questionBank={questionBank} questionId={questionId}/>
+            <QuestionsPage 
+                questionBank={questionBank} questionId={questionId} 
+                closePopup={props.closePopup} answerQuestion={props.answerQuestion}
+            />
         </ThemeProvider>
     );
 }
@@ -42,12 +45,13 @@ const AnswerStyle = {
     width: '190px',
 }
 
-class QuestionsPage extends React.Component <{questionBank, questionId}, { [key: string]: string }>{
+class QuestionsPage extends React.Component <{questionBank, questionId, closePopup, answerQuestion}, { [key: string]: any }>{
     constructor(props) {
         super(props);
         this.state = {
             currentAnswer: "",
-            correctAnswer: this.props.questionBank?.getAllQuestion[this.props.questionId].correctAnswer.toUpperCase()
+            correctAnswer: this.props.questionBank?.getAllQuestion[this.props.questionId].correctAnswer.toUpperCase(),
+            answeredQuestion: false
         };
         this.isCorrect = this.isCorrect.bind(this);
         this.changeColor1 = this.changeColor1.bind(this);
@@ -70,20 +74,22 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
     render() {
         return (
             <Flex minHeight='100vh' width='full' align='center' justifyContent='center'>
-                <Box borderWidth={1} px={1} width='full' maxWidth='500px' borderRadius={4} textAlign='center' boxShadow='lg'>
+                <Box borderWidth={1} px={1} width='full' borderRadius={4} textAlign='center' boxShadow='lg'  bgColor='white' alignItems='center'>
                     <ThemeProvider theme={theme} />
                     
-                    <Box h='100px' bgImage="url('/images/sausage.png')" bgRepeat='no-repeat' bgPosition='center' bgSize='contain' p={2}>
+                    <Box w='60vw' h='120px' bgImage="url('/images/sausage.png')" bgRepeat='no-repeat' bgPosition='center' bgSize='55vw 120px' p={2}>
                         <Box textAlign='center'>
                             <Heading>Question {this.props.questionId + 1} </Heading>
                         </Box>                    
-                        <Box>
-                            <Heading size='md'>{this.props.questionBank?.getAllQuestion[this.props.questionId].questionTitle}</Heading>
+                        <Box maxW='45vw' mr='auto' ml='auto'>
+                            <Heading size='md'>
+                                {this.props.questionBank?.getAllQuestion[this.props.questionId].questionTitle}
+                            </Heading>
                         </Box>
                     </Box>
                     
                     <Box p={3}>
-                        <Stack isInline spacing='10px'>
+                        <Stack isInline spacing='10px' justify='center'>
                             <h2> A </h2>
                             <Box id = "A" onClick={this.changeColor1} style={AnswerStyle}  as="button" mr="40px">
                                 {this.props.questionBank?.getAllQuestion[this.props.questionId].A}
@@ -96,7 +102,7 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
                     </Box>
 
                     <Box p={3}>
-                        <Stack isInline  spacing='10px' >
+                        <Stack isInline spacing='10px' justify='center'>
                             <h2> C </h2>
                             <Box id = "C" onClick={this.changeColor3} style={AnswerStyle} as="button" mr="40px" >
                                 {this.props.questionBank?.getAllQuestion[this.props.questionId].C}
@@ -108,9 +114,15 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
                         </Stack>
                     </Box>
                     
+                    {this.state.answeredQuestion ? 
+                    <Box onClick= {this.props.closePopup} as="button" borderRadius="10px" bg="tomato" color="yellow" px={4}>
+                        Next
+                    </Box>
+                    :
                     <Box onClick= {this.isCorrect} as="button" borderRadius="10px" bg="tomato" color="yellow" px={4}>
                         Confirm
                     </Box>
+                    }
 
                     <h3> Your answer is {this.state.currentAnswer} </h3>
 
@@ -197,22 +209,21 @@ class QuestionsPage extends React.Component <{questionBank, questionId}, { [key:
             if (this.state.currentAnswer == this.state.correctAnswer){
                 document.getElementById('answer').textContent= "Your answer is correct!"
                 document.getElementById(this.state.correctAnswer).style.backgroundColor = "green"
+                this.props.answerQuestion(true) //correct
             }
             else {
                 document.getElementById('answer').textContent= "Your answer is incorrect. The correct answer is " + this.state.correctAnswer
                 document.getElementById(this.state.correctAnswer).style.backgroundColor = "green"
                 document.getElementById(this.state.currentAnswer).style.backgroundColor = "red"
+                this.props.answerQuestion(false) //incorrect
             }
+
+            this.setState({
+                ...this.state,
+                answeredQuestion: true
+            })
         }
     }
-
-// QuestionTitle = () => {
-//     return (
-//         <Box>
-//             <Heading>Choose the correct option: </Heading>
-//         </Box>
-//     )
-// }
 
 }
 
