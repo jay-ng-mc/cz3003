@@ -11,8 +11,8 @@ import Character from './BoardCharacter'
 import {Box, Stack, Flex, HStack, Button} from "@chakra-ui/react"
 import SausageTile from './tiles/sausageTile'
 import next from 'next'
-import { DiceRoller } from './DiceRoller'
-import { Questions } from './../Questions'
+import DiceRoller from '../DiceRoller'
+import Questions from '../Questions'
 import Dice from "react-dice-roll"
 import Popup from 'reactjs-popup';
 
@@ -328,9 +328,9 @@ class BoardComponent extends React.Component {
         height="50ps">
               Moves Left: {this.state.movesLeft}
         </Box>
-        {/* <Popup trigger={<button> Trigger</button>} position="right center">
-        <Questions />
-        </Popup> */}
+        <Popup trigger={<button> Trigger</button>} position="right center">
+          <Questions />
+        </Popup>
         <HStack>
         <Grid className={styles.gameBoard} width={45} gap={5} >
           {this.createBoard()}  
