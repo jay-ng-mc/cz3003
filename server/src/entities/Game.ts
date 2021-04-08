@@ -9,20 +9,36 @@ export class Game {
   @PrimaryKey()
   id!: number;
 
+  @Field()
+  @Property()
+  gameId!: number;
+
   @Field(() => String)
   @Property({ type: 'text' })
   username!: string;
+
+  @Field(() => String)
+  @Property({ type: 'text' })
+  type!: string;
+
+  @Field()
+  @Property()
+  difficulty!: number;
 
   @Field(() => String)
   @Property({ type: 'date' })
   startTime = new  Date();
 
   @Field(() => String)
-  @Property({ type: 'date' })
+  @Property({ type: 'date' , nullable: true})
   endTime = new Date();
 
   @Field()
-  @Property()
-  score: number;
+  @Property({nullable: true})
+  score!: number;
+
+  @Field()
+  @Property({nullable: true})
+  totalQuestion!: number; 
 
 }

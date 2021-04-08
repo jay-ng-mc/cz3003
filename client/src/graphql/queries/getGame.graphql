@@ -1,6 +1,9 @@
-query GetGame($username: String!){
-  getGame(username: $username){
+query GetGame($username: String!, $gameId: Float!){
+  getGame(username: $username, gameId: $gameId){
+    gameId
     username
+    type
+    difficulty
     startTime
     endTime
     score

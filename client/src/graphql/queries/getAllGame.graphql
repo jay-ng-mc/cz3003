@@ -1,6 +1,9 @@
 query GetAllGame{
     getAllGame{
+        gameId
         username
+        type
+        difficulty
         startTime
         endTime
         score

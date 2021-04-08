@@ -1,0 +1,8 @@
+mutation UpdateStartGame( $gameId: Float!, $username: String!, $type: String!, $difficulty: Float!) {
+    updateStartGame(options: { gameId: $gameId, username: $username, type: $type, difficulty: $difficulty}){
+        game{
+            gameId
+            username
+        }
+      }
+    }

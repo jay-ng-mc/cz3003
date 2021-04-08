@@ -12,7 +12,7 @@ import { COOKIE_NAME, __prod__ } from "./constants";
 import session from "express-session";
 import { QuestionResolver } from "./resolvers/question";
 import { GameResolver } from "./resolvers/game";
-import { StudentTeacherResolver } from "./resolvers/student_teacher";
+import { StudentTeacherResolver } from "./resolvers/studentTeacher";
 import { CharacterResolver } from "./resolvers/character";
 
 const main = async () => {
