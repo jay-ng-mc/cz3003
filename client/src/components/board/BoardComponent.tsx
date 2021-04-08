@@ -5,7 +5,7 @@ import Start from './tiles/Start'
 import WallTile from './tiles/wallTile'
 import ShopTile from './tiles/shopTile'
 import CurrentTile from './tiles/currentTile'
-import React, { Component } from 'react'
+import React, { Component, useRef } from 'react'
 import styles from './board.module.css'
 import Character from './BoardCharacter'
 import {Box, Stack, Flex, HStack, Button} from "@chakra-ui/react"
@@ -15,6 +15,7 @@ import DiceRoller from '../DiceRoller'
 import Questions from '../Questions'
 import Dice from "react-dice-roll"
 import Popup from 'reactjs-popup';
+import PopupController from '../PopupController';
 
 class BoardComponent extends React.Component {
 
@@ -37,7 +38,7 @@ class BoardComponent extends React.Component {
       wall: [3,4,5,6,7,8,9,10,11,12,13,14,26,27,39,40,52,53,65,66,78,79,91,92,104,105,117,118,119,
       120,121,122,123,124,125,126,127,128,129,130,94,96,97,98,99,100,101,102,
       37,36,35,34,33,32,31,30,29],
-      targetPlayer : 0,
+      targetPlayer : 0
   };
   
     createBoard = () => {
@@ -68,44 +69,84 @@ class BoardComponent extends React.Component {
       ))
     }
     else {
-    return tileArray.map(number => (
-      this.state.startTiles.includes(number)
-      ? <Start startGame={this.startGame} didStart={this.state.didStart} number={number} />
-      : this.state.sausageTile.includes(number) ?
-        this.state.canMoveTo.includes(number)
-        ? <SausageTile move={this.move} number={number} />
-        : <SausageTile number={number} />
-              :
-              this.state.redTile.includes(number) ? 
-              this.state.canMoveTo.includes(number)
-                ? <RedTile move={this.move} number={number} />
-                : <RedTile number={number} />
-                :
-              this.state.wall.includes(number)  ?
-              <WallTile number = {number} />
-                :
-                this.state.shopTile.includes(number) ?
-                this.state.canMoveTo.includes(number)
-                ? <ShopTile move={this.move} number={number} />
-                : <ShopTile number={number} /> :
-                  this.state.canMoveTo.includes(number)
-                    ? <Tile move={this.move} number={number} />
-                    : number == this.state.currentTile ? 
-                    <CurrentTile number = {number}/>
-                    :
-                    <Tile number={number} />
-    ))
+      return tileArray.map(number => {
+          if (this.state.startTiles.includes(number)) {
+              return <Start startGame={this.startGame} didStart={this.state.didStart} number={number} />
+          } else if (this.state.sausageTile.includes(number)) {
+              if (this.state.canMoveTo.includes(number)) {
+                  return <SausageTile move={this.move} number={number} />
+              } else {
+                  return <SausageTile number={number} />
+              }
+
+          } else if (this.state.redTile.includes(number)) {
+              if (this.state.canMoveTo.includes(number)) {
+                  return (
+                    <RedTile move={this.move} number={number} movesLeft={this.state.movesLeft}/>
+                  )
+              } else {
+                  return <RedTile number={number} />
+              }
+          } else if (this.state.wall.includes(number)) {
+              return <WallTile number = {number} />
+          } else if (this.state.shopTile.includes(number)) {
+              if (this.state.canMoveTo.includes(number)) {
+                  return <ShopTile move={this.move} number={number} />
+              } else {
+                  return <ShopTile number={number} />
+              }
+          } else if (this.state.canMoveTo.includes(number)) {
+              return (
+                <Tile move={this.move} number={number} movesLeft={this.state.movesLeft}/>
+              )
+          } else if (number == this.state.currentTile) {
+              return <CurrentTile number = {number}/>
+          } else {
+              return <Tile number={number} />
+          }
+      
+        // const tileToRender = 
+        // this.state.startTiles.includes(number)
+        // ? <Start startGame={this.startGame} didStart={this.state.didStart} number={number} />
+        // : this.state.sausageTile.includes(number) ?
+        //   this.state.canMoveTo.includes(number)
+        //   ? <SausageTile move={this.move} number={number} />
+        //   : <SausageTile number={number} />
+        //         :
+        //         this.state.redTile.includes(number) ? 
+        //         this.state.canMoveTo.includes(number)
+        //           ? <RedTile move={this.move} number={number} />
+        //           : <RedTile number={number} />
+        //           :
+        //         this.state.wall.includes(number)  ?
+        //         <WallTile number = {number} />
+        //           :
+        //           this.state.shopTile.includes(number) ?
+        //           this.state.canMoveTo.includes(number)
+        //           ? <ShopTile move={this.move} number={number} />
+        //           : <ShopTile number={number} /> :
+        //             this.state.canMoveTo.includes(number)
+        //               ? <Tile move={this.move} number={number} />
+        //               : number == this.state.currentTile ? 
+        //               <CurrentTile number = {number}/>
+        //               :
+        //               <Tile number={number} />
+        console.log(tileToRender)
+        // return(<PopupController hostDiv={tileToRender} enable={true}/>)
+        return(tileToRender)
+      })
     }  
   }
 
 
   startGame = (number) => {
-    this.setState({
-      didStart: true,
-      currentTile: number
-    }, () => this.updateCanMoveTo(131)
+    if (!this.state.didStart) {
+      this.setState({
+        didStart: true,
+        currentTile: number
+      }, () => this.updateCanMoveTo(131))
+    }
     //131 is a random number so that a prameter can be taken in
-    )
   }
 
   updateCanMoveTo = (prev) => {
@@ -134,15 +175,16 @@ class BoardComponent extends React.Component {
     }
     else{
     if (this.state.movesLeft == 1){
-    if (this.state.redTile.includes(number)){ 
-      this.decreaseCoins(this.state.characters[this.state.playerTurn-1])
+      if (this.state.redTile.includes(number)){ 
+        this.decreaseCoins(this.state.characters[this.state.playerTurn-1])
+      }
+      else if (this.state.sausageTile.includes(number)){
+        this.increaseSausage(this.state.characters[this.state.playerTurn-1])
+      }
+      else{  
+        this.increaseCoins(this.state.characters[this.state.playerTurn-1])
+      }
     }
-    else if (this.state.sausageTile.includes(number)){
-      this.increaseSausage(this.state.characters[this.state.playerTurn-1])
-    }
-    else{  
-      this.increaseCoins(this.state.characters[this.state.playerTurn-1])
-    }}
     if (this.state.sausageTile.includes(number)){
       this.increaseSausage(this.state.characters[this.state.playerTurn-1])
     }
@@ -245,6 +287,7 @@ class BoardComponent extends React.Component {
     else{
       this.state.turnsTaken++;
     }}
+    this.startGame(1)
   };
 
   createMustardButton = () => {
@@ -328,9 +371,6 @@ class BoardComponent extends React.Component {
         height="50ps">
               Moves Left: {this.state.movesLeft}
         </Box>
-        <Popup trigger={<button> Trigger</button>} position="right center">
-          <Questions />
-        </Popup>
         <HStack>
         <Grid className={styles.gameBoard} width={45} gap={5} >
           {this.createBoard()}  
