@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Link, Button, Stack, Box } from "@chakra-ui/react";
+import { Flex, Link, Button, Stack, Box, propNames } from "@chakra-ui/react";
 import { BiHome } from 'react-icons/bi';
 import NextLink from "next/link";
 

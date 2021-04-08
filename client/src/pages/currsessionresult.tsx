@@ -1,6 +1,8 @@
 import React from "react";
 import { Flex, Heading, Box, ThemeProvider, theme, CSSReset } from "@chakra-ui/react";
 import PlayerResult from '../components/CurrentResults';
+import { useLocation } from "react-router-dom";
+
 
 export const Results = () => {
     return (
@@ -18,7 +20,7 @@ const ResultsPage = () => {
                 <ThemeProvider theme={theme} />
                 <Box p={2}>
                     <ResultsHeader />
-                    <PlayerResult />
+                    <PlayerResult/>
                 </Box>
             </Box>
         </Flex>
