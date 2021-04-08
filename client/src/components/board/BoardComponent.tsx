@@ -38,7 +38,8 @@ class BoardComponent extends React.Component {
       wall: [3,4,5,6,7,8,9,10,11,12,13,14,26,27,39,40,52,53,65,66,78,79,91,92,104,105,117,118,119,
       120,121,122,123,124,125,126,127,128,129,130,94,96,97,98,99,100,101,102,
       37,36,35,34,33,32,31,30,29],
-      targetPlayer : 0
+      targetPlayer : 0,
+      correctlyAnswered : true
   };
   
     createBoard = () => {
@@ -139,7 +140,16 @@ class BoardComponent extends React.Component {
   }
 
   answerQuestion(correctAnswer){
-
+    if (correctAnswer){
+      this.setState({
+        correctlyAnswered: true
+      })
+    }
+    else {
+      this.setState({
+        correctlyAnswered: false
+      })
+    }
   }
 
   startGame = (number) => {
@@ -200,11 +210,13 @@ class BoardComponent extends React.Component {
   }
 
   increaseCoins = character => {
+    if (this.state.correctlyAnswered){
     const characters = [...this.state.characters];
     const index = characters.indexOf(character);
     characters[index] = {...character};
     characters[index].playerCoins += 3;
     this.setState({ characters });
+    }
   };
 
   increaseMustard = character => {
@@ -216,11 +228,13 @@ class BoardComponent extends React.Component {
   };
 
   decreaseCoins = character => {
+    if (!this.state.correctlyAnswered){
     const characters = [...this.state.characters];
     const index = characters.indexOf(character);
     characters[index] = {...character};
     characters[index].playerCoins -= 3;
     this.setState({ characters });
+    }
   };
 
   increaseSausage = character => {
@@ -276,7 +290,7 @@ class BoardComponent extends React.Component {
       for (let x = 1; x <= number; x++){
         this.state.characters.push(
           {characterId: x, playerCoins: 100, playerSausage: 0, mustardCount: 0,ketchupCount: 0,
-          position:0,canMoveTo:[]})
+          position:0,canMoveTo:[], answeredCorrectly: true})
     }}
   };
 
