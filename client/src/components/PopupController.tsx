@@ -22,7 +22,7 @@ const PopupController = (props) => {
                     closeOnDocumentClick
                     onClose={props.handleClick}
                 >
-                    <Questions closePopup={closeTooltip}/>
+                    <Questions closePopup={closeTooltip} answerQuestion={props.answerQuestion}/>
                 </Popup>
             </Box>
         )

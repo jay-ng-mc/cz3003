@@ -21,7 +21,7 @@ export default class tile extends Component {
         if (this.props.movesLeft == 1) {
             return(
                 // this.tileDiv()
-                <PopupController hostDiv={this.tileDiv} enable={true} handleClick={this.handleClick}/>
+                <PopupController hostDiv={this.tileDiv} enable={true} handleClick={this.handleClick} answerQuestion={this.props.answerQuestion}/>
                 // <Popup trigger={this.tileDiv} modal>
                 //     <Box>
                 //         <Questions />

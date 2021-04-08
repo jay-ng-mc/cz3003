@@ -82,7 +82,7 @@ class BoardComponent extends React.Component {
           } else if (this.state.redTile.includes(number)) {
               if (this.state.canMoveTo.includes(number)) {
                   return (
-                    <RedTile move={this.move} number={number} movesLeft={this.state.movesLeft}/>
+                    <RedTile move={this.move} number={number} movesLeft={this.state.movesLeft} answerQuestion={this.answerQuestion}/>
                   )
               } else {
                   return <RedTile number={number} />
@@ -97,7 +97,7 @@ class BoardComponent extends React.Component {
               }
           } else if (this.state.canMoveTo.includes(number)) {
               return (
-                <Tile move={this.move} number={number} movesLeft={this.state.movesLeft}/>
+                <Tile move={this.move} number={number} movesLeft={this.state.movesLeft} answerQuestion={this.answerQuestion}/>
               )
           } else if (number == this.state.currentTile) {
               return <CurrentTile number = {number}/>
@@ -138,6 +138,9 @@ class BoardComponent extends React.Component {
     }  
   }
 
+  answerQuestion(correctAnswer){
+
+  }
 
   startGame = (number) => {
     if (!this.state.didStart) {

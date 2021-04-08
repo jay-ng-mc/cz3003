@@ -27,7 +27,10 @@ const Questions = (props)  => {
     return (
         <ThemeProvider theme={theme}>
             <CSSReset />
-            <QuestionsPage questionBank={questionBank} questionId={questionId} closePopup={props.closePopup}/>
+            <QuestionsPage 
+                questionBank={questionBank} questionId={questionId} 
+                closePopup={props.closePopup} answerQuestion={props.answerQuestion}
+            />
         </ThemeProvider>
     );
 }
@@ -42,7 +45,7 @@ const AnswerStyle = {
     width: '190px',
 }
 
-class QuestionsPage extends React.Component <{questionBank, questionId, closePopup}, { [key: string]: any }>{
+class QuestionsPage extends React.Component <{questionBank, questionId, closePopup, answerQuestion}, { [key: string]: any }>{
     constructor(props) {
         super(props);
         this.state = {
@@ -206,11 +209,13 @@ class QuestionsPage extends React.Component <{questionBank, questionId, closePop
             if (this.state.currentAnswer == this.state.correctAnswer){
                 document.getElementById('answer').textContent= "Your answer is correct!"
                 document.getElementById(this.state.correctAnswer).style.backgroundColor = "green"
+                this.props.answerQuestion(true) //correct
             }
             else {
                 document.getElementById('answer').textContent= "Your answer is incorrect. The correct answer is " + this.state.correctAnswer
                 document.getElementById(this.state.correctAnswer).style.backgroundColor = "green"
                 document.getElementById(this.state.currentAnswer).style.backgroundColor = "red"
+                this.props.answerQuestion(false) //incorrect
             }
 
             this.setState({
