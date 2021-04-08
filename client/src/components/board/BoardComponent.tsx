@@ -16,6 +16,8 @@ import Questions from '../Questions'
 import Dice from "react-dice-roll"
 import Popup from 'reactjs-popup';
 import PopupController from '../PopupController';
+import { useRouter } from "next/router";
+
 
 class BoardComponent extends React.Component {
 
@@ -270,7 +272,9 @@ class BoardComponent extends React.Component {
   };
 
   endGame() {
+    const router = useRouter();
     console.log("End game");
+    router.push("/currsessionresult");
   }
 
 
