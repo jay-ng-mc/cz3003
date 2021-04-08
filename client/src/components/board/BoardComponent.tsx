@@ -19,27 +19,32 @@ import PopupController from '../PopupController';
 
 class BoardComponent extends React.Component {
 
-    state = {
-      charactersCreated: false,
-      characters: [],
-      sausageTile: [70],
-      shopTile: [95],
-      redTile:[85, 20,41,72],
-      startTiles: [1],
-      leftWall: [130, 117, 104, 91, 78, 65, 52, 39, 26, 13],
-      rightWall: [118, 105, 92, 79, 66, 53, 40, 27, 14, 1],
-      currentTile: 0,
-      canMoveTo: [],
-      playerTurn: 1,
-      turnsTaken: 0,
-      didStart: false,
-      numberOfPlayers: 3,
-      movesLeft : 0,
-      wall: [3,4,5,6,7,8,9,10,11,12,13,14,26,27,39,40,52,53,65,66,78,79,91,92,104,105,117,118,119,
-      120,121,122,123,124,125,126,127,128,129,130,94,96,97,98,99,100,101,102,
-      37,36,35,34,33,32,31,30,29],
-      targetPlayer : 0,
-      correctlyAnswered : true
+  constructor(props) {
+    super(props)
+    this.answerQuestion = this.answerQuestion.bind(this);
+  }
+
+  state = {
+    charactersCreated: false,
+    characters: [],
+    sausageTile: [70],
+    shopTile: [95],
+    redTile:[85, 20,41,72],
+    startTiles: [1],
+    leftWall: [130, 117, 104, 91, 78, 65, 52, 39, 26, 13],
+    rightWall: [118, 105, 92, 79, 66, 53, 40, 27, 14, 1],
+    currentTile: 0,
+    canMoveTo: [],
+    playerTurn: 1,
+    turnsTaken: 0,
+    didStart: false,
+    numberOfPlayers: 3,
+    movesLeft : 0,
+    wall: [3,4,5,6,7,8,9,10,11,12,13,14,26,27,39,40,52,53,65,66,78,79,91,92,104,105,117,118,119,
+    120,121,122,123,124,125,126,127,128,129,130,94,96,97,98,99,100,101,102,
+    37,36,35,34,33,32,31,30,29],
+    targetPlayer : 0,
+    correctlyAnswered : null
   };
   
     createBoard = () => {
@@ -140,6 +145,8 @@ class BoardComponent extends React.Component {
   }
 
   answerQuestion(correctAnswer){
+    console.log('debug')
+    console.log(this)
     if (correctAnswer){
       this.setState({
         correctlyAnswered: true
