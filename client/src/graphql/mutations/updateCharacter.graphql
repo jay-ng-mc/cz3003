@@ -1,0 +1,6 @@
+mutation UpdateCharacter($username: String!, $characterId: Float!){
+    updateCharacter(options: {username: $username, characterId: $characterId}){
+        username
+        characterId
+    }
+}

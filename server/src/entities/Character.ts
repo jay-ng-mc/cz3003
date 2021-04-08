@@ -14,8 +14,8 @@ export class Character {
   username!: string;
 
   @Field()
-  @Property({type: 'text', unique: true})
-  characterId!: string;
+  @Property()
+  characterId!: number;
 
 
 }

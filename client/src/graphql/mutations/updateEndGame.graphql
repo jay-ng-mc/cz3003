@@ -1,0 +1,8 @@
+mutation UpdateEndGame( $gameId: Float!, $username: String!, $score: Float!, $totalQuestion: Float! ) {
+    updateEndGame(options: { gameId: $gameId, username: $username, score: $score, totalQuestion: $totalQuestion}){
+        game{
+            gameId
+            username
+        }
+      }
+    }
