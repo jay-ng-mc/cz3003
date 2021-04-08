@@ -1,0 +1,11 @@
+query GetAllGameByUsername($username: String!){
+  getAllGameByUsername(username: $username){
+    gameId
+    username
+    type
+    difficulty
+    startTime
+    endTime
+    score
+  }
+}

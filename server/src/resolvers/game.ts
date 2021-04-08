@@ -53,6 +53,14 @@ export class GameResolver {
         return em.find(Game, { });
     }
 
+    @Query(() => [Game], { nullable: true })
+    getAllGameByUsername(
+        @Arg( 'username' ) username: string,
+        @Ctx() { em }: MyContext
+    ): Promise<Game[] | null>{
+        return em.find(Game, { username });
+    }
+
     @Mutation(() => GameResponse)
     async updateStartGame(
         @Arg('options') options: StartGameInput,
