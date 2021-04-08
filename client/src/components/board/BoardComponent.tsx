@@ -263,11 +263,15 @@ class BoardComponent extends React.Component {
       sausageTile : NewSausageTile
     })
     if(characters[index].playerSausage == 3){
-      console.log("End game");
+      this.endGame()
     }
   }
     this.setState({ characters });
   };
+
+  endGame() {
+    console.log("End game");
+  }
 
 
   nextTurn = (number) => {
@@ -276,7 +280,7 @@ class BoardComponent extends React.Component {
     let nextIndex;
     index === number-1 ? nextIndex = 0: nextIndex = index+1;
     if (this.state.turnsTaken == 3 * this.state.numberOfPlayers){
-      console.log("GAME END");
+      this.endGame()
     }
     if (characters[index].position === 0 && this.state.turnsTaken < number){ 
     this.state.didStart = false;}
