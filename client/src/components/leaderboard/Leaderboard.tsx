@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useTable } from 'react-table'
-import {Box, Heading, Image} from "@chakra-ui/react";
-import leaderboardData from './leaderboardData'
+import { ReactTable, useTable } from 'react-table'
+import {ThemeProvider, theme, CSSReset, Box, Image, Heading} from "@chakra-ui/react";
+import { withUrqlClient } from "next-urql";
+import { createUrqlClient } from "../../utils/createUrqlClient";
+import { useGetAllGameQuery } from '../../generated/graphql'
 
 const Styles = styled.div`
   padding: 1rem;
@@ -76,41 +78,70 @@ function Table({ columns, data }) {
   )
 }
 
-function Leaderboard() {
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: 'Ranking',
-        accessor: 'rank',
-      },
-      {
-        Header: 'Username',
-        accessor: 'userName',
-      },
-      {
-        Header: 'Date Recorded',
-        accessor: 'entryDate',
-      },
-      {
-        Header: 'Timing',
-        accessor: 'timeTaken',
-      },
-    ],
-    []
-  )
+class LeaderboardPage extends React.Component<{data}> {
+  columns = [
+    {
+      Header: 'Ranking',
+      accessor: 'rank',
+    },
+    {
+      Header: 'Username',
+      accessor: 'userName',
+    },
+    {
+      Header: 'Date Recorded',
+      accessor: 'entryDate',
+    },
+    {
+      Header: 'Timing',
+      accessor: 'timeTaken',
+    },
+    {
+      Header: 'Score',
+      accessor: 'score'
+    }
+  ]
 
-  const data = React.useMemo(() => leaderboardData(10), [])
+  render() {
+    return (
+      <Styles>
+        <Box p={3} textAlign='center'>
+          <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
+          <Heading>Leaderboard</Heading>
+        </Box>
+        <Table columns={this.columns} data={this.props.data} />
+      </Styles>
+    )
+  }
+}
 
-  return (
-    <Styles>
-      <Box p={3} textAlign='center'>
-        <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
-        <Heading>Leaderboard</Heading>
-      </Box>
-      <Table columns={columns} data={data} />
-    </Styles>
+const Leaderboard = () => {
+  var [{data}] = useGetAllGameQuery();
+  var games
+  if (data) {
+    games = data.getAllGame
+  } else {
+    games = []
+  }
+  games.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
+  console.log(games)
+  var leaderboard = games.map((game, index) => {
+    return {
+      rank: index,
+      userName: game.username,
+      entryDate: game.startTime,
+      timeTaken: game.endTime - game.startTime,
+      score: game.score
+    }
+  })
+  console.log(leaderboard)
+  return(
+    <ThemeProvider theme={theme}>
+      <CSSReset />
+      <LeaderboardPage data={leaderboard} />
+    </ThemeProvider>
   )
 }
 
 
-export default Leaderboard
+export default withUrqlClient(createUrqlClient) (Leaderboard);
