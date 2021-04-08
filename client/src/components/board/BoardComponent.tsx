@@ -301,7 +301,7 @@ class BoardComponent extends React.Component {
       for (let x = 1; x <= number; x++){
         this.state.characters.push(
           {characterId: x, playerCoins: 100, playerSausage: 0, mustardCount: 0,ketchupCount: 0,
-          position:0,canMoveTo:[], answeredCorrectly: true})
+          position:0,canMoveTo:[], questionsAsked: 0, questionsCorrect: 0 })
     }}
   };
 
