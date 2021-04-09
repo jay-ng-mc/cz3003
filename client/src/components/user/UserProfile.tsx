@@ -4,8 +4,7 @@ import { ReactTable, useTable } from 'react-table'
 import {ThemeProvider, theme, CSSReset, Box, Image, Heading} from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../../utils/createUrqlClient";
-import { useGetAllGameByUsernameQuery } from '../../generated/graphql'
-import { useMeQuery, useLogoutMutation } from "../generated/graphql";
+import { useMeQuery, useLogoutMutation, useGetAllGameByUsernameQuery } from "../../generated/graphql";
 
 const Styles = styled.div`
   padding: 1rem;
@@ -107,36 +106,49 @@ class ProfilePage extends React.Component<{data}> {
     )
   }
 }
-const isServer = () => typeof window ==="undefined";
-
-const [{data, fetching}] = useMeQuery({
-  pause: isServer(),
-});
 
 // const username = data.me.username
 
 const UserProfile = () => {
-  var [{data}] = useGetAllGameByUsername(data.me.username); // changed to getALlGamesQuery
+  const isServer = () => typeof window ==="undefined";
+  const getMe = () => {
+    const [{data, fetching}] = useMeQuery({
+      pause: isServer(),
+    });
+    return data
+  }
+  var meData = getMe()
+  var userName
+  if (meData) {
+    userName = meData.me.username
+  } else {
+    userName = ''
+  }
+  var [{data}] = useGetAllGameByUsernameQuery({
+    variables: {username: userName}
+  });
   var games 
   if (data) {
     games = data.getAllGameByUsername
   } else {
     games = []
   }
-  games.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
-  console.log(games)
-  var profile = games.map((game, index) => {
-    return {
-      timePlayed: game.startTime,
-      questionAnswered: game.endTime - game.startTime,  //questionAnswered: game.questionAnswered,
-      correctAnswer: game.score // score = no. of correct answeres?
-    }
-  })
-  console.log(profile)
+  console.log(userName)
+  console.log(data)
+  // games.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
+  // console.log(games)
+  // var profile = games.map((game, index) => {
+  //   return {
+  //     timePlayed: game.startTime,
+  //     questionAnswered: game.endTime - game.startTime,  //questionAnswered: game.questionAnswered,
+  //     correctAnswer: game.score // score = no. of correct answeres?
+  //   }
+  // })
+  // console.log(profile)
   return(
     <ThemeProvider theme={theme}>
       <CSSReset />
-      <ProfilePage data={profile} />
+      {/* <ProfilePage data={profile} /> */}
     </ThemeProvider>
   )
 }
