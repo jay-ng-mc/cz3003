@@ -4,7 +4,8 @@ import { ReactTable, useTable } from 'react-table'
 import {ThemeProvider, theme, CSSReset, Box, Image, Heading} from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../../utils/createUrqlClient";
-import { useGetAllGameQuery } from '../../generated/graphql'
+import { useGetAllGameByUsernameQuery } from '../../generated/graphql'
+import { useMeQuery, useLogoutMutation } from "../generated/graphql";
 
 const Styles = styled.div`
   padding: 1rem;
@@ -106,12 +107,19 @@ class ProfilePage extends React.Component<{data}> {
     )
   }
 }
+const isServer = () => typeof window ==="undefined";
 
-const Profile = () => {
-  var [{data}] = useGetAllGameQuery(); // changed to getALlGamesQuery
+const [{data, fetching}] = useMeQuery({
+  pause: isServer(),
+});
+
+// const username = data.me.username
+
+const UserProfile = () => {
+  var [{data}] = useGetAllGameByUsername(data.me.username); // changed to getALlGamesQuery
   var games 
   if (data) {
-    games = data.getAllGame
+    games = data.getAllGameByUsername
   } else {
     games = []
   }
@@ -134,4 +142,4 @@ const Profile = () => {
 }
 
 
-export default withUrqlClient(createUrqlClient) (Profile);
+export default withUrqlClient(createUrqlClient) (UserProfile);
