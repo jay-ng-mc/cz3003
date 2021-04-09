@@ -7,6 +7,7 @@ query GetAllGameByUsername($username: String!){
     startTime
     endTime
     score
+    totalCorrect
     totalQuestion
   }
 }
