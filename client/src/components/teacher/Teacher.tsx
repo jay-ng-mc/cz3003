@@ -2,7 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { useTable } from 'react-table'
 import {Box, Image, Button, Heading} from "@chakra-ui/react";
-import teacherData from './teacherData'
+import teacherData from './teacherData';
+import {FacebookShareButton, FacebookIcon} from "react-share";
+import { useGetAllStudentTeacherQuery } from '../../generated/graphql';
+import { withUrqlClient } from 'next-urql';
+import { createUrqlClient } from '../../utils/createUrqlClient';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -81,17 +85,38 @@ function Table({ columns, data }) {
             () => [
             {
                 Header: 'Username',
-                accessor: 'userName',
+                accessor: 'student',
             },
             {
                 Header: 'Mastery',
-                accessor: 'masteryScore',
+                accessor: 'mastery',
             },
             ],
             []
         )
 
-        const data = React.useMemo(() => teacherData(10), [])
+        var [{data}] = useGetAllStudentTeacherQuery({
+            variables:{
+                teacher: 'me'
+            }
+        });
+        var studentTeachers
+        if (data) {
+            studentTeachers = data.getAllStudentTeacher
+        } else {
+        studentTeachers = []
+        }
+        studentTeachers.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
+        console.log(studentTeachers)
+        var student = studentTeachers.map((studentTeacher) => {
+        return {
+        student: studentTeacher.student,
+        mastery: Math.floor(Math.random() * 100),
+        }
+        
+    })
+    console.log(student)
+        //const data = React.useMemo(() => teacherData(10), [])
 
         return (
             <Styles>
@@ -99,16 +124,22 @@ function Table({ columns, data }) {
                     <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
                 </Box>
                 <Box my={5} textAlign='center'>
-                    <Button type="submit" backgroundColor="teal.300" bgImage="url('/images/sausage.png')" 
+                    {/* <Button type="submit" backgroundColor="teal.300" bgImage="url('/images/sausage.png')" 
                     bgPosition='center' bgSize='112px 45px'>
                         Share Class
-                    </Button>
+                    </Button> */}
+                    <FacebookShareButton 
+                url={"http://127.0.0.1:3000/student"}
+                quote={"Join my class"}
+                hashtag="#Sausage_Party">
+                 <FacebookIcon size={36} />
+              </FacebookShareButton>
                 </Box>
                 <Heading textAlign='center' mb='10px'>Students in my class</Heading>
-                <Table columns={columns} data={data} />
+                <Table columns={columns} data={student} />
             </Styles>
     )
 }
 
 
-export default Teacher
+export default withUrqlClient(createUrqlClient) (Teacher);
