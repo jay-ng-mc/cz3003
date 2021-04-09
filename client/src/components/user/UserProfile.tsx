@@ -1,19 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { useTable } from 'react-table'
-import {Box, Image, Button, Heading} from "@chakra-ui/react";
-import {makeData, getQuestion, getCorrect} from './userData'
-import { useGetAllGamesQuery } from "../../generated/graphql";
-
-const [{data}] = useGetAllGamesQuery({
-    variables: {
-        // type: "topic 2",
-        // difficulty: 2,
-        username: "test"
-    }
-})
-
-const userBank = data;
+import { ReactTable, useTable } from 'react-table'
+import {ThemeProvider, theme, CSSReset, Box, Image, Heading} from "@chakra-ui/react";
+import { withUrqlClient } from "next-urql";
+import { createUrqlClient } from "../../utils/createUrqlClient";
+import { useGetAllGameQuery } from '../../generated/graphql'
 
 const Styles = styled.div`
   padding: 1rem;
@@ -47,85 +38,100 @@ const Styles = styled.div`
 `
 
 function Table({ columns, data }) {
-    // Use the state and functions returned from useTable to build your UI
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = useTable({
-        columns,
-        data,
-    })
+  // Use the state and functions returned from useTable to build your UI
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({
+    columns,
+    data,
+  })
 
-    // Render the UI for your table
-    return (
-        <table {...getTableProps()}>
-        <thead>
-            {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                ))}
-            </tr>
+  // Render the UI for your table
+  return (
+    <table {...getTableProps()}>
+      <thead>
+        {headerGroups.map(headerGroup => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map(column => (
+              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-            {rows.map((row, i) => {
-            prepareRow(row)
-            return (
-                <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                })}
-                </tr>
-            )
-            })}
-        </tbody>
-        </table>
-    )
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row, i) => {
+          prepareRow(row)
+          return (
+            <tr {...row.getRowProps()}>
+              {row.cells.map(cell => {
+                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+              })}
+            </tr>
+          )
+        })}
+      </tbody>
+    </table>
+  )
 }
-    
 
-function UserProfile() {
-    const columns = React.useMemo(
-        () => [
-        {
-            Header: 'Time played',
-            accessor: 'timePlayed',
-        },
-        {
-            Header: 'Questions answered',
-            accessor: 'questionAnswered',
-        },
-        {
-            Header: 'Correct answer',
-            accessor: 'correctAnswer'
-        },
-        ],
-        []
-    )
+class ProfilePage extends React.Component<{data}> {
+  columns = [
+    {
+        Header: 'Time played',
+        accessor: 'timePlayed',
+    },
+    {
+        Header: 'Questions answered',
+        accessor: 'questionAnswered',
+    },
+    {
+        Header: 'Correct answer',
+        accessor: 'correctAnswer'
+    }
+  ]
 
-    const data = React.useMemo(() => makeData(10), [])
-    const totalQuestions = getQuestion()
-    const totalCorrect = getCorrect()
-    const percentageCorrect = (totalCorrect/totalQuestions)*100
-    const converted = percentageCorrect.toPrecision(3) + "%"
+  render() {
     return (
-        <Styles>
-            <Box p={3} textAlign='center'>
-                <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
-                <Heading textAlign='center' mb='10px'>My profile</Heading>
-                <h2> Total questions answered: {totalQuestions} </h2>
-                <h2> Total correct answers: {totalCorrect} </h2>
-                <h2> Accuracy: {converted} </h2>
-            </Box>        
-            <h1>{userBank}</h1>
-            <Table columns={columns} data={data} />
-        </Styles>
+      <Styles>
+        <Box p={3} textAlign='center'>
+          <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
+          <Heading>User Profile</Heading>
+        </Box>
+        <Table columns={this.columns} data={this.props.data} />
+      </Styles>
     )
+  }
+}
+
+const Profile = () => {
+  var [{data}] = useGetAllGameQuery(); // changed to getALlGamesQuery
+  var games 
+  if (data) {
+    games = data.getAllGame
+  } else {
+    games = []
+  }
+  games.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
+  console.log(games)
+  var profile = games.map((game, index) => {
+    return {
+      timePlayed: game.startTime,
+      questionAnswered: game.endTime - game.startTime,  //questionAnswered: game.questionAnswered,
+      correctAnswer: game.score // score = no. of correct answeres?
+    }
+  })
+  console.log(profile)
+  return(
+    <ThemeProvider theme={theme}>
+      <CSSReset />
+      <ProfilePage data={profile} />
+    </ThemeProvider>
+  )
 }
 
 
-export default UserProfile
+export default withUrqlClient(createUrqlClient) (Profile);
