@@ -3,6 +3,17 @@ import styled from 'styled-components'
 import { useTable } from 'react-table'
 import {Box, Image, Button, Heading} from "@chakra-ui/react";
 import {makeData, getQuestion, getCorrect} from './userData'
+import { useGetAllGamesQuery } from "../../generated/graphql";
+
+const [{data}] = useGetAllGamesQuery({
+    variables: {
+        // type: "topic 2",
+        // difficulty: 2,
+        username: "test"
+    }
+})
+
+const userBank = data;
 
 const Styles = styled.div`
   padding: 1rem;
@@ -110,7 +121,7 @@ function UserProfile() {
                 <h2> Total correct answers: {totalCorrect} </h2>
                 <h2> Accuracy: {converted} </h2>
             </Box>        
-
+            <h1>{userBank}</h1>
             <Table columns={columns} data={data} />
         </Styles>
     )
