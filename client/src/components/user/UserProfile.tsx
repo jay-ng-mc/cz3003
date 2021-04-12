@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ReactTable, useTable } from 'react-table'
+import { useTable } from 'react-table'
 import {ThemeProvider, theme, CSSReset, Box, Image, Heading} from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../../utils/createUrqlClient";
-import { useMeQuery, useLogoutMutation, useGetAllGameByUsernameQuery } from "../../generated/graphql";
+import { useMeQuery, useGetAllGameByUsernameQuery } from "../../generated/graphql";
 
 const Styles = styled.div`
   padding: 1rem;
@@ -97,10 +97,6 @@ class ProfilePage extends React.Component<{data}> {
   render() {
     return (
       <Styles>
-        <Box p={3} textAlign='center'>
-          <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
-          <Heading>User Profile</Heading>
-        </Box>
         <Table columns={this.columns} data={this.props.data} />
       </Styles>
     )
@@ -133,22 +129,33 @@ const UserProfile = () => {
   } else {
     games = []
   }
-  console.log(userName)
-  console.log(data)
-  // games.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
-  // console.log(games)
-  // var profile = games.map((game, index) => {
-  //   return {
-  //     timePlayed: game.startTime,
-  //     questionAnswered: game.endTime - game.startTime,  //questionAnswered: game.questionAnswered,
-  //     correctAnswer: game.score // score = no. of correct answeres?
-  //   }
-  // })
+
+  var totalQuestions = 0
+  var totalCorrect = 0
+
+  var profile = games.map((game) => {
+    totalQuestions += game.totalQuestion,
+    totalCorrect += game.score
+    return {
+      timePlayed: game.startTime,
+      questionAnswered: game.totalQuestion,
+      correctAnswer: game.score 
+    }
+  })
+  const accuracy_origin = totalCorrect/totalQuestions * 100
+  const accuracy = accuracy_origin.toPrecision(4)
   // console.log(profile)
   return(
     <ThemeProvider theme={theme}>
       <CSSReset />
-      {/* <ProfilePage data={profile} /> */}
+        <Box p={3} textAlign='center'>
+          <Image borderRadius="full" src={"images\\titleScreen.png"} alt="title" id="title" />
+          <Heading>User Profile</Heading>
+          <h2> Total questions answered: {totalQuestions} </h2>
+          <h2> Total correct answers: {totalCorrect} </h2>
+          <h2> Accuracy: {accuracy}% </h2>
+        </Box>
+      <ProfilePage data={profile} />
     </ThemeProvider>
   )
 }
