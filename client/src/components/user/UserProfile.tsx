@@ -142,8 +142,7 @@ const UserProfile = () => {
       correctAnswer: game.score 
     }
   })
-  const accuracy_origin = totalCorrect/totalQuestions * 100
-  const accuracy = accuracy_origin.toPrecision(4)
+  const accuracy = (totalCorrect/totalQuestions * 100).toPrecision(4)
   // console.log(profile)
   return(
     <ThemeProvider theme={theme}>
