@@ -7,5 +7,7 @@ query GetGame($username: String!, $gameId: Float!){
     startTime
     endTime
     score
+    totalCorrect
+    totalQuestion
   }
 }
