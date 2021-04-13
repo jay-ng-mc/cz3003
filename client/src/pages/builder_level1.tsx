@@ -1,14 +1,14 @@
 import { withUrqlClient } from 'next-urql'
 import { Container } from '../components/Container'
-import LevelBuilder from '../components/Builder'
+import Builder1 from '../components/Builder1'
 import { NavBar } from '../components/NavBar'
 import { createUrqlClient } from '../utils/createUrqlClient'
 
-const Builder = () => (
+const LevelBuilder = () => (
   <Container height="100vh">
     <NavBar />
-    <LevelBuilder />
+    <Builder1 />
   </Container>
 )
 
-export default withUrqlClient(createUrqlClient, {ssr: true}) (Builder);
+export default withUrqlClient(createUrqlClient, {ssr: true}) (LevelBuilder);

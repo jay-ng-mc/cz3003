@@ -6,7 +6,8 @@ import { Container } from './Container';
 import { GetQuestionQuery, Question, useGetAllQuestionQuery, GetAllQuestionQuery, useGetQuestionQuery } from "../generated/graphql";
 import { useTable } from 'react-table'
 import styled from 'styled-components'
-import NextLink from "next/link";
+import { render } from "react-dom";
+
 
 const Styles = styled.div`
   padding: 1rem;
@@ -39,7 +40,7 @@ const Styles = styled.div`
   }
 `
 
-class LevelBuilder extends React.Component {
+class Builder1 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -55,72 +56,46 @@ class LevelBuilder extends React.Component {
             <div>
                 <ThemeProvider theme= {theme}>
                     <CSSReset />
-                    <LevelBuilderPage />
+                    <Heading marginBottom='2vw' size='2xl'>Level 1</Heading>
+                    <Heading size='md'>Selected questions</Heading>
+                    <SelectedQuestions />
+                    <Heading size='md' marginTop='5vw'>Topic 1</Heading>
+                    <QuestionTable type='topic 1' difficulty={1}/>
+                    <Heading size='md'>Topic 2</Heading>
+                    <QuestionTable type='topic 2' difficulty={1}/>
+                    <Heading size='md'>Topic 3</Heading>
+                    <QuestionTable type='topic 3' difficulty={1}/>
                 </ThemeProvider> 
             </div>
         )
     }
+
+    // isSelected(row) {
+    //     this.setState(prevState => ({
+    //         selection: [...prevState.selection, row]
+    //     }))
+    // }
 }
 
- 
-const LevelBuilderPage = () => {
-    return(
-        <div>
-            <Heading size='3xl'>Level Builder</Heading>
-            <Heading size='lg' marginTop='5vw'>Create a new level</Heading>
-            <LevelSelection />
-            <Heading size='lg' marginTop='5vw'>Your saved levels</Heading>
-            <SavedLevels />
-        </div>
-    )
-}
-
-const LevelSelection = () => {
-    return(
-        <Stack isInline={true} marginTop='2vw'>
-            <NextLink href={"/builder_level1"}>
-                <Button w='30vw' h='80px' boxShadow='lg'  bgColor='green' textAlign='center'>
-                    <Heading>Level 1</Heading>
-                </Button>
-            </NextLink>
-            <NextLink href={"/builder_level2"}>
-                <Button w='30vw' h='80px' boxShadow='lg'  bgColor='yellow' textAlign='center'>
-                    <Heading>Level 2</Heading>
-                </Button>
-            </NextLink>
-            <NextLink href={"/builder_level3"}>
-                <Button w='30vw' h='80px' boxShadow='lg'  bgColor='red' textAlign='center'>
-                    <Heading>Level 3</Heading>
-                </Button>
-            </NextLink>
-        </Stack>
-    )
-}
-
-const SavedLevels = () => {
+const SelectedQuestions = () => {
     const columns = React.useMemo(
         () => [
             {
                 Header: 'No.',
-                accessor: 'lvlNo',
+                accessor: 'questionId',
             },
             {
-                Header: 'Level',
-                accessor: 'lvl',
+                Header: 'Question',
+                accessor: 'questionTitle',
             },
             {
-                Header: 'Number of Questions',
-                accessor: 'numOfQns',
-            },
-            {
-                Header: 'Date Created',
-                accessor: 'dateCreated',
+                Header: 'Topic',
+                accessor: 'questionTopic',
             },
         ],
         []
       )
 
-    ///////////// TO BE LINKED WITH DATABASE////////////////////////
     const [{data}] = useGetAllQuestionQuery({
         variables: {
             type: 'topic 1',
@@ -140,17 +115,89 @@ const SavedLevels = () => {
 
     var builder = questions.map((questions, index) => {
         return {
-            lvlNo: index + 1,
-            lvl: 1,
-            numOfQns: 10,
-            dateCreated: '13/4/21',
+            questionId: index + 1,
+            questionTitle: questions.questionTitle,
+            questionTopic: 'Topic 1',
         }
     })
-    ///////////// TO BE LINKED WITH DATABASE////////////////////////
 
     return (
         <Styles>
-            <Box my={5} textAlign='left'>
+            <Box textAlign='left'>
+                <Table columns={columns} data={builder}/>
+                <Stack isInline={true}>
+                    <Button w='10vw' h='4vw' boxShadow='lg'  bgColor='green'>
+                        <Heading>Save</Heading>
+                    </Button>
+                </Stack>
+            </Box>
+        </Styles>
+        
+    )
+}
+
+const QuestionTable = (type, difficulty) => {
+    const columns = React.useMemo(
+        () => [
+            {
+                Header: 'No.',
+                accessor: 'questionId',
+            },
+            {
+                Header: 'Question',
+                accessor: 'questionTitle',
+            },
+            {
+                Header: 'Choice A',
+                accessor: 'A',
+            },
+            {
+                Header: 'Choice B',
+                accessor: 'B',
+            },
+            {
+                Header: 'Choice C',
+                accessor: 'C',
+            },
+            {
+                Header: 'Choice D',
+                accessor: 'D',
+            },
+        ],
+        []
+      )
+
+    const [{data}] = useGetAllQuestionQuery({
+        variables: {
+            type: 'topic 1',
+            difficulty: 1,
+        }
+    })
+
+    var questions
+    if (data) {
+      questions = data.getAllQuestion
+    } else {
+      questions = []
+    }
+    questions.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
+    console.log(questions)
+
+
+    var builder = questions.map((questions, index) => {
+        return {
+            questionId: index + 1,
+            questionTitle: questions.questionTitle,
+            A: questions.A,
+            B: questions.B,
+            C: questions.C,
+            D: questions.D,
+        }
+    })
+
+    return (
+        <Styles>
+            <Box textAlign='left'>
                 <Table columns={columns} data={builder}/> 
             </Box>
         </Styles>
@@ -187,7 +234,7 @@ function Table({ columns, data }) {
             {rows.map((row, i) => {
                 prepareRow(row)
                 return (
-                <tr {...row.getRowProps()}>
+                <tr {...row.getRowProps()} onClick={highlightRow(row.getRowProps())}>
                     {row.cells.map(cell => {
                     return <td {...cell.getCellProps()}> {cell.render('Cell')} </td>
                     })}
@@ -197,8 +244,12 @@ function Table({ columns, data }) {
             </tbody>
         </table>
     )
+
+    function highlightRow (row) {
+        console.log("Question " + row + " highlighted")
+    }
 }
 
 
 
-export default LevelBuilder
+export default Builder1
