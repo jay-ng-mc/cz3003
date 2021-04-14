@@ -67,7 +67,6 @@ const LevelBuilderPage = () => {
     return(
         <div>
             <Heading size='3xl'>Level Builder</Heading>
-            <Heading size='lg' marginTop='5vw'>Create a new level</Heading>
             <LevelSelection />
             <Heading size='lg' marginTop='5vw'>Your saved levels</Heading>
             <SavedLevels />
@@ -78,19 +77,9 @@ const LevelBuilderPage = () => {
 const LevelSelection = () => {
     return(
         <Stack isInline={true} marginTop='2vw'>
-            <NextLink href={"/builder_level1"}>
+            <NextLink href={"/selectquestions"}>
                 <Button w='30vw' h='80px' boxShadow='lg'  bgColor='green' textAlign='center'>
-                    <Heading>Level 1</Heading>
-                </Button>
-            </NextLink>
-            <NextLink href={"/builder_level2"}>
-                <Button w='30vw' h='80px' boxShadow='lg'  bgColor='yellow' textAlign='center'>
-                    <Heading>Level 2</Heading>
-                </Button>
-            </NextLink>
-            <NextLink href={"/builder_level3"}>
-                <Button w='30vw' h='80px' boxShadow='lg'  bgColor='red' textAlign='center'>
-                    <Heading>Level 3</Heading>
+                    <Heading>Create New Level</Heading>
                 </Button>
             </NextLink>
         </Stack>
@@ -102,19 +91,19 @@ const SavedLevels = () => {
         () => [
             {
                 Header: 'No.',
-                accessor: 'lvlNo',
+                accessor: 'levelID',
             },
             {
-                Header: 'Level',
-                accessor: 'lvl',
-            },
-            {
-                Header: 'Number of Questions',
-                accessor: 'numOfQns',
+                Header: 'Level Name',
+                accessor: 'levelName',
             },
             {
                 Header: 'Date Created',
                 accessor: 'dateCreated',
+            },
+            {
+                Header: 'Created By',
+                accessor: 'creator',
             },
         ],
         []
@@ -140,10 +129,10 @@ const SavedLevels = () => {
 
     var builder = questions.map((questions, index) => {
         return {
-            lvlNo: index + 1,
-            lvl: 1,
-            numOfQns: 10,
+            levelID: index + 1,
+            levelName: 'SSAD',
             dateCreated: '13/4/21',
+            creator: 'SX'
         }
     })
     ///////////// TO BE LINKED WITH DATABASE////////////////////////
