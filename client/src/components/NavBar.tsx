@@ -41,7 +41,9 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
                     color="whiteAlpha.700"
                     variant="link">Logout</Button>
                 <Tag backgroundColor={"transparent"} mr={2}>{data.me.username}</Tag>
-                <CharacterIcon/>
+                <NextLink href={"/character"}>
+                    <Link alignContent='center' color={"white"} mr={2}><CharacterIcon/></Link>
+                </NextLink>
             </Flex>
         )   
     }
