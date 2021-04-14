@@ -44,7 +44,7 @@ const LoginForm = () => {
                         <FormControl mt={4}>
                             <FormLabel>Password:</FormLabel>
                             <Input
-                                type="teacher"
+                                type="password"
                                 name="teacher"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
