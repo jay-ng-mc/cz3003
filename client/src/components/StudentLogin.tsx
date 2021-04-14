@@ -15,7 +15,7 @@ const LoginForm = () => {
                 initialValues={{ student: '', teacher: '' }}
                 
                 onSubmit={async (values, {setErrors}) => {
-                    await updateStudentTeacher({student: values.student, teacher: values.teacher});
+                    await updateStudentTeacher({student: values.student, teacher: 'me'});
                     router.push("/");
 
                 }}
@@ -33,22 +33,22 @@ const LoginForm = () => {
                         <FormControl mt={4}>
                             <FormLabel>Login ID:</FormLabel>
                             <Input 
-                                type="teacher"
-                                name="teacher"
+                                type="student"
+                                name="student"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.teacher}
+                                value={values.student}
                             />
                         </FormControl>
                             
                         <FormControl mt={4}>
                             <FormLabel>Password:</FormLabel>
                             <Input
-                                type="student"
-                                name="student"
+                                type="teacher"
+                                name="teacher"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.student}
+                                value={values.teacher}
                             />
                         </FormControl>
                         

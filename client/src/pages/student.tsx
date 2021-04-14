@@ -3,6 +3,8 @@ import { ThemeProvider } from "@emotion/react";
 import React from "react";
 import LoginForm from '../components/StudentLogin'
 import { NavBar } from "../components/NavBar";
+import { withUrqlClient } from "next-urql";
+import { createUrqlClient } from "../utils/createUrqlClient";
 
 
 const LoginPage: React.FC<{}> = ({}) => {
@@ -37,4 +39,4 @@ const LoginBox = () => {
     );
 }
 
-export default LoginPage
+export default withUrqlClient(createUrqlClient) (LoginPage);
