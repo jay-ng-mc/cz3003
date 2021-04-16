@@ -14,18 +14,18 @@ let imageList = ["images\\p0.png","images\\p1.png","images\\p2.png","images\\p3.
 var savedImageId = 1 //can pass in from DB
 var savedImageId2 = 2 //can pass in from DB
 
-const GameLobby = () => {
+const GameLobby = (props) => {
     return (
         <div>
             <ThemeProvider theme={theme}>
                 <CSSReset />
-                <GameLobbyBox />
+                <GameLobbyBox updateState={props.updateState} nextView={props.nextView} />
             </ThemeProvider> 
         </div>
     );
 }
 
-const GameLobbyBox = () => {
+const GameLobbyBox = (props) => {
     return (
         <Flex minHeight='80vh' width='full' align='center' justifyContent='center'>
             <Box borderWidth={1} px={4} h="auto" w="60vw" borderRadius={4} textAlign='center' boxShadow='lg'>
@@ -36,7 +36,7 @@ const GameLobbyBox = () => {
                         <Header/>
                     </Box>
                     <Box flex='3'>
-                        <GameLobbyContent/>
+                        <GameLobbyContent updateState={props.updateState} nextView={props.nextView}/>
                     </Box>
                 </Box>
             </Box>
@@ -87,10 +87,10 @@ function users(num : Number){
     return output;
 }
 
-function GameLobbyContent(){
+function GameLobbyContent(props){
     return(
         <Box my={5} textAlign='left'>
-            <form>
+            <div>
                 <Grid templateColumns="repeat(4, 1fr)" gap={1}>
                     <Box w="100%" h="200" bg="gray.200" textAlign='center'>        
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -103,10 +103,11 @@ function GameLobbyContent(){
                     { users(3) }
                     { users(4) }
                 </Grid>
-                <NextLink href={"/board"}>
-                    <Button width='full' mt={5}>New Game</Button>
-                </NextLink>
-            </form>
+                <Button onClick={() => {
+                    props.updateState({users: ['test', 'test2']}) //add your user list here: users: userlist
+                    props.nextView()
+                }} width='full' mt={5}>New Game</Button>
+            </div>
         </Box>
     ) 
 }

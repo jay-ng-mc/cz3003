@@ -46,7 +46,8 @@ export const getPlayerResult = () => {
     );
 }
 
-const PlayerResult = () => {
+const PlayerResult = (props) => {
+    console.log(props)
     var p_result = getPlayerResult()
 
     return (
