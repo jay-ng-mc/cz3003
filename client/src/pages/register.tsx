@@ -4,7 +4,7 @@ import React from "react";
 import {Formik, Form} from "formik";
 import { toErrorMap } from "../utils/toErrorMap";
 import { useRouter } from "next/router";
-import { useRegisterMutation } from "../generated/graphql";
+import { useRegisterMutation, useUpdateCharacterMutation } from "../generated/graphql";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { NavBar } from "../components/NavBar";
@@ -47,12 +47,14 @@ const RegisterHeader = () => {
 const RegisterForm = () => {
     const router = useRouter();
     const [,register] = useRegisterMutation();
+    const [,updateCharacter] = useUpdateCharacterMutation();
     return (
         <Box my={8} textAlign='left'>
             <Formik
                 initialValues={{ email: '',username: '', password: '', password2: '', userType: '' }}
                 onSubmit={async (values, {setErrors}) => {
                     const response = await register({email: values.email, username: values.username, password: values.password, password2: values.password2, userType: values.userType});
+                    const character_response = await updateCharacter({username: values.username, characterId: 3});
                     if(response.data?.register.errors){
                         setErrors(toErrorMap(response.data.register.errors));
                     } else if (response.data?.register.user) {
