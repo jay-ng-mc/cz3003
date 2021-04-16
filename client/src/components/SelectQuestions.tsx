@@ -1,7 +1,7 @@
 import Grid from 'react-css-grid'
 import React, { Component } from 'react'
 import styles from '../board/board.module.css'
-import {Box, Stack, HStack, Button, Text, Flex, Heading, ThemeProvider, CSSReset, theme, Center} from "@chakra-ui/react";
+import {Box, Stack, HStack, Button, Text, Flex, Heading, ThemeProvider, CSSReset, theme, Center, VStack} from "@chakra-ui/react";
 import { Container } from './Container';
 import { GetQuestionQuery, Question, useGetAllQuestionQuery, GetAllQuestionQuery, useGetQuestionQuery } from "../generated/graphql";
 import { useTable } from 'react-table'
@@ -51,16 +51,18 @@ class SelectQuestions extends React.Component {
         };
  
     }
-
+    
     render() {
         return (
             <div>
                 <ThemeProvider theme= {theme}>
                     <CSSReset />
                     <Center>
-                        <Heading size='xl'>Selected Questions</Heading>
+                        <VStack>
+                            <Heading size='xl'>Selected Questions</Heading>
+                            <Input w='25vw' marginLeft='2vw' placeholder="Name of level"/>
+                        </VStack>
                     </Center>   
-                    <Input w='25vw' marginLeft='2vw' placeholder="Name of level"/>
                     <SelectedQuestions/>
                     <Heading size='md' marginTop='5vw'>Topic 1 Difficulty 1 Questions</Heading>
                     <QuestionTableType1Diff1/>
@@ -121,12 +123,7 @@ const SelectedQuestions = () => {
         []
       )
 
-    const [{data}] = useGetAllQuestionQuery({
-        variables: {
-            type: 'topic 1',
-            difficulty: 1,
-        }
-    })
+    const [{data}] = useGetAllQuestionQuery()
 
     var selected
     if (data) {

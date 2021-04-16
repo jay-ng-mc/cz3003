@@ -7,6 +7,7 @@ import { GetQuestionQuery, Question, useGetAllQuestionQuery, GetAllQuestionQuery
 import { useTable } from 'react-table'
 import styled from 'styled-components'
 import NextLink from "next/link";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const Styles = styled.div`
   padding: 1rem;
@@ -66,7 +67,7 @@ class LevelBuilder extends React.Component {
 const LevelBuilderPage = () => {
     return(
         <div>
-            <Heading size='3xl'>Level Builder</Heading>
+            <Heading size='2xl'>Level Builder</Heading>
             <LevelSelection />
             <Heading size='lg' marginTop='5vw'>Your saved levels</Heading>
             <SavedLevels />
@@ -78,7 +79,7 @@ const LevelSelection = () => {
     return(
         <Stack isInline={true} marginTop='2vw'>
             <NextLink href={"/selectquestions"}>
-                <Button w='30vw' h='80px' boxShadow='lg'  bgColor='green' textAlign='center'>
+                <Button w='30vw' h='70px' boxShadow='lg'  bgColor='green' textAlign='center'>
                     <Heading>Create New Level</Heading>
                 </Button>
             </NextLink>
@@ -104,6 +105,14 @@ const SavedLevels = () => {
             {
                 Header: 'Created By',
                 accessor: 'creator',
+            },
+            {
+                Header: 'Edit',
+                accessor: 'edit',
+            },
+            {
+                Header: 'Delete',
+                accessor: 'delete',
             },
         ],
         []
@@ -132,7 +141,9 @@ const SavedLevels = () => {
             levelID: index + 1,
             levelName: 'SSAD',
             dateCreated: '13/4/21',
-            creator: 'SX'
+            creator: 'SX',
+            edit: <Button><FaEdit /></Button>,
+            delete: <Button><FaTrash /></Button>,
         }
     })
     ///////////// TO BE LINKED WITH DATABASE////////////////////////
@@ -178,7 +189,7 @@ function Table({ columns, data }) {
                 return (
                 <tr {...row.getRowProps()}>
                     {row.cells.map(cell => {
-                    return <td {...cell.getCellProps()}> {cell.render('Cell')} </td>
+                        return <td {...cell.getCellProps()}> {cell.render('Cell')} </td>
                     })}
                 </tr>
                 )
