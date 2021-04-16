@@ -19,7 +19,7 @@ import PopupController from '../PopupController';
 import { useRouter } from "next/router";
 
 
-class BoardComponent extends React.Component<{router}> {
+class BoardComponent extends React.Component<{router, nextView}> {
 
   constructor(props) {
     super(props)
@@ -243,7 +243,8 @@ class BoardComponent extends React.Component<{router}> {
 
   endGame() {
     console.log("End game");
-    this.props.router.push("/currsessionresult");
+    this.props.nextView()
+    // this.props.router.push("/currsessionresult");
   }
 
 
@@ -252,9 +253,10 @@ class BoardComponent extends React.Component<{router}> {
     const index = this.state.playerTurn-1;
     let nextIndex;
     index === number-1 ? nextIndex = 0: nextIndex = index+1;
-    if (this.state.turnsTaken == 2 * this.state.numberOfPlayers){
-      this.endGame()
-    }
+    // if (this.state.turnsTaken == 2 * this.state.numberOfPlayers){
+    //   this.endGame()
+    // }
+    this.endGame()
     if (characters[index].position === 0 && this.state.turnsTaken < number){ 
     this.state.didStart = false;}
     this.state.turnsTaken++;
@@ -400,9 +402,10 @@ class BoardComponent extends React.Component<{router}> {
     fontSize:"30px"
   }
 
-  const BoardFunction = () => {
+  const BoardFunction = (props) => {
+    console.log(props)
     return (
-      <BoardComponent router={useRouter()}/>
+      <BoardComponent router={useRouter()} nextView={props.nextView}/>
     )
   }
 
