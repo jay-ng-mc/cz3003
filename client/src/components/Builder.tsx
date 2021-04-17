@@ -1,8 +1,5 @@
-import Grid from 'react-css-grid'
 import React, { Component } from 'react'
-import styles from '../board/board.module.css'
-import {Box, Stack, HStack, Button, Text, Flex, Heading, ThemeProvider, CSSReset, theme} from "@chakra-ui/react";
-import { Container } from './Container';
+import {Box, Stack, Button, Text, Flex, Heading, ThemeProvider, CSSReset, theme} from "@chakra-ui/react";
 import { GetQuestionQuery, Question, useGetAllQuestionQuery, GetAllQuestionQuery, useGetQuestionQuery } from "../generated/graphql";
 import { useTable } from 'react-table'
 import styled from 'styled-components'
@@ -40,27 +37,15 @@ const Styles = styled.div`
   }
 `
 
-class LevelBuilder extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selection: [],
-            type: 'topic 1',
-            difficulty: 1
-        };
- 
-    }
-
-    render() {
-        return (
-            <div>
-                <ThemeProvider theme= {theme}>
-                    <CSSReset />
-                    <LevelBuilderPage />
-                </ThemeProvider> 
-            </div>
-        )
-    }
+const LevelBuilder = () => {
+    return (
+        <div>
+            <ThemeProvider theme= {theme}>
+                <CSSReset />
+                <LevelBuilderPage />
+            </ThemeProvider> 
+        </div>
+    )
 }
 
  
