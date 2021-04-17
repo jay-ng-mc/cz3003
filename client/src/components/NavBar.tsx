@@ -41,9 +41,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
                     color="whiteAlpha.700"
                     variant="link">Logout</Button>
                 <Tag backgroundColor={"transparent"} mr={2}>{data.me.username}</Tag>
-                <NextLink href={"/character"}>
-                    <Link alignContent='center' color={"white"} mr={2}><CharacterIcon/></Link>
-                </NextLink>
+                <CharacterIcon/>
             </Flex>
         )   
     }
@@ -56,8 +54,8 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
                 </NextLink>
             </Box>
             <Box p={2}>
-                <NextLink href={"/game"}>
-                    <Link alignContent='center' color={"white"} mr={2}>Game</Link>
+                <NextLink href={"/board"}>
+                    <Link alignContent='center' color={"white"} mr={2}>Board</Link>
                 </NextLink>
             </Box>
             <Box p={2}>

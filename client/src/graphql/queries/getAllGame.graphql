@@ -7,7 +7,5 @@ query GetAllGame{
         startTime
         endTime
         score
-        totalCorrect
-        totalQuestion
     }
 }

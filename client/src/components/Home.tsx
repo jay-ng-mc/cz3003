@@ -111,7 +111,7 @@ const HomeBoxLogin = () => {
     return (
         <Box my={5} textAlign='left'>
             
-            <NextLink href={"/game"}>
+            <NextLink href={"/lobby"}>
                 <Button width='full' mt={5}>Start Game Lobby</Button>
             </NextLink>
         </Box>
