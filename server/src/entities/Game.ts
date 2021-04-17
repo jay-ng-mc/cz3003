@@ -39,6 +39,10 @@ export class Game {
 
   @Field()
   @Property({nullable: true})
+  totalCorrect!: number;
+
+  @Field()
+  @Property({nullable: true})
   totalQuestion!: number; 
 
 }
