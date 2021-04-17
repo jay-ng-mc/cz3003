@@ -8,7 +8,9 @@ import {
     NumberDecrementStepper,
   } from "@chakra-ui/react"
 import NextLink from "next/link";
-import React from "react";
+import React, { Component }  from "react";
+import Modal from 'react-awesome-modal';
+import Sublogin from './Sublogin';
 
 let imageList = ["images\\p0.png","images\\p1.png","images\\p2.png","images\\p3.png","images\\p4.png","images\\p5.png"]
 var savedImageId = 1 //can pass in from DB
@@ -81,10 +83,52 @@ function users(num : Number){
         </Box>
     }
     else if (num == userCount + 1){
-        var output = <Box w="100%" h="200" bg="gray.50" ><Center h="100px"><IconButton aria-label="New Character" isRound={true} icon={<AddIcon />} size='lg'/></Center></Box>   
+        var output = 
+        <Box w="100%" h="200" bg="gray.50" >
+        <Center h="100px">
+        <Popup/>
+        </Center>
+    </Box>   
     }
     else{}
     return output;
+}
+
+class Popup extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            visible : false
+        }
+    }
+
+    openModal() {
+        this.setState({
+            visible : true
+        });
+    }
+
+    closeModal() {
+        this.setState({
+            visible : false
+        });
+    }
+
+    render() {
+        return (
+            <Box>
+                <IconButton onClick={() => this.openModal()} aria-label="New Character" isRound={true} icon={<AddIcon />} size='lg'/>   
+                <Modal visible={this.state.visible} width="400" height="300" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    
+                        <Box borderWidth={1} px={4} width='full' maxWidth='500px' borderRadius={4} textAlign='center' boxShadow='lg'>
+                        <Sublogin/>
+                        <Button href="javascript:void(0);" onClick={() => this.closeModal()}>Close</Button>
+                        </Box>
+                   
+                </Modal>
+            </Box>
+        );
+    }
 }
 
 function GameLobbyContent(props){
