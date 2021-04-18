@@ -15,6 +15,6 @@ export default{
     entities: [ User, Question, Game, StudentTeacher, Character ],
     dbName: 'postgres',
     type: 'postgresql',
-    password: 'postgres',
+    password: 'Postgres',
     debug: !__prod__,
   }as Parameters<typeof MikroORM.init>[0];

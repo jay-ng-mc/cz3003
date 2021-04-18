@@ -149,7 +149,7 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
       const characters = [...this.state.characters];
       const index = this.state.playerTurn-1;
       characters[index] = {...this.state.characters[index]};
-      characters[index].wrongAnswer.push([questionArray[0], questionArray[1]], questionArray[2]);
+      characters[index].wrongAnswer.push([questionArray[0], questionArray[1], questionArray[2]]);
       this.setState({ characters });
     }
   }
@@ -289,20 +289,23 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
   };
 
   endGame() {
-    let sausageScore = [];
-    let correctAnswer = [];
-    let wrongAnswer = []
+    var results = [];
     for (let x = 1; x <= this.state.numberOfPlayers; x++){
-      sausageScore.push(this.state.characters[x-1].playerSausage)
-      correctAnswer.push(this.state.characters[x-1].correctAnswer)
-      wrongAnswer.push(this.state.characters[x-1].wrongAnswer)
-      this.props.updateEndGame(this.getCurrentDate(),
-      this.props.gameState.users[x-1], 
-      this.state.characters[x-1].playerSausage, 
-      this.state.characters[x-1].wrongAnswer.length()+this.state.characters[x-1].correctAnswer.length())
+      const result = {
+        username: this.state.characters[x-1].username,
+        playerSausage: this.state.characters[x-1].playerSausage,
+        correctAnswer: this.state.characters[x-1].correctAnswer,
+        wrongAnswer: this.state.characters[x-1].wrongAnswer
+      }
+      this.props.updateEndGame({gameId: this.getCurrentDate(),
+        username: result.username,
+        score: result.playerSausage,
+        totalQuestion: result.correctAnswer.length + result.wrongAnswer.length
+      })
+      console.log(this.props)
+      results.push(result)
     }
-    this.props.updateState({sausageScore: sausageScore, correctAnswer: correctAnswer, wrongAnswer: wrongAnswer})
-    console.log("End game");
+    this.props.updateState({results: results})
     this.props.nextView()
   }
 
@@ -312,7 +315,7 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
     const index = this.state.playerTurn-1;
     let nextIndex;
     index === number-1 ? nextIndex = 0: nextIndex = index+1;
-    if (this.state.turnsTaken == 2 * this.state.numberOfPlayers){
+    if (this.state.turnsTaken == 3 * this.state.numberOfPlayers){
       this.endGame()
     }
     if (characters[index].position === 0 && this.state.turnsTaken < number){ 
@@ -338,6 +341,11 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
         this.state.characters.push({
           characterId: index, username:username, playerCoins: 20, playerSausage: 0, mustardCount: 0,ketchupCount: 0,
           position:0,canMoveTo:[], wrongAnswer: [], correctAnswer: []
+        })
+        this.props.updateStartGame({gameId: this.getCurrentDate(),
+        username: username,
+        type: "Sausage",
+        difficulty: 1
         })
       })
     }
@@ -394,7 +402,7 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
       return "Game has not started"
     }
     else{ 
-      return (this.state.turnsTaken - this.state.playerTurn)/3 + 1
+      return (this.state.turnsTaken - this.state.playerTurn)/this.state.numberOfPlayers + 1
     }
   }
 

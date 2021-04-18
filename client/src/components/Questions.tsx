@@ -8,25 +8,44 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 const Questions = (props)  => {
     const [{data}] = useGetAllQuestionQuery({
         variables: {
-            type: "topic 2",
-            difficulty: 2,
+            type: "Sausage",
+            difficulty: 1,
         }
     })
-    const questionId = Math.floor(Math.random()*[{data}].length)
     const questionBank = data;
-    
+    console.log(questionBank)
+    const questionId = Math.floor(Math.random()*questionBank?.getAllQuestion.length)
+    console.log("Data:" + questionId); 
 
     return (
         <ThemeProvider theme={theme}>
             <CSSReset />
             <QuestionsPage 
-                questionBank={questionBank} questionId={questionId} 
+                questionBank={questionBank} questionId={questionId}
                 closePopup={props.closePopup} answerQuestion={props.answerQuestion}
                 updateQuestion={props.updateQuestion}
             />
         </ThemeProvider>
     );
 }
+
+/*async Data() {
+    const [{data,fetching}] = await useGetAllQuestionQuery({
+        variables: {
+            type: "Sausage",
+            difficulty: 1,
+        }
+    })
+    if (fetching){
+        console.log('fetching')
+    }else{
+         var questionBank = data.getAllQuestion;
+        if (questionBank == null){
+            console.log('nothing');
+        }
+    }
+    return questionBank;
+}*/
 
 const AnswerStyle = {
     borderWidth: "3px", 
@@ -125,23 +144,6 @@ class QuestionsPage extends React.Component <{questionBank, questionId, closePop
         )
     }
 
-    async Data() {
-        const [{data,fetching}] = await useGetAllQuestionQuery({
-            variables: {
-                type: "topic 2",
-                difficulty: 2,
-            }
-        })
-        if (fetching){
-            console.log('fetching')
-        }else{
-             var questionBank = data.getAllQuestion;
-            if (questionBank == null){
-                console.log('nothing');
-            }
-        }
-        return questionBank;
-    }
 
     changeColor1() {
         if (document.getElementById('A').style.backgroundColor == "yellow" ){
