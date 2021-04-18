@@ -4,7 +4,7 @@ import { useTable } from 'react-table'
 import {Box, Image, Button, Heading} from "@chakra-ui/react";
 import teacherData from './teacherData';
 import {FacebookShareButton, FacebookIcon} from "react-share";
-import { useGetAllStudentTeacherQuery } from '../../generated/graphql';
+import { useGetAllGameByUsernameQuery, useGetAllStudentTeacherQuery } from '../../generated/graphql';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
 
@@ -79,6 +79,21 @@ function Table({ columns, data }) {
         </table>
     )
 }
+    // function getscore(x){
+    //     console.log(x)
+    //     var [{data}] = useGetAllGameByUsernameQuery({
+    //         variables: {
+    //             username: x.student,
+    //         }
+    //     })
+    //     var allGames
+    //     if (data) {
+    //         allGames = Object.values(data.getAllGameByUsername)
+    //     } else {
+    //     allGames = []
+    //     }
+    //     console.log(allGames)
+    // }
 
     function Teacher() {
         const columns = React.useMemo(
@@ -97,17 +112,31 @@ function Table({ columns, data }) {
 
         var [{data}] = useGetAllStudentTeacherQuery({
             variables:{
-                teacher: 'me'
+                teacher: 't1'
             }
         });
         var studentTeachers
+        var studentList = []
         if (data) {
             studentTeachers = data.getAllStudentTeacher
         } else {
         studentTeachers = []
         }
-        studentTeachers.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
-        console.log(studentTeachers)
+        for (var i = 0; i < studentTeachers.length;i++){
+            var temp = String(studentTeachers[i].student);
+            // var temp1 = JSON.stringify(Object.values(temp)[0])
+            try{
+                studentList.push(temp)
+            }catch(err){
+                console.log(err)
+            }
+        }
+        console.log(studentList)
+        
+        //studentTeachers.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
+        //console.log(studentList)
+        //console.log(studentTeachers)
+        //console.log(studentTeachers['0'])
         var student = studentTeachers.map((studentTeacher) => {
         return {
         student: studentTeacher.student,
@@ -115,7 +144,7 @@ function Table({ columns, data }) {
         }
         
     })
-    console.log(student)
+    //console.log(student)
         //const data = React.useMemo(() => teacherData(10), [])
 
         return (
