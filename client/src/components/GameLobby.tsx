@@ -71,7 +71,7 @@ const Header = () => {
     )
 }
 
-function users(num : Number){
+function users(num : Number, addUser: any){
     let userCount: number = 3; //import from DB
     if (num <= userCount){
         var output = <Box w="100%" h="200" bg="gray.200" textAlign='center'>        
@@ -86,7 +86,7 @@ function users(num : Number){
         var output = 
         <Box w="100%" h="200" bg="gray.50" >
         <Center h="100px">
-        <Popup/>
+        <Popup addUser={addUser}/>
         </Center>
     </Box>   
     }
@@ -94,21 +94,12 @@ function users(num : Number){
     return output;
 }
 
-class Popup extends Component {
+class Popup extends Component<{addUser}> {
     constructor(props) {
         super(props);
-        this.addUser = this.addUser.bind(this)
         this.state = {
-            visible : false,
-            users: []
+            visible : false
         }
-    }
-
-    addUser(newUser){
-        this.setState({
-            users: [...this.state.users, newUser]
-        })
-        console.log(this.state)
     }
 
     openModal() {
@@ -130,7 +121,7 @@ class Popup extends Component {
                 <Modal visible={this.state.visible} width="400" height="300" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     
                         <Box borderWidth={1} px={4} width='full' maxWidth='500px' borderRadius={4} textAlign='center' boxShadow='lg'>
-                        <Sublogin addUser={this.addUser} closeModal={() => this.closeModal()}/>
+                        <Sublogin addUser={this.props.addUser} closeModal={() => this.closeModal()}/>
                         <Button href="javascript:void(0);" onClick={() => this.closeModal()}>Close</Button>
                         </Box>
                    
@@ -140,29 +131,45 @@ class Popup extends Component {
     }
 }
 
-function GameLobbyContent(props){
-    return(
-        <Box my={5} textAlign='left'>
-            <div>
-                <Grid templateColumns="repeat(4, 1fr)" gap={1}>
-                    <Box w="100%" h="200" bg="gray.200" textAlign='center'>        
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <IconButton aria-label="Change Character" isRound={true} icon={<SettingsIcon />} size='md'/>
-                        <Center><Image borderRadius="full" boxSize="30px" src={imageList[savedImageId]} alt="Avatar" img id="Avatar" /></Center>
-                        <Text fontSize="md">IGN</Text>
-                        <Text fontSize="md">Username</Text>
-                    </Box>
-                    { users(2) }
-                    { users(3) }
-                    { users(4) }
-                </Grid>
-                <Button onClick={() => {
-                    props.updateState({users: ['test', 'test2']}) //add your user list here: users: userlist
-                    props.nextView()
-                }} width='full' mt={5}>New Game</Button>
-            </div>
-        </Box>
-    ) 
+class GameLobbyContent extends React.Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            users: []
+        }
+        this.addUser = this.addUser.bind(this)
+    }
+    addUser(newUser){
+        this.setState({
+            users: [...this.state.users, newUser]
+        })
+        console.log(this.state)
+    }
+
+    render(){
+        return(
+            <Box my={5} textAlign='left'>
+                <div>
+                    <Grid templateColumns="repeat(4, 1fr)" gap={1}>
+                        <Box w="100%" h="200" bg="gray.200" textAlign='center'>        
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <IconButton aria-label="Change Character" isRound={true} icon={<SettingsIcon />} size='md'/>
+                            <Center><Image borderRadius="full" boxSize="30px" src={imageList[savedImageId]} alt="Avatar" img id="Avatar" /></Center>
+                            <Text fontSize="md">IGN</Text>
+                            <Text fontSize="md">Username</Text>
+                        </Box>
+                        { users(2, this.addUser) }
+                        { users(3) }
+                        { users(4) }
+                    </Grid>
+                    <Button onClick={() => {
+                        props.updateState({users: ['test', 'test2']}) //add your user list here: users: userlist
+                        props.nextView()
+                    }} width='full' mt={5}>New Game</Button>
+                </div>
+            </Box>
+        ) 
+    }
 }
 
 
