@@ -18,8 +18,9 @@ import Popup from 'reactjs-popup';
 import PopupController from '../PopupController';
 import { useRouter } from "next/router";
 import PlayerResult from '../CurrentResults';
+import { useUpdateStartGameMutation, useUpdateEndGameMutation } from '../../generated/graphql'
 
-class BoardComponent extends React.Component<{router, nextView, updateState, gameState}> {
+class BoardComponent extends React.Component<{router, nextView, updateState, gameState, updateStartGame, updateEndGame}> {
 
   constructor(props) {
     super(props)
@@ -27,7 +28,6 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
     this.updateQuestion = this.updateQuestion.bind(this);
     this.increaseKetchup = this.increaseKetchup.bind(this);
     this.increaseMustard = this.increaseMustard.bind(this);
-
   }
 
   state = {
@@ -44,16 +44,16 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
     playerTurn: 1,
     turnsTaken: 0,
     didStart: false,
-    numberOfPlayers: 3,
     movesLeft : 0,
     wall: [3,4,5,6,7,8,9,10,11,12,13,14,26,27,39,40,52,53,65,66,78,79,91,92,104,105,117,118,119,
     120,121,122,123,124,125,126,127,128,129,130,94,96,97,98,99,100,101,102,
     37,36,35,34,33,32,31,30,29],
     targetPlayer : 0,
+    numberOfPlayers: null,
     correctlyAnswered : null
   };
   
-    createBoard = () => {
+  createBoard = () => {
     let tileArray = []
     for (let counter = 130; counter > 0; counter--){
       tileArray.push(counter)
@@ -296,7 +296,7 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
       sausageScore.push(this.state.characters[x-1].playerSausage)
       correctAnswer.push(this.state.characters[x-1].correctAnswer)
       wrongAnswer.push(this.state.characters[x-1].wrongAnswer)
-      UpdateEndGame(this.getCurrentDate(),
+      this.props.updateEndGame(this.getCurrentDate(),
       this.props.gameState.users[x-1], 
       this.state.characters[x-1].playerSausage, 
       this.state.characters[x-1].wrongAnswer.length()+this.state.characters[x-1].correctAnswer.length())
@@ -328,19 +328,19 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
     this.setState({ characters });
   };
 
-  createCharacters = (number) =>{
+  createCharacters = () =>{
     if (this.state.charactersCreated == false){
       this.state.charactersCreated = true;
-      for (let x = 1; x <= number; x++){
-        UpdateStartGame(
-          this.getCurrentDate(),
-        this.props.gameState.users[x-1], 
-        "type", 
-        2)
-        this.state.characters.push(
-          {characterId: x, playerCoins: 20, playerSausage: 0, mustardCount: 0,ketchupCount: 0,
-          position:0,canMoveTo:[], wrongAnswer: [], correctAnswer: []})
-    }}
+      this.setState({
+        numberOfPlayers: this.props.gameState.users.length
+      })
+      this.props.gameState.users.map((username, index) => {
+        this.state.characters.push({
+          characterId: index, username:username, playerCoins: 20, playerSausage: 0, mustardCount: 0,ketchupCount: 0,
+          position:0,canMoveTo:[], wrongAnswer: [], correctAnswer: []
+        })
+      })
+    }
   };
 
   rollDice = (value) => {
@@ -402,7 +402,7 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
   render(){
     return (
       <div>
-        {this.createCharacters(this.state.numberOfPlayers)}
+        {this.createCharacters()}
         <Flex flexDir='column'>
           <Stack isInline={true} mt='30px' mb='30px' spacing ="10px" height='auto'>
             { this.state.characters.map(character => (
@@ -467,8 +467,16 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
 
   const BoardFunction = (props) => {
     console.log(props)
+    const [,updateStartGame] = useUpdateStartGameMutation()
+    const [,updateEndGame] = useUpdateEndGameMutation()
     return (
-      <BoardComponent router={useRouter()} nextView={props.nextView} updateState={props.updateState} gameState= {props.gameState}/>
+      <BoardComponent router={useRouter()}
+        nextView={props.nextView}
+        updateState={props.updateState}
+        gameState= {props.gameState}
+        updateStartGame={updateStartGame}
+        updateEndGame={updateEndGame}
+      />
     )
   }
 

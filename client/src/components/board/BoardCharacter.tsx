@@ -12,6 +12,9 @@ export default class BoardCharacter extends Component {
                     <b> Player  {this.props.character.characterId} </b>    
                 </Box>
                 <Box bg ="yellow" fontSize="20px" px={4}>
+                     Name: {this.props.character.username}
+                </Box>
+                <Box bg ="yellow" fontSize="20px" px={4}>
                      Coins: {this.props.character.playerCoins}  Sausages:  {this.props.character.playerSausage}
                 </Box>
                 <Box bg ="yellow" fontSize="20px" px={4}>
