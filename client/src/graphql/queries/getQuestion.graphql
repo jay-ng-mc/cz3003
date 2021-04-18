@@ -9,5 +9,10 @@ query GetQuestion($id: Float!){
     C
     D
     correctAnswer
+    levels{
+      questions{
+        id
+      }
+    }
   }
 }

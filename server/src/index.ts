@@ -14,6 +14,7 @@ import { QuestionResolver } from "./resolvers/question";
 import { GameResolver } from "./resolvers/game";
 import { StudentTeacherResolver } from "./resolvers/studentTeacher";
 import { CharacterResolver } from "./resolvers/character";
+import { LevelResolver } from "./resolvers/level";
 
 const main = async () => {
   // connect to database
@@ -51,7 +52,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [ UserResolver, QuestionResolver, GameResolver, StudentTeacherResolver, CharacterResolver ],
+      resolvers: [ UserResolver, QuestionResolver, GameResolver, StudentTeacherResolver, CharacterResolver, LevelResolver ],
       validate: false,
     }),
     context: ({ req, res }): MyContext => ({ em: orm.em, req, res })
