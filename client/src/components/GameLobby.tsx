@@ -159,12 +159,12 @@ class GameLobbyContent extends React.Component{
                             <Text fontSize="md">Username</Text>
                         </Box>
                         { users(2, this.addUser) }
-                        { users(3) }
-                        { users(4) }
+                        { users(3, this.addUser) }
+                        { users(4, this.addUser) }
                     </Grid>
                     <Button onClick={() => {
-                        props.updateState({users: ['test', 'test2']}) //add your user list here: users: userlist
-                        props.nextView()
+                        this.props.updateState({users: ['test', 'test2']}) //add your user list here: users: userlist
+                        this.props.nextView()
                     }} width='full' mt={5}>New Game</Button>
                 </div>
             </Box>
