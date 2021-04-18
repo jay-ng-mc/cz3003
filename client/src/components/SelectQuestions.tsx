@@ -1,19 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {Box, Stack, HStack, Button, Text, Flex, Heading, ThemeProvider, CSSReset, theme, Center, VStack} from "@chakra-ui/react";
 import { GetQuestionQuery, Question, useGetAllQuestionQuery, GetAllQuestionQuery, useGetQuestionQuery } from "../generated/graphql";
 import { useTable } from 'react-table'
 import styled from 'styled-components'
 import { Checkbox } from "@chakra-ui/react"
 import { Input } from "@chakra-ui/react"
-
-
-
+import { render } from 'react-dom';
 
 
 const SelectQuestions = () => {
 
-    const [selection, setSelection] = useState([3, 5, 14]);
+    const [selection, setSelection] = useState([]);
 
+    // const renderThis = () => {}
 
     const SelectedQuestions = () => {
         const columns = React.useMemo(
@@ -63,7 +62,6 @@ const SelectQuestions = () => {
         selected.sort((firstEl, secondEl) => firstEl.id - secondEl.id);
         console.log(selected);
     
-    
         var builder = selected.map((questions, index) => {
             return {
                 number: index + 1,
@@ -73,7 +71,7 @@ const SelectQuestions = () => {
                 difficulty: questions.difficulty,
             }
         })
-    
+         
         return (
             <Styles>
                 <Box textAlign='left'>
@@ -85,7 +83,6 @@ const SelectQuestions = () => {
                     </Center>
                 </Box>
             </Styles>
-            
         )
     }
 
@@ -157,7 +154,7 @@ const SelectQuestions = () => {
     
         var builder = questions.map((questions) => {
             return {
-                checkbox: <Checkbox />,
+                checkbox: <Checkbox onChange={() => updateSelection(questions.id)} defaultChecked={checked(questions.id)}/>,
                 questionId: questions.id,
                 questionTitle: questions.questionTitle,
                 A: questions.A,
@@ -169,21 +166,37 @@ const SelectQuestions = () => {
             }
         })
     
-        return builder;
+        return builder
     }
 
 
-    // const updateSelection = (questionId) => {
-    //     let newSelection = selection;
-    //     if (newSelection.includes(questionId)) {
-    //         newSelection.splice(questionId);
-    //     }
-    //     else {
-    //         newSelection.push(questionId);
-    //     }
+    const updateSelection = async (questionId) => {
+        let newSelection = selection;
+        if (newSelection.includes(questionId)) {
+            var index = newSelection.indexOf(questionId);
+            newSelection.splice(index, 1);
+            console.log(questionId + ' unchecked');
+        }
+        else {
+            newSelection.push(questionId);
+            console.log(questionId + ' checked');
+        }
 
-    //     setSelection(newSelection);
-    // }
+        setSelection(newSelection);
+    }
+
+    useEffect(() => {
+        console.log('new state', selection)
+    }, [selection])
+    
+
+
+    const checked = (questionId) => {
+        if(selection.includes(questionId)) {
+            return true;
+        }
+        return false;
+    }
 
 
     const QuestionTables = () => {
@@ -256,14 +269,14 @@ const SelectQuestions = () => {
         )
     }
 
-    
+
     return (
         <div>
             <ThemeProvider theme= {theme}>
                 <CSSReset />
                 <Center>
                     <VStack>
-                        <Heading size='xl'>Your Level</Heading>
+                        <Heading size='xl'>Level Editor</Heading>
                         <Input w='25vw' marginLeft='2vw' placeholder="Name of level"/>
                     </VStack>
                 </Center>   
