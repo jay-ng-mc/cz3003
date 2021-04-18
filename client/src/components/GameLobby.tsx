@@ -97,9 +97,18 @@ function users(num : Number){
 class Popup extends Component {
     constructor(props) {
         super(props);
+        this.addUser = this.addUser.bind(this)
         this.state = {
-            visible : false
+            visible : false,
+            users: []
         }
+    }
+
+    addUser(newUser){
+        this.setState({
+            users: [...this.state.users, newUser]
+        })
+        console.log(this.state)
     }
 
     openModal() {
@@ -121,7 +130,7 @@ class Popup extends Component {
                 <Modal visible={this.state.visible} width="400" height="300" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     
                         <Box borderWidth={1} px={4} width='full' maxWidth='500px' borderRadius={4} textAlign='center' boxShadow='lg'>
-                        <Sublogin/>
+                        <Sublogin addUser={this.addUser} closeModal={() => this.closeModal()}/>
                         <Button href="javascript:void(0);" onClick={() => this.closeModal()}>Close</Button>
                         </Box>
                    

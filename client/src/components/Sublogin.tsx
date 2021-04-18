@@ -1,13 +1,13 @@
 import { Box, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
 import React from "react";
 import {Formik, Form} from "formik";
-import { useLoginMutation, useSubloginMutation} from "../generated/graphql";
+import { useSubloginMutation} from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { useRouter } from "next/router";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
     
-const SubloginForm = () => {
+const SubloginForm = (props) => {
     const router = useRouter();
     const [,sublogin] = useSubloginMutation();
     return (
@@ -20,7 +20,9 @@ const SubloginForm = () => {
                     if(response.data?.sublogin.errors){
                         setErrors(toErrorMap(response.data.sublogin.errors));
                     } else if (response.data?.sublogin.user) {
-                        console.log(response.data?.sublogin.user)
+                        console.log(response.data.sublogin.user)
+                        props.addUser(response.data.sublogin.user)
+                        props.closeModal()
                         //worked
                         // call some function passed in from outside sublogin to set the user
                     }
