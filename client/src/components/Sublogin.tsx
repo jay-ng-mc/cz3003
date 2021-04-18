@@ -21,7 +21,7 @@ const SubloginForm = (props) => {
                         setErrors(toErrorMap(response.data.sublogin.errors));
                     } else if (response.data?.sublogin.user) {
                         console.log(response.data.sublogin.user)
-                        props.addUser(response.data.sublogin.user)
+                        props.addUser(response.data.sublogin.user.username)
                         props.closeModal()
                         //worked
                         // call some function passed in from outside sublogin to set the user

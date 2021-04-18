@@ -1,5 +1,5 @@
 import {ThemeProvider, theme, CSSReset, Flex, Box, IconButton, Center, Button, Image, Grid, Text } from "@chakra-ui/react";
-import { SettingsIcon, CloseIcon, AddIcon, ArrowBackIcon } from '@chakra-ui/icons'
+import { CloseIcon, AddIcon, ArrowBackIcon } from '@chakra-ui/icons'
 import {
     NumberInput,
     NumberInputField,
@@ -53,6 +53,7 @@ const BackIcon = () => {
         aria-label="Home"
         isRound={true} 
         icon={<ArrowBackIcon />}
+        onClick={() => <NextLink href={"/"} />}
         size='lg'/>
         </Box>
     )
@@ -71,18 +72,15 @@ const Header = () => {
     )
 }
 
-function users(num : Number, addUser: any){
-    let userCount: number = 3; //import from DB
-    if (num <= userCount){
+function dispUsers(num: Number, userList : any, addUser: any, removeUser: any){
+    if (num < userList.length){
         var output = <Box w="100%" h="200" bg="gray.200" textAlign='center'>        
-            <IconButton aria-label="Delete Character" isRound={true} icon={<CloseIcon />} size='md'/>&#8239;
-            <IconButton aria-label="Change Character" isRound={true} icon={<SettingsIcon />} size='md'/>
+            <IconButton aria-label="Delete Character" isRound={true} icon={<CloseIcon />} onClick={() => removeUser(num)}  size='md'/>&#8239;
             <Center><Image borderRadius="full" boxSize="30px" src={imageList[savedImageId2]} alt="Avatar" img id="Avatar" /></Center>
-            <Text fontSize="md">IGN</Text>
-            <Text fontSize="md">Username</Text>
+            {userList[num]}
         </Box>
     }
-    else if (num == userCount + 1){
+    else if (num == userList.length){
         var output = 
         <Box w="100%" h="200" bg="gray.50" >
         <Center h="100px">
@@ -145,6 +143,12 @@ class GameLobbyContent extends React.Component{
         })
         console.log(this.state)
     }
+    removeUser(indexNum){
+        this.setState({
+            users: [...this.state.users].splice(indexNum,1)
+        })
+        console.log("After removal: " + this.state.users)
+    } 
 
     render(){
         return(
@@ -153,17 +157,16 @@ class GameLobbyContent extends React.Component{
                     <Grid templateColumns="repeat(4, 1fr)" gap={1}>
                         <Box w="100%" h="200" bg="gray.200" textAlign='center'>        
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <IconButton aria-label="Change Character" isRound={true} icon={<SettingsIcon />} size='md'/>
                             <Center><Image borderRadius="full" boxSize="30px" src={imageList[savedImageId]} alt="Avatar" img id="Avatar" /></Center>
-                            <Text fontSize="md">IGN</Text>
-                            <Text fontSize="md">Username</Text>
+                            <Text fontSize="md">Logged in Username</Text> //pass from db
                         </Box>
-                        { users(2, this.addUser) }
-                        { users(3, this.addUser) }
-                        { users(4, this.addUser) }
+                        { dispUsers(0, this.state.users, this.addUser, this.removeUser) }
+                        { dispUsers(1, this.state.users, this.addUser, this.removeUser) }
+                        { dispUsers(2, this.state.users, this.addUser, this.removeUser) }
+                        
                     </Grid>
                     <Button onClick={() => {
-                        this.props.updateState({users: ['test', 'test2']}) //add your user list here: users: userlist
+                        this.props.updateState({users: this.state.users}) 
                         this.props.nextView()
                     }} width='full' mt={5}>New Game</Button>
                 </div>
