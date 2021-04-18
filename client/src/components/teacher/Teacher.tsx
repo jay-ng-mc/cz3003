@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useTable } from 'react-table'
 import {Box, Image, Button, Heading} from "@chakra-ui/react";
 import {FacebookShareButton, FacebookIcon} from "react-share";
-import { useGetAllStudentTeacherQuery, useMeQuery } from '../../generated/graphql';
+import { useGetAllGameByUsernameQuery, useGetAllStudentTeacherQuery, useMeQuery } from '../../generated/graphql';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
 
@@ -78,6 +78,50 @@ function Table({ columns, data }) {
         </table>
     )
 }
+    function getscore(x){
+        console.log(x)
+        var dataNeeded = [];
+        var masteryScore = 0
+        for (var j = 0; j < x.length;j++){
+            var allGames
+            var dataInside = new Object()
+            var correctSum = 0
+            var questionSum = 0
+            var [{data}] = useGetAllGameByUsernameQuery({
+                variables: {
+                    username: x[j],
+                }
+            })
+            if (data) {
+                allGames = data.getAllGameByUsername
+            } else {
+            allGames = []
+            }
+            for (var i = 0; i < allGames.length;i++){
+                // var temp1 = parseInt(allGames[i].totalCorrect);
+                // var temp2 = parseInt(allGames[i].totalQuestion);
+                try{
+                    var temp1 = parseInt(allGames[i].totalCorrect);
+                    var temp2 = parseInt(allGames[i].totalQuestion);
+                    correctSum += temp1
+                    questionSum += temp2
+                }catch(err){
+                    console.log(err)
+                }
+                console.log(correctSum)
+                console.log(questionSum)
+                masteryScore =  parseInt(((correctSum/questionSum)*100).toFixed())
+                dataInside['student'] = x[j]
+                dataInside['mastery'] = masteryScore
+            }
+            dataNeeded.push(dataInside)
+            
+        }
+        
+        console.log(allGames)
+        console.log(dataNeeded)
+        return dataNeeded
+    }
 
 function Teacher() {
     var columns = React.useMemo(
@@ -105,6 +149,7 @@ function Teacher() {
         console.log('Did not persist: no me data in StudentLogin')
     }
 
+<<<<<<< HEAD
     var studentTeachers = []
     var [{data}] = useGetAllStudentTeacherQuery({
         variables:{
@@ -119,12 +164,53 @@ function Teacher() {
     studentTeachers.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
     console.log(studentTeachers)
     students = studentTeachers.map((studentTeacher) => {
+=======
+        var [{data}] = useGetAllStudentTeacherQuery({
+            variables:{
+                teacher: 't1'
+            }
+        });
+        var studentTeachers
+        var studentList = []
+        if (data) {
+            studentTeachers = data.getAllStudentTeacher
+        } else {
+        studentTeachers = []
+        }
+        for (var i = 0; i < studentTeachers.length;i++){
+            var temp = String(studentTeachers[i].student);
+            try{
+                studentList.push(temp)
+            }catch(err){
+                console.log(err)
+            }
+        }
+        console.log(studentList)
+        var needed =  getscore(studentList)
+        //studentTeachers.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
+        //console.log(studentList)
+        //console.log(studentTeachers)
+        //console.log(studentTeachers['0'])
+<<<<<<< HEAD
+        var student = studentTeachers.map((studentTeacher) => {
+>>>>>>> 974b644 (changes1.0)
         return {
             student: studentTeacher.student,
             mastery: Math.floor(Math.random() * 100),
+=======
+        var student = needed.map((studentTeacher) => {
+        return {
+        student: studentTeacher.student,
+        mastery: studentTeacher.mastery,
+>>>>>>> 58c08e5 (added mstery calculation)
         }
     })
+<<<<<<< HEAD
     console.log(students)
+=======
+    //console.log(student)
+        //const data = React.useMemo(() => teacherData(10), [])
+>>>>>>> 974b644 (changes1.0)
 
     return <TeacherComponent myName={myName} students={students} columns={columns}/>
 }
