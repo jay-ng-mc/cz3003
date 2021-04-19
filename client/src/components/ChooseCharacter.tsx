@@ -6,7 +6,7 @@ import {Formik, Form} from "formik";
 import {useUpdateCharacterMutation, useMeQuery, useGetCharacterQuery} from "../generated/graphql";
 
 let imageList = [...Array(8)].map((_, i) => `icons/${i+1}.png`)
-var savedImageId = 0  //can pass in from DB
+var savedImageId = 0  //passed in from database later
 
 const ChooseCharacter = () => {
     return (
@@ -126,7 +126,7 @@ function ChooseImage({ imageId }) {
     return (
     <Flex justifyContent="center">
       <ButtonGroup justifyContent="center" size="sm">
-        {/* <IconButton icon={<ChevronLeftIcon />} onClick={prevImage} isRound={true} aria-label='previous'/> */}
+        <IconButton icon={<ChevronLeftIcon />} onClick={prevImage} isRound={true} aria-label='previous'/>
         {render()}
         <IconButton icon={<ChevronRightIcon />} onClick={nextImage} isRound={true} aria-label='next'/>
         </ButtonGroup>
@@ -146,11 +146,13 @@ function ChooseImage({ imageId }) {
     }
 }
 
-// function prevImage() {
-//   savedImageId = (savedImageId-1)%8; //had some rendering error while trying to put -1 and spam clicking
-//   (document.getElementById('Avatar') as HTMLImageElement).src = imageList[savedImageId]
-//   //alert(imageList[savedImageId])
-// }
+function prevImage() {
+  savedImageId = (savedImageId-1)%8; 
+  if (savedImageId < 0){
+    savedImageId = 7
+  }
+  (document.getElementById('Avatar') as HTMLImageElement).src = imageList[savedImageId]
+}
 
 function nextImage() {
   savedImageId = (savedImageId+1)%8;

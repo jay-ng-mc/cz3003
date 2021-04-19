@@ -10,22 +10,12 @@ const imageList = [...Array(8)].map((_, i) => `icons/${i+1}.png`)
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
 
-    const CharacterIcon = () => {
-        return (
-            <IconButton 
-            aria-label="Change Character"
-            isRound={true} 
-            size='lg'/>
-        )
-    }
-
     var SetIcon = ({userName}) => {
         var [{data}] = useGetCharacterQuery({
           variables: {username: userName}
         });      
         if (data) {
           var imageId = data.getCharacter.characterId          
-          console.log(imageId)
         } 
         return(
                 <Image
@@ -61,9 +51,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
                     variant="link">Logout</Button>
                 <Tag backgroundColor={"transparent"} mr={2}>{data.me.username}</Tag>
                 <NextLink href={"/character"}>
-                    {/* <Link alignContent='center' color={"white"} mr={2}><CharacterIcon /></Link> */}
                     <Link alignContent='center' color={"white"} mr={2}><SetIcon userName={data.me.username} /></Link>
-
                 </NextLink>
             </Flex>
         )   
