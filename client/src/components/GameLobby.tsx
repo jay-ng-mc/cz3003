@@ -107,6 +107,15 @@ const Header = () => {
 //not sure where to put get image list
 
 function dispUsers(num: Number, userList : any, addUser: any, removeUser: any){
+    var [{data}] = useGetCharacterQuery({
+        variables: {username: 'user2'}
+      });
+      if (data?.getCharacter) {
+        savedImageId2 = data.getCharacter.characterId
+      } else {
+          savedImageId2 = 2
+      }
+
     if (num < userList.length){
         var output = <Box w="100%" h="200" bg="gray.200" textAlign='right'>        
             <IconButton aria-label="Delete Character" isRound={true} icon={<CloseIcon />} onClick={() => removeUser(num)}  size='md'/>&#8239;
