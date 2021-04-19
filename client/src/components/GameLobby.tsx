@@ -11,10 +11,13 @@ import NextLink from "next/link";
 import React, { Component }  from "react";
 import Modal from 'react-awesome-modal';
 import Sublogin from './Sublogin';
+import { useMeQuery, useGetCharacterQuery } from "../generated/graphql";
 
 let imageList = ["images\\p0.png","images\\p1.png","images\\p2.png","images\\p3.png","images\\p4.png","images\\p5.png"]
 var savedImageId = 1 //can pass in from DB
 var savedImageId2 = 2 //can pass in from DB
+
+
 
 const GameLobby = (props) => {
     return (
@@ -28,6 +31,24 @@ const GameLobby = (props) => {
 }
 
 const GameLobbyBox = (props) => {
+        const isServer = () => typeof window ==="undefined";
+        const getMe = () => {
+          const [{data, fetching}] = useMeQuery({
+            pause: isServer(),
+          });
+          return data
+        }
+        var meData = getMe()
+        var userName
+        if (meData) {
+          userName = meData.me.username
+        }
+        var [{data}] = useGetCharacterQuery({
+            variables: {username: userName}
+          });
+          if (data) {
+            var savedImageIdx = data.getCharacter.characterId
+          } 
     return (
         <Flex minHeight='80vh' width='full' align='center' justifyContent='center'>
             <Box borderWidth={1} px={4} h="auto" w="60vw" borderRadius={4} textAlign='center' boxShadow='lg'>
@@ -38,7 +59,7 @@ const GameLobbyBox = (props) => {
                         <Header/>
                     </Box>
                     <Box flex='3'>
-                        <GameLobbyContent updateState={props.updateState} nextView={props.nextView}/>
+                        <GameLobbyContent updateState={props.updateState} nextView={props.nextView} data={userName}/>
                     </Box>
                 </Box>
             </Box>
@@ -49,12 +70,13 @@ const GameLobbyBox = (props) => {
 const BackIcon = () => {
     return (
         <Box my={3} textAlign='left'>
+        <NextLink href={"/"}>
         <IconButton 
         aria-label="Home"
         isRound={true} 
         icon={<ArrowBackIcon />}
-        onClick={() => <NextLink href={"/"} />}
         size='lg'/>
+        </NextLink>
         </Box>
     )
 }
@@ -129,13 +151,14 @@ class Popup extends Component<{addUser}> {
     }
 }
 
-class GameLobbyContent extends React.Component{
+class GameLobbyContent extends React.Component<{data}>{
     constructor(props){
         super(props)
         this.state = {
             users: []
         }
         this.addUser = this.addUser.bind(this)
+        this.removeUser = this.removeUser.bind(this)
     }
     addUser(newUser){
         this.setState({
@@ -145,7 +168,7 @@ class GameLobbyContent extends React.Component{
     }
     removeUser(indexNum){
         this.setState({
-            users: [...this.state.users].splice(indexNum,1)
+            ...this.state.users.splice(indexNum,1)
         })
         console.log("After removal: " + this.state.users)
     } 
@@ -158,7 +181,8 @@ class GameLobbyContent extends React.Component{
                         <Box w="100%" h="200" bg="gray.200" textAlign='center'>        
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <Center><Image borderRadius="full" boxSize="30px" src={imageList[savedImageId]} alt="Avatar" img id="Avatar" /></Center>
-                            <Text fontSize="md">Logged in Username</Text> //pass from db
+
+                            {this.props.data}
                         </Box>
                         { dispUsers(0, this.state.users, this.addUser, this.removeUser) }
                         { dispUsers(1, this.state.users, this.addUser, this.removeUser) }
