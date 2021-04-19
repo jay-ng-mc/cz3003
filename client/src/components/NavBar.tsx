@@ -13,10 +13,13 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     var SetIcon = ({userName}) => {
         var [{data}] = useGetCharacterQuery({
           variables: {username: userName}
-        });      
-        if (data) {
-          var imageId = data.getCharacter.characterId          
-        } 
+        });
+        var imageId
+        if (data?.getCharacter) {
+            imageId = data.getCharacter.characterId
+        } else {
+            imageId = 0
+        }
         return(
                 <Image
                   borderRadius="full"

@@ -85,12 +85,15 @@ const SaveBox = () => {
   var [{data}] = useGetCharacterQuery({
     variables: {username: userName}
   });
-  if (data) {
+  if (data?.getCharacter) {
     savedImageId = data.getCharacter.characterId
-  } 
+  } else {
+    savedImageId = 0
+  }
 
   const [,updateCharacter] = useUpdateCharacterMutation();
   const submit = () => {
+
     updateCharacter({username: userName, characterId: savedImageId});
     window.location.reload(false);
   }
@@ -147,10 +150,7 @@ function ChooseImage({ imageId }) {
 }
 
 function prevImage() {
-  savedImageId = (savedImageId-1)%8; 
-  if (savedImageId < 0){
-    savedImageId = 7
-  }
+  savedImageId = (savedImageId-1)%8;
   (document.getElementById('Avatar') as HTMLImageElement).src = imageList[savedImageId]
 }
 
