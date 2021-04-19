@@ -8,6 +8,7 @@ import { createUrqlClient } from "../utils/createUrqlClient";
     
 const LoginForm = () => {
     const router = useRouter();
+    const param = router.query
     const [,updateStudentTeacher] = useUpdateStudentTeacherMutation();
     return (
         <Box my={8} textAlign='left'>
@@ -15,7 +16,7 @@ const LoginForm = () => {
                 initialValues={{ student: '', password: '' }}
                 
                 onSubmit={async (values, {setErrors}) => {
-                    await updateStudentTeacher({student: values.student, teacher: teacherName});
+                    await updateStudentTeacher({student: values.student, teacher: param.tid.toString()});
                     router.push("/");
 
                 }}
