@@ -14,8 +14,6 @@ import Sublogin from './Sublogin';
 import { useMeQuery, useGetCharacterQuery } from "../generated/graphql";
 
 let imageList = ["images\\p0.png","images\\p1.png","images\\p2.png","images\\p3.png","images\\p4.png","images\\p5.png"]
-var savedImageId2 = 2 //can pass in from DB
-
 
 const GameLobby = (props) => {
     return (
@@ -27,6 +25,8 @@ const GameLobby = (props) => {
         </div>
     );
 }
+
+
 
 const GameLobbyBox = (props) => {
         const isServer = () => typeof window ==="undefined";
@@ -95,39 +95,36 @@ const Header = () => {
     )
 }
 
-/*var [{data}] = useGetCharacterQuery({
-    variables: {username: userList[num]}
-  });
-  if (data?.getCharacter) {
-    savedImageId2 = data.getCharacter.characterId
-  } else {
-      savedImageId2 = 2
-  }
-*/
-//not sure where to put get image list
+const DispUsers = (props) => {
+    const ImageId = (userName) => {
+        var curImageId
+        var [{data}] = useGetCharacterQuery({
+            variables: {username: userName}
+          });
+          if (data?.getCharacter) {
+                curImageId = data.getCharacter.characterId
+          } else {
+                curImageId = 1
+          }
+        return (
+                curImageId
+        );
+    }
 
-function dispUsers(num: Number, userList : any, addUser: any, removeUser: any){
-    var [{data}] = useGetCharacterQuery({
-        variables: {username: 'user2'}
-      });
-      if (data?.getCharacter) {
-        savedImageId2 = data.getCharacter.characterId
-      } else {
-          savedImageId2 = 2
-      }
+    var output = null
 
-    if (num < userList.length){
-        var output = <Box w="100%" h="200" bg="gray.200" textAlign='right'>        
-            <IconButton aria-label="Delete Character" isRound={true} icon={<CloseIcon />} onClick={() => removeUser(num)}  size='md'/>&#8239;
-            <Center><Image borderRadius="full" boxSize="30px" src={imageList[savedImageId2]} alt="Avatar" img id="Avatar" /></Center>
-            <Center>{userList[num]}</Center>
+    if (props.num < props.userList.length){
+        output = <Box w="100%" h="200" bg="gray.200" textAlign='right'>        
+            <IconButton aria-label="Delete Character" isRound={true} icon={<CloseIcon />} onClick={() => props.removeUser(props.num)}  size='md'/>&#8239;
+            <Center><Image borderRadius="full" boxSize="30px" src={imageList[ImageId(props.userList[props.num])]} alt="Avatar" img id="Avatar" /></Center>
+            <Center>{props.userList[props.num]}</Center>
         </Box>
     }
-    else if (num == userList.length){
-        var output = 
+    else if (props.num == props.userList.length){
+        output = 
         <Box w="100%" h="200" bg="gray.50" >
         <Center h="100px">
-        <Popup addUser={addUser}/>
+        <Popup addUser={props.addUser}/>
         </Center>
     </Box>   
     }
@@ -203,9 +200,9 @@ class GameLobbyContent extends React.Component<{username, imageId}>{
                             <Center><br/><br/><Image borderRadius="full" boxSize="30px" src={imageList[this.props.imageId]} alt="Avatar" img id="Avatar" /></Center>
                             {this.props.username}
                         </Box>
-                        { dispUsers(0, this.state.users, this.addUser, this.removeUser) }
-                        { dispUsers(1, this.state.users, this.addUser, this.removeUser) }
-                        { dispUsers(2, this.state.users, this.addUser, this.removeUser) }
+                        < DispUsers num={0} userList={this.state.users} addUser={this.addUser} removeUser={this.removeUser} />
+                        < DispUsers num={1} userList={this.state.users} addUser={this.addUser} removeUser={this.removeUser} />
+                        < DispUsers num={2} userList={this.state.users} addUser={this.addUser} removeUser={this.removeUser} />
                         
                     </Grid>
                     <Button onClick={() => {
