@@ -1,6 +1,6 @@
 import { Question } from "../entities/Question";
 import { MyContext } from "src/types";
-import { Arg, Ctx, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 
 
 @Resolver()
@@ -11,7 +11,7 @@ export class QuestionResolver {
         @Arg( 'id' ) id: number,
         @Ctx() { em }: MyContext
     ): Promise<Question | null>{
-        return em.findOne(Question, { id });
+        return em.findOne(Question, { id } ,['levels']);
     }
 
     @Query(() => [Question], { nullable: true })

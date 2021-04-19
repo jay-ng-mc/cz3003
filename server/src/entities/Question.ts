@@ -1,5 +1,6 @@
-import { Entity, PrimaryKey, Property } from "mikro-orm";
+import { Collection, Entity, ManyToMany, PrimaryKey, Property } from "mikro-orm";
 import { Field, ObjectType } from "type-graphql";
+import { Level } from "./Level";
 
 @ObjectType()
 @Entity()
@@ -40,5 +41,9 @@ export class Question {
   @Field()
   @Property({type: 'text'})
   correctAnswer!: string;
+
+  @Field(() => [Level], {nullable:true})
+  @ManyToMany(() => Level, level => level.questions)
+  levels = new Collection<Level>(this);
   
 }
