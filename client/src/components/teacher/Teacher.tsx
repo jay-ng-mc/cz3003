@@ -4,7 +4,7 @@ import { useTable } from 'react-table'
 import {Box, Image, Button, Heading} from "@chakra-ui/react";
 import teacherData from './teacherData';
 import {FacebookShareButton, FacebookIcon} from "react-share";
-import { useGetAllStudentTeacherQuery } from '../../generated/graphql';
+import { useGetAllStudentTeacherQuery, useMeQuery } from '../../generated/graphql';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
 
@@ -95,9 +95,19 @@ function Table({ columns, data }) {
             []
         )
 
+        var me
+        const isServer = () => typeof window ==="undefined";
+        const [{data: meData, fetching}] = useMeQuery({
+            pause: isServer(),
+        });
+        if (!fetching && meData?.me) {
+            me = meData.me.username
+        } else {
+            console.log('Did not persist: no me data in StudentLogin')
+        }
         var [{data}] = useGetAllStudentTeacherQuery({
             variables:{
-                teacher: 'me'
+                teacher: me
             }
         });
         var studentTeachers
@@ -129,7 +139,7 @@ function Table({ columns, data }) {
                         Share Class
                     </Button> */}
                     <FacebookShareButton 
-                url={"http://127.0.0.1:3000/student"}
+                url={`http://127.0.0.1:3000/student/`}
                 quote={"Join my class"}
                 hashtag="#Sausage_Party">
                  <FacebookIcon size={36} />

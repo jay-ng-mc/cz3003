@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Teacher from '../components/teacher/Teacher'
 import { NavBar } from '../components/NavBar'
 import { Container } from '../components/Container'
+import { withUrqlClient } from 'next-urql';
+import { createUrqlClient } from '../utils/createUrqlClient';
 
 class teacher extends React.Component {
   render() {
@@ -14,4 +16,4 @@ class teacher extends React.Component {
   }
 }
 
-export default teacher;
+export default withUrqlClient(createUrqlClient) (teacher);;

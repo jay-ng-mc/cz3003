@@ -12,10 +12,10 @@ const LoginForm = () => {
     return (
         <Box my={8} textAlign='left'>
             <Formik
-                initialValues={{ student: '', teacher: '' }}
+                initialValues={{ student: '', password: '' }}
                 
                 onSubmit={async (values, {setErrors}) => {
-                    await updateStudentTeacher({student: values.student, teacher: 'me'});
+                    await updateStudentTeacher({student: values.student, teacher: teacherName});
                     router.push("/");
 
                 }}
@@ -45,10 +45,10 @@ const LoginForm = () => {
                             <FormLabel>Password:</FormLabel>
                             <Input
                                 type="password"
-                                name="teacher"
+                                name="password"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.teacher}
+                                value={values.password}
                             />
                         </FormControl>
                         
