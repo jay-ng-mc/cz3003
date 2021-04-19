@@ -1,9 +1,12 @@
 import React from "react";
 import {ThemeProvider, theme, CSSReset, Flex, Box, Heading, IconButton, IconButtonProps, Link, FormControl, FormLabel, Input, Stack, Checkbox, Button, Editable, EditableInput, EditablePreview, ButtonGroup, Image, Avatar } from "@chakra-ui/react";
 import { EditIcon, CheckIcon, CloseIcon, ChevronLeftIcon, ChevronRightIcon, ArrowBackIcon } from '@chakra-ui/icons'
+import { useRouter } from "next/router";
+import {Formik, Form} from "formik";
+import {useUpdateCharacterMutation, useMeQuery, useGetCharacterQuery} from "../generated/graphql";
 
 let imageList = [...Array(8)].map((_, i) => `icons/${i+1}.png`)
-var savedImageId = 1 //can pass in from DB
+var savedImageId = 0  //passed in from database later
 
 const ChooseCharacter = () => {
     return (
@@ -22,7 +25,6 @@ const CharacterPage = () => {
                 <Box p={4}>
                     <Title />
                     <CharacterName />
-                    <ChangeAvatar />
                     <SaveBox />
                 </Box>
             </Box>
@@ -66,22 +68,47 @@ const CharacterName = () => {
     )
 }
 
-const ChangeAvatar = () => {
-    return (
-        <Box my={5} textAlign='center'>
-            <ChooseImage imageId={savedImageId} />
-        </Box>
-    )
-}
 
 const SaveBox = () => {
-    return (
-        <Box my={5} textAlign='left'>
-            
-            <Button width='full' mt={5}>Save</Button>
-            
+  const isServer = () => typeof window ==="undefined";
+  const getMe = () => {
+    const [{data, fetching}] = useMeQuery({
+      pause: isServer(),
+    });
+    return data
+  }
+  var meData = getMe()
+  var userName
+  if (meData) {
+    userName = meData.me.username
+  }
+  var [{data}] = useGetCharacterQuery({
+    variables: {username: userName}
+  });
+  if (data?.getCharacter) {
+    savedImageId = data.getCharacter.characterId
+  } else {
+    savedImageId = 0
+  }
+
+  const [,updateCharacter] = useUpdateCharacterMutation();
+  const submit = () => {
+
+    updateCharacter({username: userName, characterId: savedImageId});
+    window.location.reload(false);
+  }
+  return (
+    <Box>
+        <Box my={5} textAlign='center'>
+          <ChooseImage imageId={savedImageId} />
         </Box>
+        <Box my={5} textAlign='left'>
+            <Button width='full' mt={5} onClick={submit}> Save </Button>   
+        </Box>
+    </Box>
     )
+
+
 }
 
 function EditableControls({ isEditing, onSubmit, onCancel, onEdit }) {
@@ -123,9 +150,8 @@ function ChooseImage({ imageId }) {
 }
 
 function prevImage() {
-  savedImageId = (savedImageId-1)%8; //had some rendering error while trying to put -1 and spam clicking
+  savedImageId = (savedImageId-1)%8;
   (document.getElementById('Avatar') as HTMLImageElement).src = imageList[savedImageId]
-  //alert(imageList[savedImageId])
 }
 
 function nextImage() {

@@ -1,20 +1,32 @@
-import { Link, Flex, Box, Button, Spacer, IconButton, Tag } from "@chakra-ui/react"
+import { Link, Flex, Box, Button, Spacer, IconButton, Tag, Image } from "@chakra-ui/react"
 import NextLink from "next/link";
-import { useMeQuery, useLogoutMutation } from "../generated/graphql";
+import { useMeQuery, useLogoutMutation, useGetCharacterQuery } from "../generated/graphql";
+import { render } from "react-dom";
 
 interface NavBarProps {
 
 }
+const imageList = [...Array(8)].map((_, i) => `icons/${i+1}.png`)
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
 
-    const CharacterIcon = () => {
-        return (
-            <IconButton 
-            aria-label="Change Character"
-            isRound={true} 
-            size='lg'/>
-        )
+    var SetIcon = ({userName}) => {
+        var [{data}] = useGetCharacterQuery({
+          variables: {username: userName}
+        });
+        var imageId
+        if (data?.getCharacter) {
+            imageId = data.getCharacter.characterId
+        } else {
+            imageId = 0
+        }
+        return(
+                <Image
+                  borderRadius="full"
+                  boxSize="45px"
+                  src={imageList[imageId]}
+                  />
+              )          
     }
 
     const isServer = () => typeof window ==="undefined";
@@ -42,7 +54,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
                     variant="link">Logout</Button>
                 <Tag backgroundColor={"transparent"} mr={2}>{data.me.username}</Tag>
                 <NextLink href={"/character"}>
-                    <Link alignContent='center' color={"white"} mr={2}><CharacterIcon/></Link>
+                    <Link alignContent='center' color={"white"} mr={2}><SetIcon userName={data.me.username} /></Link>
                 </NextLink>
             </Flex>
         )   
@@ -86,6 +98,6 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
             </Box>
         </Flex>
     )
-
-
 }
+
+ 

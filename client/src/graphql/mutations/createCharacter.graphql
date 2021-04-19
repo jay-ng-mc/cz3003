@@ -1,0 +1,8 @@
+mutation CreateCharacter($username: String!, $characterId: Float!){
+    createCharacter(options: {username: $username, characterId: $characterId}){
+        character{
+            username
+            characterId
+        }
+    }
+}

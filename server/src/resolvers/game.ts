@@ -67,20 +67,20 @@ export class GameResolver {
         @Ctx() { em }: MyContext
     ): Promise<GameResponse> {
         let game;
-            const result = await (em as EntityManager)
-            .createQueryBuilder(Game)
-            .getKnexQuery()
-            .insert({
-                game_id: options.gameId,
-                username: options.username,
-                type: options.type,
-                difficulty: options.difficulty,
-                start_time: new Date(),
-                end_time: null,
-                score: null,
-                total_question: null,
-            }).returning("*");
-            game = result[0];
+        const result = await (em as EntityManager)
+        .createQueryBuilder(Game)
+        .getKnexQuery()
+        .insert({
+            game_id: options.gameId,
+            username: options.username,
+            type: options.type,
+            difficulty: options.difficulty,
+            start_time: new Date(),
+            end_time: null,
+            score: null,
+            total_question: null,
+        }).returning("*");
+        game = result[0];
 
         return {game};
     }
