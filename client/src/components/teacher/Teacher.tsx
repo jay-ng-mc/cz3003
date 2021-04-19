@@ -79,21 +79,50 @@ function Table({ columns, data }) {
         </table>
     )
 }
-    // function getscore(x){
-    //     console.log(x)
-    //     var [{data}] = useGetAllGameByUsernameQuery({
-    //         variables: {
-    //             username: x.student,
-    //         }
-    //     })
-    //     var allGames
-    //     if (data) {
-    //         allGames = Object.values(data.getAllGameByUsername)
-    //     } else {
-    //     allGames = []
-    //     }
-    //     console.log(allGames)
-    // }
+    function getscore(x){
+        console.log(x)
+        var dataNeeded = [];
+        var masteryScore = 0
+        for (var j = 0; j < x.length;j++){
+            var allGames
+            var dataInside = new Object()
+            var correctSum = 0
+            var questionSum = 0
+            var [{data}] = useGetAllGameByUsernameQuery({
+                variables: {
+                    username: x[j],
+                }
+            })
+            if (data) {
+                allGames = data.getAllGameByUsername
+            } else {
+            allGames = []
+            }
+            for (var i = 0; i < allGames.length;i++){
+                // var temp1 = parseInt(allGames[i].totalCorrect);
+                // var temp2 = parseInt(allGames[i].totalQuestion);
+                try{
+                    var temp1 = parseInt(allGames[i].totalCorrect);
+                    var temp2 = parseInt(allGames[i].totalQuestion);
+                    correctSum += temp1
+                    questionSum += temp2
+                }catch(err){
+                    console.log(err)
+                }
+                console.log(correctSum)
+                console.log(questionSum)
+                masteryScore =  parseInt(((correctSum/questionSum)*100).toFixed())
+                dataInside['student'] = x[j]
+                dataInside['mastery'] = masteryScore
+            }
+            dataNeeded.push(dataInside)
+            
+        }
+        
+        console.log(allGames)
+        console.log(dataNeeded)
+        return dataNeeded
+    }
 
     function Teacher() {
         const columns = React.useMemo(
@@ -124,7 +153,6 @@ function Table({ columns, data }) {
         }
         for (var i = 0; i < studentTeachers.length;i++){
             var temp = String(studentTeachers[i].student);
-            // var temp1 = JSON.stringify(Object.values(temp)[0])
             try{
                 studentList.push(temp)
             }catch(err){
@@ -132,15 +160,15 @@ function Table({ columns, data }) {
             }
         }
         console.log(studentList)
-        
+        var needed =  getscore(studentList)
         //studentTeachers.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
         //console.log(studentList)
         //console.log(studentTeachers)
         //console.log(studentTeachers['0'])
-        var student = studentTeachers.map((studentTeacher) => {
+        var student = needed.map((studentTeacher) => {
         return {
         student: studentTeacher.student,
-        mastery: Math.floor(Math.random() * 100),
+        mastery: studentTeacher.mastery,
         }
         
     })
