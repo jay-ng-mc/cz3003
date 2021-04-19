@@ -2,9 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { useTable } from 'react-table'
 import {Box, Image, Button, Heading} from "@chakra-ui/react";
-import teacherData from './teacherData';
 import {FacebookShareButton, FacebookIcon} from "react-share";
-import { useGetAllStudentTeacherQuery } from '../../generated/graphql';
+import { useGetAllStudentTeacherQuery, useMeQuery } from '../../generated/graphql';
 import { withUrqlClient } from 'next-urql';
 import { createUrqlClient } from '../../utils/createUrqlClient';
 
@@ -80,44 +79,59 @@ function Table({ columns, data }) {
     )
 }
 
-    function Teacher() {
-        const columns = React.useMemo(
-            () => [
-            {
-                Header: 'Username',
-                accessor: 'student',
-            },
-            {
-                Header: 'Mastery',
-                accessor: 'mastery',
-            },
-            ],
-            []
-        )
+function Teacher() {
+    var columns = React.useMemo(
+        () => [
+        {
+            Header: 'Username',
+            accessor: 'student',
+        },
+        {
+            Header: 'Mastery',
+            accessor: 'mastery',
+        },
+        ],
+        []
+    )
 
-        var [{data}] = useGetAllStudentTeacherQuery({
-            variables:{
-                teacher: 'me'
-            }
-        });
-        var studentTeachers
-        if (data) {
-            studentTeachers = data.getAllStudentTeacher
-        } else {
-        studentTeachers = []
+    var myName
+    const isServer = () => typeof window ==="undefined";
+    const [{data: meData, fetching}] = useMeQuery({
+        pause: isServer(),
+    });
+    if (!fetching && meData?.me) {
+        myName = meData.me.username
+    } else {
+        console.log('Did not persist: no me data in StudentLogin')
+    }
+
+    var studentTeachers = []
+    var [{data}] = useGetAllStudentTeacherQuery({
+        variables:{
+            teacher: myName
         }
-        studentTeachers.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
-        console.log(studentTeachers)
-        var student = studentTeachers.map((studentTeacher) => {
+    });
+    if (myName && data) {
+        studentTeachers = data.getAllStudentTeacher
+    }
+
+    var students = []
+    studentTeachers.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
+    console.log(studentTeachers)
+    students = studentTeachers.map((studentTeacher) => {
         return {
-        student: studentTeacher.student,
-        mastery: Math.floor(Math.random() * 100),
+            student: studentTeacher.student,
+            mastery: Math.floor(Math.random() * 100),
         }
-        
     })
-    console.log(student)
-        //const data = React.useMemo(() => teacherData(10), [])
+    console.log(students)
 
+    return <TeacherComponent myName={myName} students={students} columns={columns}/>
+}
+
+class TeacherComponent extends React.Component<{myName, students, columns}> {
+
+    render() {
         return (
             <Styles>
                 <Box p={3} textAlign='center'>
@@ -128,17 +142,21 @@ function Table({ columns, data }) {
                     bgPosition='center' bgSize='112px 45px'>
                         Share Class
                     </Button> */}
-                    <FacebookShareButton 
-                url={"http://127.0.0.1:3000/student"}
-                quote={"Join my class"}
-                hashtag="#Sausage_Party">
-                 <FacebookIcon size={36} />
-              </FacebookShareButton>
+                    {this.props.myName ?
+                        <FacebookShareButton 
+                            url={`http://127.0.0.1:3000/student/${this.props.myName}`}
+                            quote={"Join my class"}
+                            hashtag="#Sausage_Party">
+                            <FacebookIcon size={36} />
+                        </FacebookShareButton>
+                        : "Loading share button"
+                    }
                 </Box>
                 <Heading textAlign='center' mb='10px'>Students in my class</Heading>
-                <Table columns={columns} data={student} />
+                <Table columns={this.props.columns} data={this.props.students} />
             </Styles>
-    )
+        )
+    }
 }
 
 

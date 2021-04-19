@@ -8,14 +8,15 @@ import { createUrqlClient } from "../utils/createUrqlClient";
     
 const LoginForm = () => {
     const router = useRouter();
+    const param = router.query
     const [,updateStudentTeacher] = useUpdateStudentTeacherMutation();
     return (
         <Box my={8} textAlign='left'>
             <Formik
-                initialValues={{ student: '', teacher: '' }}
+                initialValues={{ student: '', password: '' }}
                 
                 onSubmit={async (values, {setErrors}) => {
-                    await updateStudentTeacher({student: values.student, teacher: values.teacher});
+                    await updateStudentTeacher({student: values.student, teacher: param.tid.toString()});
                     router.push("/");
 
                 }}
@@ -33,22 +34,22 @@ const LoginForm = () => {
                         <FormControl mt={4}>
                             <FormLabel>Login ID:</FormLabel>
                             <Input 
-                                type="teacher"
-                                name="teacher"
+                                type="student"
+                                name="student"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.teacher}
+                                value={values.student}
                             />
                         </FormControl>
                             
                         <FormControl mt={4}>
                             <FormLabel>Password:</FormLabel>
                             <Input
-                                type="student"
-                                name="student"
+                                type="password"
+                                name="password"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                value={values.student}
+                                value={values.password}
                             />
                         </FormControl>
                         
