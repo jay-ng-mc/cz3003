@@ -29,24 +29,6 @@ const Questions = (props)  => {
     );
 }
 
-/*async Data() {
-    const [{data,fetching}] = await useGetAllQuestionQuery({
-        variables: {
-            type: "topic 1",
-            difficulty: 1,
-        }
-    })
-    if (fetching){
-        console.log('fetching')
-    }else{
-         var questionBank = data.getAllQuestion;
-        if (questionBank == null){
-            console.log('nothing');
-        }
-    }
-    return questionBank;
-}*/
-
 const AnswerStyle = {
     borderWidth: "3px", 
     borderColor:  "#000000",
