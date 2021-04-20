@@ -47,15 +47,15 @@ const SavedLevels = () => {
         () => [
             {
                 Header: 'No.',
+                accessor: 'number',
+            },
+            {
+                Header: 'Level ID',
                 accessor: 'levelID',
             },
             {
-                Header: 'Level Name',
-                accessor: 'levelName',
-            },
-            {
-                Header: 'Date Created',
-                accessor: 'dateCreated',
+                Header: 'Level',
+                accessor: 'level',
             },
             {
                 Header: 'Created By',
@@ -93,9 +93,9 @@ const SavedLevels = () => {
 
     var builder = questions.map((questions, index) => {
         return {
+            number: index + 1,
             levelID: index + 1,
-            levelName: 'SSAD',
-            dateCreated: '13/4/21',
+            level: 3,
             creator: 'SX',
             edit: <Button><FaEdit /></Button>,
             delete: <Button><FaTrash /></Button>,
