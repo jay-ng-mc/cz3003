@@ -25,6 +25,8 @@ class EndGameInput {
     score: number;
     @Field()
     totalQuestion: number;
+    @Field()
+    totalCorrect: number;
 }
 
 @ObjectType()
@@ -79,6 +81,7 @@ export class GameResolver {
             end_time: null,
             score: null,
             total_question: null,
+            total_correct: null
         }).returning("*");
         game = result[0];
 
@@ -95,6 +98,7 @@ export class GameResolver {
             game.endTime = new Date();
             game.score = options.score;
             game.totalQuestion = options.totalQuestion;
+            game.totalCorrect = options.totalCorrect;
             await em.persistAndFlush(game);
         } else{
             return null

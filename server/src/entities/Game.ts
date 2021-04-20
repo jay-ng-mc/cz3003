@@ -1,4 +1,4 @@
-import { Entity, PrimaryKey, Property } from "mikro-orm";
+import { BigIntType, Entity, PrimaryKey, Property } from "mikro-orm";
 import { Field, ObjectType } from "type-graphql";
 
 @ObjectType()
@@ -10,7 +10,7 @@ export class Game {
   id!: number;
 
   @Field()
-  @Property()
+  @Property({ type: BigIntType })
   gameId!: number;
 
   @Field(() => String)
