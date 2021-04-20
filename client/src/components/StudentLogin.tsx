@@ -15,7 +15,7 @@ const LoginForm = () => {
                 initialValues={{ student: '', teacher: '' }}
                 
                 onSubmit={async (values, {setErrors}) => {
-                    await updateStudentTeacher({student: values.student, teacher: 'me'});
+                    await updateStudentTeacher({student: values.student, teacher: values.teacher});
                     router.push("/");
 
                 }}
