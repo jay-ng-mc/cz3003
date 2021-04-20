@@ -48,7 +48,7 @@ const LevelSelection = () => {
         // <Stack isInline={true} marginTop='2vw'>
            // <NextLink href={"/selectquestions"}>
             <Formik
-                initialValues={{ level: 1, createdBy: ''}}
+                initialValues={{ level: 1, createdBy: '' }}
                 
                 onSubmit={async (values, {setErrors}) => {
                     const response = await createLevel({level: values.level, createdBy: values.createdBy});
@@ -128,14 +128,6 @@ const SavedLevels = () => {
                 Header: 'Created By',
                 accessor: 'creator',
             },
-            {
-                Header: 'Edit',
-                accessor: 'edit',
-            },
-            {
-                Header: 'Delete',
-                accessor: 'delete',
-            },
         ],
         []
       )
@@ -163,8 +155,6 @@ const SavedLevels = () => {
             levelID: levels.id,
             level: levels.level,
             creator: levels.createdBy,
-            edit: <Button><FaEdit /></Button>,
-            delete: <Button><FaTrash /></Button>,
         }
     })
     ///////////// TO BE LINKED WITH DATABASE////////////////////////
