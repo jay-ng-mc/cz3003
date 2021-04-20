@@ -78,7 +78,7 @@ function Table({ columns, data }) {
         </table>
     )
 }
-    function getscore(x){
+    function getScore(x){
         console.log(x)
         var dataNeeded = [];
         var masteryScore = 0
@@ -149,70 +149,38 @@ function Teacher() {
         console.log('Did not persist: no me data in StudentLogin')
     }
 
-<<<<<<< HEAD
-    var studentTeachers = []
     var [{data}] = useGetAllStudentTeacherQuery({
         variables:{
             teacher: myName
         }
     });
+    var studentTeachers = []
+    var studentList = []
     if (myName && data) {
         studentTeachers = data.getAllStudentTeacher
     }
-
-    var students = []
-    studentTeachers.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
-    console.log(studentTeachers)
-    students = studentTeachers.map((studentTeacher) => {
-=======
-        var [{data}] = useGetAllStudentTeacherQuery({
-            variables:{
-                teacher: 't1'
-            }
-        });
-        var studentTeachers
-        var studentList = []
-        if (data) {
-            studentTeachers = data.getAllStudentTeacher
-        } else {
-        studentTeachers = []
+    for (var i = 0; i < studentTeachers.length;i++){
+        var temp = String(studentTeachers[i].student);
+        try{
+            studentList.push(temp)
+        }catch(err){
+            console.log(err)
         }
-        for (var i = 0; i < studentTeachers.length;i++){
-            var temp = String(studentTeachers[i].student);
-            try{
-                studentList.push(temp)
-            }catch(err){
-                console.log(err)
-            }
-        }
-        console.log(studentList)
-        var needed =  getscore(studentList)
-        //studentTeachers.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
-        //console.log(studentList)
-        //console.log(studentTeachers)
-        //console.log(studentTeachers['0'])
-<<<<<<< HEAD
-        var student = studentTeachers.map((studentTeacher) => {
->>>>>>> 974b644 (changes1.0)
+    }
+    console.log(studentList)
+    var needed = []
+    if (studentList) {
+        needed = getScore(studentList)
+        needed.sort((firstEl, secondEl) => firstEl.score - secondEl.score)
+    }
+    var studentMasteryList = needed.map((studentTeacher) => {
         return {
             student: studentTeacher.student,
-            mastery: Math.floor(Math.random() * 100),
-=======
-        var student = needed.map((studentTeacher) => {
-        return {
-        student: studentTeacher.student,
-        mastery: studentTeacher.mastery,
->>>>>>> 58c08e5 (added mstery calculation)
+            mastery: studentTeacher.mastery,
         }
     })
-<<<<<<< HEAD
-    console.log(students)
-=======
-    //console.log(student)
-        //const data = React.useMemo(() => teacherData(10), [])
->>>>>>> 974b644 (changes1.0)
-
-    return <TeacherComponent myName={myName} students={students} columns={columns}/>
+    console.log(studentList)
+    return <TeacherComponent myName={myName} students={studentMasteryList} columns={columns}/>
 }
 
 class TeacherComponent extends React.Component<{myName, students, columns}> {
