@@ -5,6 +5,8 @@ import { useTable } from 'react-table'
 import styled from 'styled-components'
 import NextLink from "next/link";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import {FacebookShareButton, FacebookIcon} from "react-share";
+
 
 
 const LevelBuilder = () => {
@@ -26,6 +28,12 @@ const LevelBuilderPage = () => {
             <LevelSelection />
             <Heading size='lg' marginTop='5vw'>Your saved levels</Heading>
             <SavedLevels />
+            <FacebookShareButton 
+                url={"http://127.0.0.1:3000/builder"}
+                quote={"Join my class!"}
+                hashtag="#Sausage_Party">
+                 <FacebookIcon size={36} />
+              </FacebookShareButton>
         </div>
     )
 }
