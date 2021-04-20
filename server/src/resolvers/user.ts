@@ -29,6 +29,14 @@ class LoginInput {
     userType: string;
 }
 
+@InputType()
+class SubloginInput {
+    @Field()
+    username: string;
+    @Field()
+    password: string;
+}
+
 @ObjectType()
 class FieldError {
     @Field()
@@ -162,7 +170,7 @@ export class UserResolver {
 
     @Mutation(() => UserResponse)
     async sublogin(
-        @Arg('options') options: LoginInput,
+        @Arg('options') options: SubloginInput,
         @Ctx() { em }: MyContext
     ): Promise<UserResponse> {
         const user = await em.findOne(User, { username: options.username });

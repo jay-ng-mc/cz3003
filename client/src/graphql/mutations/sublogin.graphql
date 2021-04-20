@@ -1,5 +1,5 @@
-mutation Sublogin($username: String!, $password: String!, $userType: String!) {
-  sublogin(options: { username: $username, password: $password, userType: $userType }) {
+mutation Sublogin($username: String!, $password: String!) {
+  sublogin(options: { username: $username, password: $password }) {
     errors {
       field
       message
