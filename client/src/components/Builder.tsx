@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import {Box, Stack, Button, Text, Flex, Heading, ThemeProvider, CSSReset, theme} from "@chakra-ui/react";
-import { GetQuestionQuery, Question, useGetAllQuestionQuery, GetAllQuestionQuery, useGetQuestionQuery } from "../generated/graphql";
+import { Box, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
+import {Stack, Text, Flex, Heading, ThemeProvider, CSSReset, theme} from "@chakra-ui/react";
+import { useCreateLevelMutation, Question, useGetAllQuestionQuery, GetAllQuestionQuery, useGetQuestionQuery, useGetAllLevelQuery } from "../generated/graphql";
 import { useTable } from 'react-table'
 import styled from 'styled-components'
 import NextLink from "next/link";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import {FacebookShareButton, FacebookIcon} from "react-share";
+import { useRouter } from "next/router";
+import {Formik, Form} from "formik";
 
 
 
@@ -39,14 +42,70 @@ const LevelBuilderPage = () => {
 }
 
 const LevelSelection = () => {
+    const router = useRouter();
+    const [,createLevel] = useCreateLevelMutation();
     return(
-        <Stack isInline={true} marginTop='2vw'>
-            <NextLink href={"/selectquestions"}>
-                <Button w='30vw' h='70px' boxShadow='lg'  bgColor='green' textAlign='center'>
-                    <Heading>Create New Level</Heading>
-                </Button>
-            </NextLink>
-        </Stack>
+        // <Stack isInline={true} marginTop='2vw'>
+           // <NextLink href={"/selectquestions"}>
+            <Formik
+                initialValues={{ level: 1, createdBy: ''}}
+                
+                onSubmit={async (values, {setErrors}) => {
+                    const response = await createLevel({level: values.level, createdBy: values.createdBy});
+                    // if(response.data?.createLevel.errors){
+                    //     setErrors(toErrorMap(response.data.createLevel.errors));
+                    // } else
+                     if (response.data?.createLevel) {
+                        //worked
+                        router.push("/selectquestions");
+                    }
+                }}
+            >
+                {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    /* and other goodies */
+                }) => (
+                    <Form onSubmit={handleSubmit}>
+                        <FormControl mt={4}>
+                            <FormLabel>Level: </FormLabel>
+                            <Input 
+                                type="number"
+                                name="level"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.level}
+                            />
+                        </FormControl>
+                            
+                        <FormControl mt={4}>
+                            <FormLabel>Created By: </FormLabel>
+                            <Input
+                                type="createdBy"
+                                name="createdBy"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.createdBy}
+                            />
+            
+                        </FormControl>
+                        
+                        <Button w='30vw' h='70px' type="submit" isLoading={isSubmitting} boxShadow='lg'  bgColor='green' textAlign='center'>
+                            <Heading>Create New Level</Heading>
+                        </Button>
+                    </Form>
+                )}
+            </Formik>
+                // <Button w='30vw' h='70px' boxShadow='lg'  bgColor='green' textAlign='center'>
+                //     <Heading>Create New Level</Heading>
+                // </Button>
+           // </NextLink>
+       // </Stack>
     )
 }
 
@@ -82,29 +141,28 @@ const SavedLevels = () => {
       )
 
     ///////////// TO BE LINKED WITH DATABASE////////////////////////
-    const [{data}] = useGetAllQuestionQuery({
+    const [{data}] = useGetAllLevelQuery({
         variables: {
-            type: 'topic 1',
-            difficulty: 1,
+            createdBy: 'test1',
         }
     })
 
-    var questions
+    var levels
     if (data) {
-      questions = data.getAllQuestion
+      levels = data.getAllLevel
     } else {
-      questions = []
+      levels = []
     }
-    questions.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
-    console.log(questions)
+    levels.sort((firstEl, secondEl) => firstEl.score - secondEl.score) 
+    console.log(levels)
 
 
-    var builder = questions.map((questions, index) => {
+    var builder = levels.map((levels, index) => {
         return {
             number: index + 1,
-            levelID: index + 1,
-            level: 3,
-            creator: 'SX',
+            levelID: levels.id,
+            level: levels.level,
+            creator: levels.createdBy,
             edit: <Button><FaEdit /></Button>,
             delete: <Button><FaTrash /></Button>,
         }

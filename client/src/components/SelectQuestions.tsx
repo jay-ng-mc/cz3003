@@ -340,6 +340,11 @@ import { Checkbox } from "@chakra-ui/react"
 import { Input } from "@chakra-ui/react"
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
+import { useUpdateLevelMutation } from "../generated/graphql";
+import { FormControl, FormLabel} from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import {Formik, Form} from "formik";
+
 
 
 const SelectQuestions = () => {
@@ -409,16 +414,20 @@ const SelectQuestions = () => {
         console.log(props.selected)
         
         return (
-            
             <Styles>
                 <Box textAlign='left'>
                     {console.log(props.selection)}
                     {console.log(props.selected)}
                     <Table columns={columns} data={builder}/>
                     <Center>
-                        <Button w='30vw' h='4vw' boxShadow='lg'  bgColor='green' marginTop='3'>
-                            <Heading>Save</Heading>
-                        </Button>
+                        <HStack spacing='5vw'>
+                            <Button w='30vw' h='4vw' boxShadow='lg'  bgColor='green' marginTop='3'>
+                                <Heading>Update</Heading>
+                            </Button>
+                            <Button w='30vw' h='4vw' boxShadow='lg'  bgColor='green' marginTop='3'>
+                                <Heading>Save</Heading>
+                            </Button>
+                        </HStack>
                     </Center>
                 </Box>
             </Styles>
@@ -492,8 +501,10 @@ const SelectQuestions = () => {
     
     
         var builder = questions.map((questions) => {
+            var numb = parseInt(questions.id)
             return {
-                checkbox: <Checkbox onChange={() => updateSelection(questions.id)} defaultChecked={checked(questions.id)}/>,
+                // checkbox: <Button onClick={() => updateSelection(questions.id)} defaultChecked={checked(questions.id)}/>,
+                checkbox: <LevelSelection questionI={numb}/>,
                 questionId: questions.id,
                 questionTitle: questions.questionTitle,
                 A: questions.A,
@@ -523,8 +534,49 @@ const SelectQuestions = () => {
         }
 
         await setSelection(newSelection);
+        
     }
     
+    const LevelSelection = ({questionI}) => {
+        const router = useRouter();
+        const [,updateLevel] = useUpdateLevelMutation();
+        return(
+            // <Stack isInline={true} marginTop='2vw'>
+               // <NextLink href={"/selectquestions"}>
+                <Formik
+                    initialValues={{ level: 1, createdBy: ''}}
+                    
+                    onSubmit={async (values, {setErrors}) => {
+                        const response = await updateLevel({level: 1, createdBy: "test1", levelId: 3, questionId:questionI});
+                        // if(response.data?.createLevel.errors){
+                        //     setErrors(toErrorMap(response.data.createLevel.errors));
+                        // } else
+                    }}
+                >
+                    {({
+                        values,
+                        errors,
+                        touched,
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        isSubmitting,
+                        /* and other goodies */
+                    }) => (
+                        <Form onSubmit={handleSubmit}>
+                            <Button onClick={() => updateSelection(questionI)} defaultChecked={checked(questionI)} w='30vw' h='70px' type="submit" isLoading={isSubmitting} boxShadow='lg'  bgColor='green' textAlign='center'>
+                                <Heading>click</Heading>
+                            </Button>
+                        </Form>
+                    )}
+                </Formik>
+                    // <Button w='30vw' h='70px' boxShadow='lg'  bgColor='green' textAlign='center'>
+                    //     <Heading>Create New Level</Heading>
+                    // </Button>
+               // </NextLink>
+           // </Stack>
+        )
+    }
 
     const checked = (questionId) => {
         if(selection.includes(questionId)) {
@@ -613,7 +665,6 @@ const SelectQuestions = () => {
                     <VStack>
                         <Heading size='xl'>Level Editor</Heading>       
                         <Heading size='md'>Level ID: 1</Heading>
-                        <Input w='20vw' marginLeft='2vw' placeholder="Level"/>
                     </VStack>
                 </Center>   
                 <SelectedQuestions selection={selection}/>
@@ -623,6 +674,7 @@ const SelectQuestions = () => {
             </ThemeProvider> 
         </div>
     )
+    
 }
 
 

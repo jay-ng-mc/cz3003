@@ -14,102 +14,6 @@ export type Scalars = {
   Float: number;
 };
 
-export type Character = {
-  __typename?: 'Character';
-  id: Scalars['Float'];
-  username: Scalars['String'];
-  characterId: Scalars['Float'];
-};
-
-export type CharacterInput = {
-  username: Scalars['String'];
-  characterId: Scalars['Float'];
-};
-
-export type EndGameInput = {
-  gameId: Scalars['Float'];
-  username: Scalars['String'];
-  score: Scalars['Float'];
-  totalQuestion: Scalars['Float'];
-};
-
-export type FieldError = {
-  __typename?: 'FieldError';
-  field: Scalars['String'];
-  message: Scalars['String'];
-};
-
-export type Game = {
-  __typename?: 'Game';
-  id: Scalars['Float'];
-  gameId: Scalars['Float'];
-  username: Scalars['String'];
-  type: Scalars['String'];
-  difficulty: Scalars['Float'];
-  startTime: Scalars['String'];
-  endTime: Scalars['String'];
-  score: Scalars['Float'];
-  totalQuestion: Scalars['Float'];
-};
-
-export type GameResponse = {
-  __typename?: 'GameResponse';
-  game?: Maybe<Game>;
-};
-
-export type LoginInput = {
-  username: Scalars['String'];
-  password: Scalars['String'];
-  userType: Scalars['String'];
-};
-
-export type Mutation = {
-  __typename?: 'Mutation';
-  register: UserResponse;
-  login: UserResponse;
-  sublogin: UserResponse;
-  logout: Scalars['Boolean'];
-  updateStartGame: GameResponse;
-  updateEndGame: GameResponse;
-  updateStudentTeacher: StudentTeacherResponse;
-  updateCharacter: Character;
-};
-
-
-export type MutationRegisterArgs = {
-  options: RegisterInput;
-};
-
-
-export type MutationLoginArgs = {
-  options: LoginInput;
-};
-
-
-export type MutationSubloginArgs = {
-  options: LoginInput;
-};
-
-
-export type MutationUpdateStartGameArgs = {
-  options: StartGameInput;
-};
-
-
-export type MutationUpdateEndGameArgs = {
-  options: EndGameInput;
-};
-
-
-export type MutationUpdateStudentTeacherArgs = {
-  options: StudentTeacherInput;
-};
-
-
-export type MutationUpdateCharacterArgs = {
-  options: CharacterInput;
-};
-
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
@@ -122,6 +26,8 @@ export type Query = {
   getStudentTeacher?: Maybe<StudentTeacher>;
   getAllStudentTeacher?: Maybe<Array<StudentTeacher>>;
   getCharacter?: Maybe<Character>;
+  getLevel?: Maybe<Level>;
+  getAllLevel?: Maybe<Array<Level>>;
 };
 
 
@@ -166,49 +72,9 @@ export type QueryGetCharacterArgs = {
   username: Scalars['String'];
 };
 
-export type Question = {
-  __typename?: 'Question';
-  id: Scalars['Float'];
-  difficulty: Scalars['Float'];
-  type: Scalars['String'];
-  questionTitle: Scalars['String'];
-  A: Scalars['String'];
-  B: Scalars['String'];
-  C: Scalars['String'];
-  D: Scalars['String'];
-  correctAnswer: Scalars['String'];
-};
 
-export type RegisterInput = {
-  email: Scalars['String'];
-  username: Scalars['String'];
-  password: Scalars['String'];
-  password2: Scalars['String'];
-  userType: Scalars['String'];
-};
-
-export type StartGameInput = {
-  gameId: Scalars['Float'];
-  username: Scalars['String'];
-  type: Scalars['String'];
-  difficulty: Scalars['Float'];
-};
-
-export type StudentTeacher = {
-  __typename?: 'StudentTeacher';
-  id: Scalars['Float'];
-  student: Scalars['String'];
-  teacher: Scalars['String'];
-};
-
-export type StudentTeacherInput = {
-  student: Scalars['String'];
-  teacher: Scalars['String'];
-};
-
-export type StudentTeacherResponse = {
-  __typename?: 'StudentTeacherResponse';
-  studentTeacher?: Maybe<StudentTeacher>;
+export type QueryGetAllLevelArgs = {
+  createdBy: Scalars['String'];
 };
 
 export type User = {
@@ -221,15 +87,209 @@ export type User = {
   userType: Scalars['String'];
 };
 
+export type Question = {
+  __typename?: 'Question';
+  id: Scalars['Float'];
+  difficulty: Scalars['Float'];
+  type: Scalars['String'];
+  questionTitle: Scalars['String'];
+  A: Scalars['String'];
+  B: Scalars['String'];
+  C: Scalars['String'];
+  D: Scalars['String'];
+  correctAnswer: Scalars['String'];
+  levels?: Maybe<Array<Level>>;
+};
+
+export type Level = {
+  __typename?: 'Level';
+  id: Scalars['Float'];
+  level: Scalars['Float'];
+  dateCreated: Scalars['String'];
+  createdBy: Scalars['String'];
+  questions?: Maybe<Array<Question>>;
+};
+
+export type Game = {
+  __typename?: 'Game';
+  id: Scalars['Float'];
+  gameId: Scalars['Float'];
+  username: Scalars['String'];
+  type: Scalars['String'];
+  difficulty: Scalars['Float'];
+  startTime: Scalars['String'];
+  endTime: Scalars['String'];
+  score: Scalars['Float'];
+  totalCorrect: Scalars['Float'];
+  totalQuestion: Scalars['Float'];
+};
+
+export type StudentTeacher = {
+  __typename?: 'StudentTeacher';
+  id: Scalars['Float'];
+  student: Scalars['String'];
+  teacher: Scalars['String'];
+};
+
+export type Character = {
+  __typename?: 'Character';
+  id: Scalars['Float'];
+  username: Scalars['String'];
+  characterId: Scalars['Float'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  register: UserResponse;
+  login: UserResponse;
+  sublogin: UserResponse;
+  logout: Scalars['Boolean'];
+  updateStartGame: GameResponse;
+  updateEndGame: GameResponse;
+  updateStudentTeacher: StudentTeacherResponse;
+  updateCharacter: Character;
+  createLevel: Level;
+  updateLevel: Level;
+};
+
+
+export type MutationRegisterArgs = {
+  options: RegisterInput;
+};
+
+
+export type MutationLoginArgs = {
+  options: LoginInput;
+};
+
+
+export type MutationSubloginArgs = {
+  options: LoginInput;
+};
+
+
+export type MutationUpdateStartGameArgs = {
+  options: StartGameInput;
+};
+
+
+export type MutationUpdateEndGameArgs = {
+  options: EndGameInput;
+};
+
+
+export type MutationUpdateStudentTeacherArgs = {
+  options: StudentTeacherInput;
+};
+
+
+export type MutationUpdateCharacterArgs = {
+  options: CharacterInput;
+};
+
+
+export type MutationCreateLevelArgs = {
+  options: LevelInput;
+};
+
+
+export type MutationUpdateLevelArgs = {
+  options: UpdateInput;
+};
+
 export type UserResponse = {
   __typename?: 'UserResponse';
   errors?: Maybe<Array<FieldError>>;
   user?: Maybe<User>;
 };
 
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
+export type RegisterInput = {
+  email: Scalars['String'];
+  username: Scalars['String'];
+  password: Scalars['String'];
+  password2: Scalars['String'];
+  userType: Scalars['String'];
+};
+
+export type LoginInput = {
+  username: Scalars['String'];
+  password: Scalars['String'];
+  userType: Scalars['String'];
+};
+
+export type GameResponse = {
+  __typename?: 'GameResponse';
+  game?: Maybe<Game>;
+};
+
+export type StartGameInput = {
+  gameId: Scalars['Float'];
+  username: Scalars['String'];
+  type: Scalars['String'];
+  difficulty: Scalars['Float'];
+};
+
+export type EndGameInput = {
+  gameId: Scalars['Float'];
+  username: Scalars['String'];
+  score: Scalars['Float'];
+  totalQuestion: Scalars['Float'];
+};
+
+export type StudentTeacherResponse = {
+  __typename?: 'StudentTeacherResponse';
+  studentTeacher?: Maybe<StudentTeacher>;
+};
+
+export type StudentTeacherInput = {
+  student: Scalars['String'];
+  teacher: Scalars['String'];
+};
+
+export type CharacterInput = {
+  username: Scalars['String'];
+  characterId: Scalars['Float'];
+};
+
+export type LevelInput = {
+  level: Scalars['Float'];
+  createdBy: Scalars['String'];
+};
+
+export type UpdateInput = {
+  level: Scalars['Float'];
+  createdBy: Scalars['String'];
+  levelId: Scalars['Float'];
+  questionId: Scalars['Float'];
+};
+
 export type RegularUserFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'username'>
+);
+
+export type CreateLevelMutationVariables = Exact<{
+  level: Scalars['Float'];
+  createdBy: Scalars['String'];
+}>;
+
+
+export type CreateLevelMutation = (
+  { __typename?: 'Mutation' }
+  & { createLevel: (
+    { __typename?: 'Level' }
+    & Pick<Level, 'id' | 'level' | 'createdBy'>
+    & { questions?: Maybe<Array<(
+      { __typename?: 'Question' }
+      & Pick<Question, 'id' | 'type' | 'difficulty' | 'questionTitle' | 'A' | 'B' | 'C' | 'D' | 'correctAnswer'>
+    )>> }
+  ) }
 );
 
 export type LoginMutationVariables = Exact<{
@@ -338,6 +398,26 @@ export type UpdateEndGameMutation = (
   ) }
 );
 
+export type UpdateLevelMutationVariables = Exact<{
+  level: Scalars['Float'];
+  createdBy: Scalars['String'];
+  levelId: Scalars['Float'];
+  questionId: Scalars['Float'];
+}>;
+
+
+export type UpdateLevelMutation = (
+  { __typename?: 'Mutation' }
+  & { updateLevel: (
+    { __typename?: 'Level' }
+    & Pick<Level, 'id' | 'level' | 'createdBy'>
+    & { questions?: Maybe<Array<(
+      { __typename?: 'Question' }
+      & Pick<Question, 'id' | 'type' | 'difficulty' | 'questionTitle' | 'A' | 'B' | 'C' | 'D' | 'correctAnswer'>
+    )>> }
+  ) }
+);
+
 export type UpdateStartGameMutationVariables = Exact<{
   gameId: Scalars['Float'];
   username: Scalars['String'];
@@ -381,7 +461,7 @@ export type GetAllGameQuery = (
   { __typename?: 'Query' }
   & { getAllGame?: Maybe<Array<(
     { __typename?: 'Game' }
-    & Pick<Game, 'gameId' | 'username' | 'type' | 'difficulty' | 'startTime' | 'endTime' | 'score'>
+    & Pick<Game, 'gameId' | 'username' | 'type' | 'difficulty' | 'startTime' | 'endTime' | 'score' | 'totalCorrect' | 'totalQuestion'>
   )>> }
 );
 
@@ -394,7 +474,24 @@ export type GetAllGameByUsernameQuery = (
   { __typename?: 'Query' }
   & { getAllGameByUsername?: Maybe<Array<(
     { __typename?: 'Game' }
-    & Pick<Game, 'gameId' | 'username' | 'type' | 'difficulty' | 'startTime' | 'endTime' | 'score'>
+    & Pick<Game, 'gameId' | 'username' | 'type' | 'difficulty' | 'startTime' | 'endTime' | 'score' | 'totalCorrect' | 'totalQuestion'>
+  )>> }
+);
+
+export type GetAllLevelQueryVariables = Exact<{
+  createdBy: Scalars['String'];
+}>;
+
+
+export type GetAllLevelQuery = (
+  { __typename?: 'Query' }
+  & { getAllLevel?: Maybe<Array<(
+    { __typename?: 'Level' }
+    & Pick<Level, 'id' | 'level' | 'createdBy'>
+    & { questions?: Maybe<Array<(
+      { __typename?: 'Question' }
+      & Pick<Question, 'id' | 'difficulty' | 'type' | 'questionTitle' | 'A' | 'B' | 'C' | 'D' | 'correctAnswer'>
+    )>> }
   )>> }
 );
 
@@ -448,7 +545,7 @@ export type GetGameQuery = (
   { __typename?: 'Query' }
   & { getGame?: Maybe<(
     { __typename?: 'Game' }
-    & Pick<Game, 'gameId' | 'username' | 'type' | 'difficulty' | 'startTime' | 'endTime' | 'score'>
+    & Pick<Game, 'gameId' | 'username' | 'type' | 'difficulty' | 'startTime' | 'endTime' | 'score' | 'totalCorrect' | 'totalQuestion'>
   )> }
 );
 
@@ -462,6 +559,13 @@ export type GetQuestionQuery = (
   & { getQuestion?: Maybe<(
     { __typename?: 'Question' }
     & Pick<Question, 'id' | 'difficulty' | 'type' | 'questionTitle' | 'A' | 'B' | 'C' | 'D' | 'correctAnswer'>
+    & { levels?: Maybe<Array<(
+      { __typename?: 'Level' }
+      & { questions?: Maybe<Array<(
+        { __typename?: 'Question' }
+        & Pick<Question, 'id'>
+      )>> }
+    )>> }
   )> }
 );
 
@@ -495,6 +599,30 @@ export const RegularUserFragmentDoc = gql`
   username
 }
     `;
+export const CreateLevelDocument = gql`
+    mutation CreateLevel($level: Float!, $createdBy: String!) {
+  createLevel(options: {level: $level, createdBy: $createdBy}) {
+    id
+    level
+    createdBy
+    questions {
+      id
+      type
+      difficulty
+      questionTitle
+      A
+      B
+      C
+      D
+      correctAnswer
+    }
+  }
+}
+    `;
+
+export function useCreateLevelMutation() {
+  return Urql.useMutation<CreateLevelMutation, CreateLevelMutationVariables>(CreateLevelDocument);
+};
 export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!, $userType: String!) {
   login(options: {username: $username, password: $password, userType: $userType}) {
@@ -587,6 +715,32 @@ export const UpdateEndGameDocument = gql`
 export function useUpdateEndGameMutation() {
   return Urql.useMutation<UpdateEndGameMutation, UpdateEndGameMutationVariables>(UpdateEndGameDocument);
 };
+export const UpdateLevelDocument = gql`
+    mutation UpdateLevel($level: Float!, $createdBy: String!, $levelId: Float!, $questionId: Float!) {
+  updateLevel(
+    options: {level: $level, createdBy: $createdBy, levelId: $levelId, questionId: $questionId}
+  ) {
+    id
+    level
+    createdBy
+    questions {
+      id
+      type
+      difficulty
+      questionTitle
+      A
+      B
+      C
+      D
+      correctAnswer
+    }
+  }
+}
+    `;
+
+export function useUpdateLevelMutation() {
+  return Urql.useMutation<UpdateLevelMutation, UpdateLevelMutationVariables>(UpdateLevelDocument);
+};
 export const UpdateStartGameDocument = gql`
     mutation UpdateStartGame($gameId: Float!, $username: String!, $type: String!, $difficulty: Float!) {
   updateStartGame(
@@ -627,6 +781,8 @@ export const GetAllGameDocument = gql`
     startTime
     endTime
     score
+    totalCorrect
+    totalQuestion
   }
 }
     `;
@@ -644,12 +800,38 @@ export const GetAllGameByUsernameDocument = gql`
     startTime
     endTime
     score
+    totalCorrect
+    totalQuestion
   }
 }
     `;
 
 export function useGetAllGameByUsernameQuery(options: Omit<Urql.UseQueryArgs<GetAllGameByUsernameQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetAllGameByUsernameQuery>({ query: GetAllGameByUsernameDocument, ...options });
+};
+export const GetAllLevelDocument = gql`
+    query GetAllLevel($createdBy: String!) {
+  getAllLevel(createdBy: $createdBy) {
+    id
+    level
+    createdBy
+    questions {
+      id
+      difficulty
+      type
+      questionTitle
+      A
+      B
+      C
+      D
+      correctAnswer
+    }
+  }
+}
+    `;
+
+export function useGetAllLevelQuery(options: Omit<Urql.UseQueryArgs<GetAllLevelQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAllLevelQuery>({ query: GetAllLevelDocument, ...options });
 };
 export const GetAllQuestionDocument = gql`
     query GetAllQuestion($type: String!, $difficulty: Float!) {
@@ -703,6 +885,8 @@ export const GetGameDocument = gql`
     startTime
     endTime
     score
+    totalCorrect
+    totalQuestion
   }
 }
     `;
@@ -722,6 +906,11 @@ export const GetQuestionDocument = gql`
     C
     D
     correctAnswer
+    levels {
+      questions {
+        id
+      }
+    }
   }
 }
     `;
