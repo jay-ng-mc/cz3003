@@ -17,13 +17,17 @@ import Dice from "react-dice-roll"
 import Popup from 'reactjs-popup';
 import PopupController from '../PopupController';
 import { useRouter } from "next/router";
+import PlayerResult from '../CurrentResults';
+import { useUpdateStartGameMutation, useUpdateEndGameMutation } from '../../generated/graphql'
 
-
-class BoardComponent extends React.Component<{router, nextView}> {
+class BoardComponent extends React.Component<{router, nextView, updateState, gameState, updateStartGame, updateEndGame}> {
 
   constructor(props) {
     super(props)
     this.answerQuestion = this.answerQuestion.bind(this);
+    this.updateQuestion = this.updateQuestion.bind(this);
+    this.increaseKetchup = this.increaseKetchup.bind(this);
+    this.increaseMustard = this.increaseMustard.bind(this);
   }
 
   state = {
@@ -40,22 +44,24 @@ class BoardComponent extends React.Component<{router, nextView}> {
     playerTurn: 1,
     turnsTaken: 0,
     didStart: false,
-    numberOfPlayers: 3,
     movesLeft : 0,
     wall: [3,4,5,6,7,8,9,10,11,12,13,14,26,27,39,40,52,53,65,66,78,79,91,92,104,105,117,118,119,
     120,121,122,123,124,125,126,127,128,129,130,94,96,97,98,99,100,101,102,
     37,36,35,34,33,32,31,30,29],
     targetPlayer : 0,
-    correctlyAnswered : null
+    numberOfPlayers: null,
+    correctlyAnswered : null,
+    gameId: new Date().getTime()
   };
   
-    createBoard = () => {
+  createBoard = () => {
     let tileArray = []
     for (let counter = 130; counter > 0; counter--){
       tileArray.push(counter)
     }
     return this.occupyTiles(tileArray)
   }
+
   
   occupyTiles = (tileArray) => {
     if (this.state.movesLeft == 0){
@@ -80,7 +86,10 @@ class BoardComponent extends React.Component<{router, nextView}> {
       return tileArray.map(number => {
           if (this.state.startTiles.includes(number)) {
               return <Start startGame={this.startGame} didStart={this.state.didStart} number={number} />
-          } else if (this.state.sausageTile.includes(number)) {
+          } else if (number == this.state.currentTile) {
+                return <CurrentTile number = {number}/>
+            }
+            else if (this.state.sausageTile.includes(number)) {
               if (this.state.canMoveTo.includes(number)) {
                   return <SausageTile move={this.move} number={number} />
               } else {
@@ -90,7 +99,8 @@ class BoardComponent extends React.Component<{router, nextView}> {
           } else if (this.state.redTile.includes(number)) {
               if (this.state.canMoveTo.includes(number)) {
                   return (
-                    <RedTile move={this.move} number={number} movesLeft={this.state.movesLeft} answerQuestion={this.answerQuestion}/>
+                    <RedTile move={this.move} number={number} movesLeft={this.state.movesLeft} answerQuestion={this.answerQuestion}
+                    updateQuestion={this.updateQuestion}/>
                   )
               } else {
                   return <RedTile number={number} />
@@ -99,16 +109,15 @@ class BoardComponent extends React.Component<{router, nextView}> {
               return <WallTile number = {number} />
           } else if (this.state.shopTile.includes(number)) {
               if (this.state.canMoveTo.includes(number)) {
-                  return <ShopTile move={this.move} number={number} />
+                  return <ShopTile move={this.move} number={number} increaseKetchup = {this.increaseKetchup} increaseMustard = {this.increaseMustard}/>
               } else {
                   return <ShopTile number={number} />
               }
           } else if (this.state.canMoveTo.includes(number)) {
               return (
-                <Tile move={this.move} number={number} movesLeft={this.state.movesLeft} answerQuestion={this.answerQuestion}/>
+                <Tile move={this.move} number={number} movesLeft={this.state.movesLeft} answerQuestion={this.answerQuestion}
+                updateQuestion={this.updateQuestion}/>
               )
-          } else if (number == this.state.currentTile) {
-              return <CurrentTile number = {number}/>
           } else {
               return <Tile number={number} />
           }
@@ -116,8 +125,33 @@ class BoardComponent extends React.Component<{router, nextView}> {
     }  
   }
 
+  getGameId(){
+    return this.state.gameId
+  }
+
+  updateQuestion(questionId, correctAnswer, currentAnswer){
+    let questionArray = [];
+    questionArray.push(questionId)
+    questionArray.push(correctAnswer)
+    questionArray.push(currentAnswer)
+
+    if (questionArray[1] == questionArray[2]) {
+          const characters = [...this.state.characters];
+          const index = this.state.playerTurn-1;
+          characters[index] = {...this.state.characters[index]};
+          characters[index].correctAnswer.push([questionArray[0], questionArray[1]]);
+          this.setState({ characters });
+    }
+    else {
+      const characters = [...this.state.characters];
+      const index = this.state.playerTurn-1;
+      characters[index] = {...this.state.characters[index]};
+      characters[index].wrongAnswer.push([questionArray[0], questionArray[1], questionArray[2]]);
+      this.setState({ characters });
+    }
+  }
+
   answerQuestion(correctAnswer){
-    console.log('debug')
     console.log(this)
     if (correctAnswer){
       this.setState({
@@ -188,7 +222,7 @@ class BoardComponent extends React.Component<{router, nextView}> {
   }
   }
 
-  increaseCoins = character => {
+  increaseCoins = (character) => {
     if (this.state.correctlyAnswered){
     const characters = [...this.state.characters];
     const index = characters.indexOf(character);
@@ -198,15 +232,25 @@ class BoardComponent extends React.Component<{router, nextView}> {
     }
   };
 
-  increaseMustard = character => {
+  increaseMustard = () => {
     const characters = [...this.state.characters];
-    const index = characters.indexOf(character);
-    characters[index] = {...character};
+    const index = this.state.playerTurn-1;
+    characters[index] = {...this.state.characters[index]};
     characters[index].mustardCount ++;
+    characters[index].playerCoins -= 10;
     this.setState({ characters });
   };
 
-  decreaseCoins = character => {
+  increaseKetchup = () => {
+    const characters = [...this.state.characters];
+    const index = this.state.playerTurn-1;
+    characters[index] = {...this.state.characters[index]};
+    characters[index].ketchupCount ++;
+    characters[index].playerCoins -= 5;
+    this.setState({ characters });
+  };
+
+  decreaseCoins = (character) => {
     if (!this.state.correctlyAnswered){
     const characters = [...this.state.characters];
     const index = characters.indexOf(character);
@@ -241,10 +285,26 @@ class BoardComponent extends React.Component<{router, nextView}> {
     this.setState({ characters });
   };
 
-  endGame() {
-    console.log("End game");
+  async endGame() {
+    var results = [];
+    for (let x = 1; x <= this.state.numberOfPlayers; x++){
+      const result = {
+        username: this.state.characters[x-1].username,
+        playerSausage: this.state.characters[x-1].playerSausage,
+        correctAnswer: this.state.characters[x-1].correctAnswer,
+        wrongAnswer: this.state.characters[x-1].wrongAnswer
+      }
+      await this.props.updateEndGame({gameId: this.getGameId(),
+        username: result.username,
+        score: result.playerSausage,
+        totalQuestion: result.correctAnswer.length + result.wrongAnswer.length,
+        totalCorrect: result.correctAnswer.length
+      })
+      console.log(this.props)
+      results.push(result)
+    }
+    this.props.updateState({results: results})
     this.props.nextView()
-    // this.props.router.push("/currsessionresult");
   }
 
 
@@ -253,10 +313,9 @@ class BoardComponent extends React.Component<{router, nextView}> {
     const index = this.state.playerTurn-1;
     let nextIndex;
     index === number-1 ? nextIndex = 0: nextIndex = index+1;
-    // if (this.state.turnsTaken == 2 * this.state.numberOfPlayers){
-    //   this.endGame()
-    // }
-    this.endGame()
+    if (this.state.turnsTaken >= 1 * this.state.numberOfPlayers){
+      this.endGame()
+    }
     if (characters[index].position === 0 && this.state.turnsTaken < number){ 
     this.state.didStart = false;}
     this.state.turnsTaken++;
@@ -270,14 +329,24 @@ class BoardComponent extends React.Component<{router, nextView}> {
     this.setState({ characters });
   };
 
-  createCharacters = (number) =>{
+  createCharacters = () =>{
     if (this.state.charactersCreated == false){
       this.state.charactersCreated = true;
-      for (let x = 1; x <= number; x++){
-        this.state.characters.push(
-          {characterId: x, playerCoins: 20, playerSausage: 0, mustardCount: 0,ketchupCount: 0,
-          position:0,canMoveTo:[], questionsAsked: 0, questionsCorrect: 0 })
-    }}
+      this.setState({
+        numberOfPlayers: this.props.gameState.users.length
+      })
+      this.props.gameState.users.map((username, index) => {
+        this.state.characters.push({
+          characterId: index, username:username, playerCoins: 20, playerSausage: 0, mustardCount: 0,ketchupCount: 0,
+          position:0,canMoveTo:[], wrongAnswer: [], correctAnswer: []
+        })
+        this.props.updateStartGame({gameId: this.getGameId(),
+        username: username,
+        type: "topic 1",
+        difficulty: 1
+        })
+      })
+    }
   };
 
   rollDice = (value) => {
@@ -331,7 +400,7 @@ class BoardComponent extends React.Component<{router, nextView}> {
       return "Game has not started"
     }
     else{ 
-      return (this.state.turnsTaken - this.state.playerTurn)/3 + 1
+      return (this.state.turnsTaken - this.state.playerTurn)/this.state.numberOfPlayers + 1
     }
   }
 
@@ -339,7 +408,7 @@ class BoardComponent extends React.Component<{router, nextView}> {
   render(){
     return (
       <div>
-        {this.createCharacters(this.state.numberOfPlayers)}
+        {this.createCharacters()}
         <Flex flexDir='column'>
           <Stack isInline={true} mt='30px' mb='30px' spacing ="10px" height='auto'>
             { this.state.characters.map(character => (
@@ -354,7 +423,7 @@ class BoardComponent extends React.Component<{router, nextView}> {
             <Box as="button" style={ButtonStyle} px={4} mr="10px"
               width="250px"
               height="50px"
-              onClick={() => this.increaseMustard(this.state.characters[this.state.playerTurn-1])}
+              onClick={() => this.increaseMustard()}
               className="btn btn-secondary btn-sm"
             >
               increase Mustard
@@ -404,8 +473,16 @@ class BoardComponent extends React.Component<{router, nextView}> {
 
   const BoardFunction = (props) => {
     console.log(props)
+    const [,updateStartGame] = useUpdateStartGameMutation()
+    const [,updateEndGame] = useUpdateEndGameMutation()
     return (
-      <BoardComponent router={useRouter()} nextView={props.nextView}/>
+      <BoardComponent router={useRouter()}
+        nextView={props.nextView}
+        updateState={props.updateState}
+        gameState= {props.gameState}
+        updateStartGame={updateStartGame}
+        updateEndGame={updateEndGame}
+      />
     )
   }
 

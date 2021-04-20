@@ -21,7 +21,8 @@ export default class RedTile extends Component {
         if (this.props.movesLeft == 1) {
             return(
                 // this.tileDiv()
-                <PopupController hostDiv={this.tileDiv} enable={true} handleClick={this.handleClick} answerQuestion={this.props.answerQuestion}/>
+                <PopupController hostDiv={this.tileDiv} enable={true} handleClick={this.handleClick} answerQuestion={this.props.answerQuestion}
+                updateQuestion={this.props.updateQuestion}/>
                 // <Popup trigger={this.tileDiv} modal>
                 //     <Box>
                 //         <Questions />

@@ -43,7 +43,7 @@ const HomePage = () => {
 
     const isServer = () => typeof window ==="undefined";
     const [{data, fetching}] = useMeQuery({
-        pause: isServer(),
+         pause: isServer(),
     });
 
     return (

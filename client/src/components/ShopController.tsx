@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react'
 import Popup from 'reactjs-popup';
-import Questions from './Questions'
+import Shop from './Shop'
 import { Box } from '@chakra-ui/react'
 
-const PopupController = (props) => {
+const ShopController = (props) => {
     // const [open, setOpen] = useState(false);
     // const closeModal = () => {
     //     setOpen(false)
@@ -22,8 +22,8 @@ const PopupController = (props) => {
                     closeOnDocumentClick
                     onClose={props.handleClick}
                 >
-                    <Questions closePopup={closeTooltip} answerQuestion={props.answerQuestion}
-                    updateQuestion={props.updateQuestion}/>
+                    <Shop closePopup={closeTooltip} increaseMustard={props.increaseMustard} 
+                    increaseKetchup={props.increaseKetchup}/>
                 </Popup>
             </Box>
         )
@@ -34,4 +34,4 @@ const PopupController = (props) => {
     }
 }
 
-export default PopupController
+export default ShopController

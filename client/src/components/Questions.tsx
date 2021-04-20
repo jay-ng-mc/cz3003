@@ -6,30 +6,24 @@ import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
 const Questions = (props)  => {
-    const questionId = 0
     const [{data}] = useGetAllQuestionQuery({
         variables: {
-            type: "topic 2",
-            difficulty: 2,
+            type: "topic 1",
+            difficulty: 1,
         }
     })
     const questionBank = data;
-        // var chunk_size = 1;
-        // const questionBank1 = data.getAllQuestion.map(function(e,i){
-        //     return i%chunk_size===0 ? data.getAllQuestion.slice(i,i+chunk_size) : null;
-        // })
-        // .filter(x=>!!x)
-
-        //const questionBank = questionBank1;
-    // var questionBank = Data();
-    //console.log(questionBank?.getAllQuestion[questionId].questionTitle)
+    console.log(questionBank)
+    const questionId = Math.floor(Math.random()*questionBank?.getAllQuestion.length)
+    console.log("Data:" + questionId); 
 
     return (
         <ThemeProvider theme={theme}>
             <CSSReset />
             <QuestionsPage 
-                questionBank={questionBank} questionId={questionId} 
+                questionBank={questionBank} questionId={questionId}
                 closePopup={props.closePopup} answerQuestion={props.answerQuestion}
+                updateQuestion={props.updateQuestion}
             />
         </ThemeProvider>
     );
@@ -45,7 +39,7 @@ const AnswerStyle = {
     width: '190px',
 }
 
-class QuestionsPage extends React.Component <{questionBank, questionId, closePopup, answerQuestion}, { [key: string]: any }>{
+class QuestionsPage extends React.Component <{questionBank, questionId, closePopup, answerQuestion, updateQuestion}, { [key: string]: any }>{
     constructor(props) {
         super(props);
         this.state = {
@@ -132,23 +126,6 @@ class QuestionsPage extends React.Component <{questionBank, questionId, closePop
         )
     }
 
-    async Data() {
-        const [{data,fetching}] = await useGetAllQuestionQuery({
-            variables: {
-                type: "topic 2",
-                difficulty: 2,
-            }
-        })
-        if (fetching){
-            console.log('fetching')
-        }else{
-             var questionBank = data.getAllQuestion;
-            if (questionBank == null){
-                console.log('nothing');
-            }
-        }
-        return questionBank;
-    }
 
     changeColor1() {
         if (document.getElementById('A').style.backgroundColor == "yellow" ){
@@ -202,10 +179,12 @@ class QuestionsPage extends React.Component <{questionBank, questionId, closePop
     }       
 
     isCorrect() {
+
         if (this.state.currentAnswer == ""){
             document.getElementById('answer').textContent= "Please select an answer!"
         }
         else {
+            this.props.updateQuestion(this.props.questionId, this.state.correctAnswer, this.state.currentAnswer)
             if (this.state.currentAnswer == this.state.correctAnswer){
                 document.getElementById('answer').textContent= "Your answer is correct!"
                 document.getElementById(this.state.correctAnswer).style.backgroundColor = "green"

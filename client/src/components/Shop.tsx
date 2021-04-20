@@ -1,6 +1,6 @@
 import { Container } from '../components/Container'
 import React from "react";
-import {ThemeProvider, theme, Heading, Flex, Box, Stack, Image, Center } from "@chakra-ui/react";
+import {ThemeProvider, theme, Heading, Flex, Box, Stack, Image, Center, CSSReset } from "@chakra-ui/react";
 
 const welcome = "Welcome to the sausage shop! Click on an item to purchase!"
 const ketchupDesc = "KETCHUP: This item can be used before the start of the turn. For the next question, the number of options will be halved."
@@ -21,20 +21,33 @@ const BuyOrExitStyle = {
     width: '200px',
 }
 
-class ShopPage extends React.Component <{}, { [key: string]: string }> {
+const Shop = (props) => {
+    return (
+        <ThemeProvider theme={theme}>
+            <CSSReset />
+            <ShopPage 
+                closePopup={props.closePopup} increaseMustard={props.increaseMustard} 
+                increaseKetchup={props.increaseKetchup}
+            />
+        </ThemeProvider>
+    );
+}
+
+class ShopPage extends React.Component <{ closePopup, increaseKetchup, increaseMustard}, { [key: string]: string }> {
     constructor(props) {
         super(props);
         this.state = {currentSelection: "welcome"};
  
         this.selectKetchup = this.selectKetchup.bind(this);
         this.selectMustard = this.selectMustard.bind(this);
+        this.buyItem = this.buyItem.bind(this);
+        this.exitShop = this.exitShop.bind(this);
     }
 
     render() {
         return (
-            <Container height="100vh">
-                <Flex minHeight='100vh' width='full' align='center' justifyContent='center'>
-                    <Box borderWidth={1} px={1} width='full' maxWidth='500px' borderRadius={4} textAlign='center' boxShadow='lg'>
+                <Flex width='full' align='center' justifyContent='center'>
+                    <Box borderWidth={1} px={1} width='full' maxWidth='500px' borderRadius={4} textAlign='center' boxShadow='lg' bgColor='white'>
                         
                         <ThemeProvider theme={theme} />
 
@@ -111,7 +124,6 @@ class ShopPage extends React.Component <{}, { [key: string]: string }> {
                             
                     </Box>
                 </Flex>
-            </Container>
         )
     }
 
@@ -136,47 +148,22 @@ class ShopPage extends React.Component <{}, { [key: string]: string }> {
     }
 
     buyItem() {
-
+        if(this.state.currentSelection == "ketchup") {
+            this.props.increaseKetchup()
+            this.props.closePopup()
+        }
+        if(this.state.currentSelection == "mustard") {
+            this.props.increaseMustard()
+            this.props.closePopup()
+        }
     }
 
     exitShop() {
-
+        this.props.closePopup()
     }
 }
 
 
 
-// const ShopPage = () => {
-//     return (
-//         <Container height="100vh">
-//             <Flex minHeight='100vh' width='full' align='center' justifyContent='center'>
-//                 <Box borderWidth={1} px={1} width='full' maxWidth='800px' borderRadius={4} textAlign='center' boxShadow='lg'>
-                    
-//                     <ThemeProvider theme={theme} />
 
-//                     <Box h='100px' >
-//                         <ShopSign />
-//                     </Box>
-
-//                     <Box h='100px' >
-//                         <Items />
-//                     </Box>
-
-//                     <Box h='100px' bgImage="url('/images/shop/itemDescBg.png')" bgRepeat='no-repeat' bgPosition='center' bgSize='contain'>
-//                         <ItemDesc />
-//                     </Box>
-                    
-//                     <Box h='100px' >
-//                         <BuyOrExit />
-//                     </Box>         
-                        
-//                 </Box>
-//             </Flex>
-//         </Container>
-        
-//     );
-// }
-
-
-
-export default ShopPage
+export default Shop
