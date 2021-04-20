@@ -16,7 +16,7 @@ export const getPlayerResult = (props) => {
 
     const [{data}] = useGetAllQuestionQuery({
         variables: {
-            type: "Sausage",
+            type: "topic 1",
             difficulty: 1,
         }
     })

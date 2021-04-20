@@ -8,7 +8,7 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 const Questions = (props)  => {
     const [{data}] = useGetAllQuestionQuery({
         variables: {
-            type: "Sausage",
+            type: "topic 1",
             difficulty: 1,
         }
     })
@@ -32,7 +32,7 @@ const Questions = (props)  => {
 /*async Data() {
     const [{data,fetching}] = await useGetAllQuestionQuery({
         variables: {
-            type: "Sausage",
+            type: "topic 1",
             difficulty: 1,
         }
     })
