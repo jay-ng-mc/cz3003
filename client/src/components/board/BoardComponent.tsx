@@ -313,7 +313,7 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
     const index = this.state.playerTurn-1;
     let nextIndex;
     index === number-1 ? nextIndex = 0: nextIndex = index+1;
-    if (this.state.turnsTaken >= 1 * this.state.numberOfPlayers){
+    if (this.state.turnsTaken >= 4 * this.state.numberOfPlayers){
       this.endGame()
     }
     if (characters[index].position === 0 && this.state.turnsTaken < number){ 
