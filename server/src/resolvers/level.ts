@@ -39,7 +39,7 @@ export class LevelResolver {
         @Arg('options') options: LevelInput,
         @Ctx() { em }: MyContext
     ): Promise<Level | undefined | null> {
-        const level1 = await em.findOne(Level, {$and:[ {level: options.level},{createdBy: options.createdBy}] })
+        const level1 = await em.findOne(Level, {$and:[ {level: options.level},{createdBy: options.createdBy}] }, ['questions'])
         if (level1 != null){
             return level1;
         }else{
@@ -76,6 +76,14 @@ export class LevelResolver {
         } else{
             return null
         }
+    }
+
+    @Query(() => [Level], {nullable: true})
+    async getAllLevel(
+        @Arg('createdBy') createdBy: string,
+        @Ctx() { em }: MyContext
+    ):  Promise<Level[] | null>  {
+        return em.find(Level, {createdBy});
     }
 
 }
