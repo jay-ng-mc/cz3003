@@ -1,0 +1,18 @@
+mutation CreateLevel($level: Float!, $createdBy: String!){
+    createLevel(options:{level: $level, createdBy: $createdBy}){
+        id
+        level
+        createdBy
+        questions{
+            id
+            type
+            difficulty
+            questionTitle
+            A
+            B
+            C    
+            D
+            correctAnswer    
+        }
+    }
+}

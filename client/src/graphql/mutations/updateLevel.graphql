@@ -1,0 +1,18 @@
+mutation UpdateLevel($level: Float!, $createdBy: String!,$levelId: Float!, $questionId: Float!){
+    updateLevel(options:{level: $level, createdBy: $createdBy, levelId: $levelId, questionId: $questionId}){
+        id
+        level
+        createdBy
+        questions{
+            id
+            type
+            difficulty
+            questionTitle
+            A
+            B
+            C    
+            D
+            correctAnswer    
+        }
+    }
+}

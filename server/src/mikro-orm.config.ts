@@ -6,13 +6,14 @@ import { Question } from "./entities/Question";
 import { Game } from "./entities/Game";
 import { StudentTeacher } from "./entities/StudentTeacher";
 import { Character } from "./entities/Character";
+import { Level } from "./entities/Level";
 
 export default{
     migrations: {
         path: path.join(__dirname,'./migrations'), // path to the folder with migrations
         pattern: /^[\w-]+\d+\.[tj]s$/, // regex pattern for the migration files
     },
-    entities: [ User, Question, Game, StudentTeacher, Character ],
+    entities: [ User, Question, Game, StudentTeacher, Character, Level ],
     dbName: 'postgres',
     type: 'postgresql',
     password: 'postgres',
