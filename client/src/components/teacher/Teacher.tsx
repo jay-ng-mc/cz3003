@@ -186,8 +186,7 @@ function Teacher() {
             console.log(err)
         }
     }
-    console.log(studentList)
-    console.log("reach here 1")
+    console.log('student list: ', studentList)
     var needed = []
     if (studentList) {
         needed = [{student:'student',mastery:"mastery"}]
@@ -263,15 +262,12 @@ const Student = ({columns, name})=>{
                 username: name,
             }
         })
-        console.log(data)
         if (data) {
             allGames = data.getAllGameByUsername
         } else {
             allGames = []
         }
         for (var i = 0; i < allGames.length;i++){
-            // var temp1 = parseInt(allGames[i].totalCorrect);
-            // var temp2 = parseInt(allGames[i].totalQuestion);
             try{
                 var temp1 = parseInt(allGames[i].totalCorrect);
                 var temp2 = parseInt(allGames[i].totalQuestion);
@@ -280,17 +276,12 @@ const Student = ({columns, name})=>{
             }catch(err){
                 console.log(err)
             }
-            console.log(correctSum)
-            console.log(questionSum)
             masteryScore =  parseInt(((correctSum/questionSum)*100).toFixed())
         }
         dataInside['student'] = name
         dataInside['mastery'] = masteryScore
         dataNeeded.push(dataInside)
-        console.log(allGames)
-        console.log("take from here")
-        console.log(dataInside)
-        console.log(dataNeeded)
+        console.log(`games played by student: ${name?name:null}`, allGames)
         var studentMasteryList = dataNeeded.map((studentTeacher) => {
             return {
                 student: studentTeacher.student,
