@@ -23,7 +23,7 @@ const PopupController = (props) => {
                     onClose={props.handleClick}
                 >
                     <Questions closePopup={closeTooltip} answerQuestion={props.answerQuestion}
-                    updateQuestion={props.updateQuestion}/>
+                    updateQuestion={props.updateQuestion} random={props.random}/>
                 </Popup>
             </Box>
         )

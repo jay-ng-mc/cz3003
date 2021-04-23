@@ -13,8 +13,8 @@ const Questions = (props)  => {
         }
     })
     const questionBank = data;
+    const questionId = Math.floor(props.random*questionBank?.getAllQuestion.length)
     console.log(questionBank)
-    const questionId = Math.floor(Math.random()*questionBank?.getAllQuestion.length)
     console.log("Data:" + questionId); 
 
     return (

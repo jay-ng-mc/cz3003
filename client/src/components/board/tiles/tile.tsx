@@ -22,7 +22,7 @@ export default class tile extends Component {
             return(
                 // this.tileDiv()
                 <PopupController hostDiv={this.tileDiv} enable={true} handleClick={this.handleClick} answerQuestion={this.props.answerQuestion}
-                updateQuestion={this.props.updateQuestion}/>
+                updateQuestion={this.props.updateQuestion} random={this.props.random}/>
                 // <Popup trigger={this.tileDiv} modal>
                 //     <Box>
                 //         <Questions />
