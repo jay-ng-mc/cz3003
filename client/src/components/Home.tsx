@@ -51,7 +51,6 @@ const HomePage = () => {
             <Box borderWidth={1} px={4} width='full' maxWidth='400px' borderRadius={4} textAlign='center' boxShadow='lg'>
                 <ThemeProvider theme={theme} />
                 <Box p={4}>
-                    <CharacterIcon />
                     <HeaderAndBox fetching={fetching} me={data?.me}/>
                 </Box>
             </Box>
@@ -78,18 +77,6 @@ const HomeBox = () => {
             <NextLink href={"/register"}>
                 <Button width='full' backgroundColor="teal.300" mt={5}>Register</Button>
             </NextLink>
-        </Box>
-    )
-}
-
-const CharacterIcon = () => {
-    return (
-        <Box my={3} textAlign='right'>
-        <IconButton 
-        aria-label="Change Character"
-        isRound={true} 
-        icon={<SettingsIcon />}
-        size='lg'/>
         </Box>
     )
 }

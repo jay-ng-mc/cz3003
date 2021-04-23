@@ -54,12 +54,12 @@ const GameLobbyBox = (props) => {
         <Flex minHeight='80vh' width='full' align='center' justifyContent='center'>
             <Box borderWidth={1} px={4} h="auto" w="60vw" borderRadius={4} textAlign='center' boxShadow='lg'>
                 <ThemeProvider theme={theme} />
-                <Box p={4} display="flex" flex-flexDirection="row">
-                    <Box flex='1' display="flex" flex-flexDirection="column">
+                <Box p={4}>
+                    <Box display="flex" flex-flexDirection="column">
                         <BackIcon />
                         <Header/>
                     </Box>
-                    <Box flex='3'>
+                    <Box>
                         <GameLobbyContent updateState={props.updateState} nextView={props.nextView} userName={userName} imageId={savedImageIdx}/>
                     </Box>
                 </Box>

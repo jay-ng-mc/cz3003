@@ -9,7 +9,7 @@ export default class BoardCharacter extends Component {
         return(
             <div>
                 <Box color="black" bg="green.300" px={4} fontSize="16px"> 
-                    <b> Player  {this.props.character.characterId} </b>    
+                    <b> Player  {this.props.character.characterId+1} </b>    
                 </Box>
                 <Box bg ="yellow" fontSize="20px" px={4}>
                      Name: {this.props.character.username}

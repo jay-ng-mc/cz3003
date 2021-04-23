@@ -135,11 +135,11 @@ const UserProfile = () => {
 
   var profile = games.map((game) => {
     totalQuestions += game.totalQuestion,
-    totalCorrect += game.score
+    totalCorrect += game.totalCorrect
     return {
       timePlayed: game.startTime,
       questionAnswered: game.totalQuestion,
-      correctAnswer: game.score 
+      correctAnswer: game.totalCorrect 
     }
   })
   const accuracy = (totalCorrect/totalQuestions * 100).toPrecision(4)

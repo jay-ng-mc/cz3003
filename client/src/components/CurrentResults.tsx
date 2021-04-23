@@ -80,8 +80,10 @@ const CustomModal = ({PlayerNo ,props, questionBank}) => {
             <ModalHeader>Player {PlayerNo + 1}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
+                <br/><br/>
                 <div style={{overflowY:"scroll", height:"375px"}}>
                 {DisplayCorrectResults(PlayerNo, props, questionBank)}
+                <br/><br/>
                 {DisplayIncorrectResults(PlayerNo, props, questionBank)}
                 </div>
             </ModalBody>
@@ -127,7 +129,6 @@ const ResultsHeader = () => {
 const DisplayCorrectResults = (playerNo, props, questionBank) => {
     return (
         <div>
-                <Box textColor='black' textAlign='left'>{props.gameState.users[playerNo]}</Box>
                 <Box textColor='black'>Correct Answers</Box>
                 {props.gameState.results[playerNo].correctAnswer.map((question, index) => {
                     if (question[1] == "A"){
@@ -137,6 +138,7 @@ const DisplayCorrectResults = (playerNo, props, questionBank) => {
                             <Box textColor='black'>Correct Answer: </Box>
                             <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].A}</Box>
                             <Spacer />
+                                <br/>
                     </div>
                     }
                     if (question[1] == "B"){
@@ -146,6 +148,7 @@ const DisplayCorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].B}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                         }
                     if (question[1] == "C"){
@@ -155,6 +158,7 @@ const DisplayCorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].C}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                         }
                     if (question[1] == "D"){
@@ -164,6 +168,7 @@ const DisplayCorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].D}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                         }
                 })}
@@ -187,6 +192,7 @@ const DisplayIncorrectResults = (playerNo, props, questionBank) => {
                             <Box textColor='black'>Correct Answer: </Box>
                             <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].A}</Box>
                             <Spacer />
+                                <br/>
                     </div>
                     }
                     if (question[1] == "A" && question[2] == "C"){
@@ -198,6 +204,7 @@ const DisplayIncorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].A}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                     }
                     if (question[1] == "A" && question[2] == "D"){
@@ -209,6 +216,7 @@ const DisplayIncorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].A}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                     }
                     if (question[1] == "B" && question[2] == "A"){
@@ -220,6 +228,7 @@ const DisplayIncorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].B}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                     }
                     if (question[1] == "B" && question[2] == "C"){
@@ -231,6 +240,7 @@ const DisplayIncorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].B}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                     }
                     if (question[1] == "B" && question[2] == "D"){
@@ -242,6 +252,7 @@ const DisplayIncorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].B}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                     }
                     if (question[1] == "C" && question[2] == "A"){
@@ -253,6 +264,7 @@ const DisplayIncorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].C}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                     }
                     if (question[1] == "C" && question[2] == "B"){
@@ -264,6 +276,7 @@ const DisplayIncorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].C}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                     }
                     if (question[1] == "C" && question[2] == "D"){
@@ -275,6 +288,7 @@ const DisplayIncorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].C}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                     }
                     if (question[1] == "D" && question[2] == "A"){
@@ -286,6 +300,7 @@ const DisplayIncorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].D}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                     }
                     if (question[1] == "D" && question[2] == "B"){
@@ -297,6 +312,7 @@ const DisplayIncorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].D}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                     }
                     if (question[1] == "D" && question[2] == "C"){
@@ -308,6 +324,7 @@ const DisplayIncorrectResults = (playerNo, props, questionBank) => {
                                 <Box textColor='black'>Correct Answer: </Box>
                                 <Box textColor='black'>{questionBank?.getAllQuestion[question[0]].D}</Box>
                                 <Spacer />
+                                <br/>
                         </div>
                     }
                 })}

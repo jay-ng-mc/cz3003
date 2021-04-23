@@ -1,0 +1,18 @@
+query GetAllLevel($createdBy: String!) {
+    getAllLevel(createdBy: $createdBy) {
+        id
+        level
+        createdBy
+        questions {
+            id
+            difficulty
+            type
+            questionTitle
+            A
+            B
+            C
+            D
+            correctAnswer
+        }
+    }
+}

@@ -25,24 +25,24 @@ export class Game {
   @Property()
   difficulty!: number;
 
-  @Field(() => String)
+  @Field()
   @Property({ type: 'date' })
-  startTime = new  Date();
+  startTime: Date;
 
-  @Field(() => String)
-  @Property({ type: 'date' , nullable: true})
-  endTime = new Date();
+  @Field()
+  @Property({ nullable: true, type: 'date' })
+  endTime: Date;
 
   @Field()
   @Property({nullable: true})
-  score!: number;
+  score: number;
 
   @Field()
   @Property({nullable: true})
-  totalCorrect!: number;
+  totalCorrect: number;
 
   @Field()
   @Property({nullable: true})
-  totalQuestion!: number; 
+  totalQuestion: number; 
 
 }
