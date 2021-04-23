@@ -51,7 +51,8 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
     targetPlayer : 0,
     numberOfPlayers: null,
     correctlyAnswered : null,
-    gameId: new Date().getTime()
+    gameId: new Date().getTime(),
+    random: 0
   };
   
   createBoard = () => {
@@ -100,7 +101,7 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
               if (this.state.canMoveTo.includes(number)) {
                   return (
                     <RedTile move={this.move} number={number} movesLeft={this.state.movesLeft} answerQuestion={this.answerQuestion}
-                    updateQuestion={this.updateQuestion}/>
+                    updateQuestion={this.updateQuestion} random={this.state.random}/>
                   )
               } else {
                   return <RedTile number={number} />
@@ -116,7 +117,7 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
           } else if (this.state.canMoveTo.includes(number)) {
               return (
                 <Tile move={this.move} number={number} movesLeft={this.state.movesLeft} answerQuestion={this.answerQuestion}
-                updateQuestion={this.updateQuestion}/>
+                updateQuestion={this.updateQuestion} random={this.state.random}/>
               )
           } else {
               return <Tile number={number} />
@@ -327,6 +328,9 @@ class BoardComponent extends React.Component<{router, nextView, updateState, gam
     this.state.canMoveTo = characters[nextIndex].canMoveTo;
     this.state.playerTurn = nextIndex + 1;
     this.setState({ characters });
+    this.setState({
+      random: Math.random()
+    })
   };
 
   createCharacters = () =>{
