@@ -52,7 +52,7 @@ export class GameResolver {
         // @Arg( 'username' ) username: string,
         @Ctx() { em }: MyContext
     ): Promise<Game[] | null>{
-        return em.find(Game, { });
+        return em.find(Game, { endTime: {$ne: null}});
     }
 
     @Query(() => [Game], { nullable: true })

@@ -93,7 +93,7 @@ class LeaderboardPage extends React.Component<{data}> {
       accessor: 'entryDate',
     },
     {
-      Header: 'Timing',
+      Header: 'Timing (s)',
       accessor: 'timeTaken',
     },
     {
@@ -129,8 +129,8 @@ const Leaderboard = () => {
     return {
       rank: index+1,
       userName: game.username,
-      entryDate: game.startTime,
-      timeTaken: game.endTime - game.startTime,
+      entryDate: game.startTime.slice(0, -5),
+      timeTaken: (Date.parse(game.endTime) - Date.parse(game.startTime))/1000,
       score: game.score
     }
   })
